@@ -8,17 +8,24 @@ class RequestUtils
         return $_SERVER['REQUEST_METHOD'] == "POST";
     }
 
-    public static function preventSpam()
+    public static function getBlacklistFile()
     {
         $ip = $_SERVER['REMOTE_ADDR'];
-        $blacklistfile = __DIR__ . '/../blacklist/' . $ip;
+        return __DIR__ . '/../blacklist/' . $ip;
+    }
+
+    public static function preventSpam()
+    {
+        $blacklistfile = self::getBlacklistFile();
         $count = 0;
         $creationDate = 0;
+        $limit = self::getCardGenerationLimit();
+        
         if (file_exists($blacklistfile)) {
             $contents = (int)file_get_contents($blacklistfile);
             // If the stored value is big, it's the unix timestamp.
             // Otherwise it's the amount of created cards.
-            if ($contents > 5) {
+            if ($contents > $limit) {
                 $creationDate = $contents;
             } else {
                 $count = $contents;
@@ -35,16 +42,59 @@ class RequestUtils
             }
         }
 
-        if ($count === 5) {
+        if ($count === $limit) {
+            // Get the timeout from environment variable
+            $timeout = self::getCardGenerationTimeout();
             // Write unix timestamp into the blacklist file. The
             // ip is blocked till then.
-            file_put_contents($blacklistfile, time() + 5*60);
+            file_put_contents($blacklistfile, time() + $timeout);
         } else {
             // increment count...
             file_put_contents($blacklistfile, ($count+1));
         }
 
         return true;
+    }
+
+    public static function checkBypassPassword()
+    {
+        if (
+            isset($_POST['bypass-password']) &&
+            isset($_POST['bypass-attempt']) &&
+            $_POST['bypass-attempt'] === "1"
+        ) {
+            $providedPassword = $_POST['bypass-password'];
+            $correctPassword = getenv('BYPASS_PASSWORD');
+            
+            // If no password is set in environment, bypass feature is disabled
+            if ($correctPassword === false || $correctPassword === '') {
+                return false;
+            }
+            
+            // Use hash_equals for timing-safe comparison
+            return hash_equals($correctPassword, $providedPassword);
+        }
+        return false;
+    }
+
+    public static function getCardGenerationLimit()
+    {
+        static $limit = null;
+        if ($limit === null) {
+            $envLimit = getenv('CARD_GENERATION_LIMIT');
+            $limit = ($envLimit !== false && is_numeric($envLimit)) ? (int)$envLimit : 5;
+        }
+        return $limit;
+    }
+
+    public static function getCardGenerationTimeout()
+    {
+        static $timeout = null;
+        if ($timeout === null) {
+            $envTimeout = getenv('CARD_GENERATION_TIMEOUT');
+            $timeout = ($envTimeout !== false && is_numeric($envTimeout)) ? (int)$envTimeout : 300;
+        }
+        return $timeout;
     }
 
     public static function parseSeed()

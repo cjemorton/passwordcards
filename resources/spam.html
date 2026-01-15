@@ -7,10 +7,25 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="header">
-        <h1>Awww...</h1>
-        <p>To prevent spam you can only create 5 cards every 5 minutes...</p>
-        <p>While you wait ({$seconds} seconds are left) - you can watch this video of cute cats!</p>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/nOBX7ffZFCU" frameborder="0" allowfullscreen></iframe>
+        <h1>Rate Limit Reached</h1>
+        <p>To prevent spam you can only create {$limit} cards every {$timeout_minutes} minutes...</p>
+        <p>{$seconds} seconds remaining until you can generate more cards.</p>
+        
+        <div style="margin-top: 20px; padding: 20px; background-color: #f5f5f5; border-radius: 5px;">
+            <p><strong>Have a bypass password?</strong></p>
+            <form action="" method="POST" accept-charset="ISO-8859-15">
+                <input type="password" name="bypass-password" placeholder="Enter bypass password" autocomplete="off" style="width: 300px; padding: 10px; margin-bottom: 10px;">
+                <input type="hidden" name="bypass-attempt" value="1">
+                {if="isset($formData)"}
+                    {loop="$formData"}
+                        <input type="hidden" name="{$key}" value="{$value}">
+                    {/loop}
+                {/if}
+                <br>
+                <input type="submit" value="Submit Password" class="button">
+            </form>
+        </div>
+        
         <br>
         <a href="/" class="button">Go Back</a>
     </div>
