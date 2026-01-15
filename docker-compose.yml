@@ -1,6 +1,9 @@
-web:
-  build: apache/
-  volumes:
-   - ./:/var/www/html:rw
-  ports:
-   - "8000:80"
+services:
+  web:
+    build:
+      context: ./apache
+      dockerfile: Dockerfile
+    container_name: passwordcards_web
+    ports:
+      - "8000:80"
+    restart: unless-stopped
