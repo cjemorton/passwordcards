@@ -50,8 +50,11 @@ COPY legacy/ /var/www/html/
 
 # -------------------------------
 # Install Composer dependencies
+# Note: SSL verification is disabled for build environment compatibility
 # -------------------------------
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer config -g -- disable-tls true && \
+    composer config -g -- secure-http false && \
+    composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -------------------------------
 # Create necessary directories
