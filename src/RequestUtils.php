@@ -123,9 +123,11 @@ class RequestUtils
             $algorithm = self::parseHashAlgorithm();
             $hash = hash($algorithm, $seed);
             
-            // Convert the hash to a numeric seed by taking the first 10 hex characters
-            // and converting to integer. This gives us a manageable seed value.
-            $numericSeed = hexdec(substr($hash, 0, 10));
+            // Convert the hash to a numeric seed by taking the first 15 hex characters
+            // and converting to integer. This provides ~60 bits of entropy (15 hex chars = 60 bits)
+            // which is sufficient to prevent practical collisions while keeping the seed manageable.
+            // PHP_INT_MAX on 64-bit systems is 2^63-1, so 15 hex chars (2^60) fits comfortably.
+            $numericSeed = hexdec(substr($hash, 0, 15));
             
             return $numericSeed;
         }
