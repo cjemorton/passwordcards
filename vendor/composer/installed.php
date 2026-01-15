@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'raphiz/passwordcards',
+        'pretty_version' => 'dev-copilot/fix-docker-build-issues',
+        'version' => 'dev-copilot/fix-docker-build-issues',
+        'reference' => '8871eee519dbb1fdfae1133127203e0a8782a594',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => false,
+    ),
+    'versions' => array(
+        'rain/raintpl' => array(
+            'pretty_version' => '3.1.0',
+            'version' => '3.1.0.0',
+            'reference' => '5fc655b59cb3d541755116a09fc4c0206b301923',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../rain/raintpl',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'raphiz/passwordcards' => array(
+            'pretty_version' => 'dev-copilot/fix-docker-build-issues',
+            'version' => 'dev-copilot/fix-docker-build-issues',
+            'reference' => '8871eee519dbb1fdfae1133127203e0a8782a594',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'tecnick.com/tcpdf' => array(
+            'pretty_version' => '6.2.8',
+            'version' => '6.2.8.0',
+            'reference' => '3dee9e7f3a414875fd1d9f4f1dfc2433493a86d2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnick.com/tcpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

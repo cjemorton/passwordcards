@@ -11,6 +11,7 @@ RUN apt-get update -yqq \
         libcurl4-gnutls-dev \
         zlib1g-dev \
         libzip-dev \
+        libxml2-dev \
         unzip \
         git \
         pkg-config \
@@ -46,11 +47,6 @@ WORKDIR /var/www/html
 # Copy application files
 # -------------------------------
 COPY . /var/www/html/
-
-# -------------------------------
-# Install dependencies as root
-# -------------------------------
-RUN composer install --no-dev --optimize-autoloader
 
 # -------------------------------
 # Create necessary directories
