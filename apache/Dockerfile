@@ -59,11 +59,23 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 RUN mkdir -p /var/www/html/blacklist && chown -R www-data:www-data /var/www/html
 
 # -------------------------------
+# Copy and setup entrypoint script
+# -------------------------------
+COPY apache/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# -------------------------------
+# Set default environment variable
+# -------------------------------
+ENV HTACCESS_MODE=dev
+
+# -------------------------------
 # Expose Apache port
 # -------------------------------
 EXPOSE 80
 
 # -------------------------------
-# Start Apache in foreground
+# Set entrypoint and default command
 # -------------------------------
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD ["apache2-foreground"]

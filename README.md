@@ -13,6 +13,74 @@ This tool allows you to generate customized password cards in the spirit of Qwer
 
 If you like the concept, please buy a card from their website.
 
+## Docker Deployment
+
+This application can be deployed using Docker and docker-compose. The configuration supports two modes for Apache .htaccess rules:
+
+### HTACCESS_MODE Environment Variable
+
+The `HTACCESS_MODE` environment variable controls which .htaccess configuration is used:
+
+- **`dev` (default)**: Relaxed rules for local development
+  - No HTTPS enforcement
+  - No path restrictions
+  - Ideal for local testing without SSL certificates
+
+- **`prod`**: Strict security rules for production
+  - Forces HTTPS redirect
+  - Enables HSTS (HTTP Strict Transport Security)
+  - Restricts access to `/index.php` and `/resources/` only
+  - Recommended for all production deployments
+
+### Usage
+
+#### Local Development
+
+For local development, use the default `dev` mode:
+
+```bash
+docker-compose up -d
+```
+
+Or explicitly set it in `docker-compose.yml`:
+
+```yaml
+services:
+  web:
+    environment:
+      - HTACCESS_MODE=dev
+```
+
+Access the application at: http://localhost:8080
+
+#### Production Deployment
+
+For production, set `HTACCESS_MODE=prod`:
+
+```yaml
+services:
+  web:
+    environment:
+      - HTACCESS_MODE=prod
+```
+
+Or via command line:
+
+```bash
+docker-compose up -d -e HTACCESS_MODE=prod
+```
+
+**Important**: When using production mode, ensure:
+- Your domain has a valid SSL certificate configured
+- Your reverse proxy or load balancer handles HTTPS termination, OR
+- Apache is configured with SSL certificates
+
+### Recommendations
+
+- **Always use `prod` mode for internet-facing deployments** to ensure proper security
+- **Use `dev` mode only for local development** where HTTPS is not configured
+- The mode can be changed at any time by updating the environment variable and restarting the container
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
