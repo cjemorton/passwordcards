@@ -15,9 +15,10 @@ elif [ "$HTACCESS_MODE" = "dev" ]; then
     echo "Using development .htaccess (relaxed: no HTTPS, no path restrictions)"
     cp /var/www/html/.htaccess.dev /var/www/html/.htaccess
 else
-    echo "ERROR: Invalid HTACCESS_MODE '$HTACCESS_MODE'. Valid values: 'dev' or 'prod'."
-    echo "Defaulting to 'dev' mode for safety."
-    cp /var/www/html/.htaccess.dev /var/www/html/.htaccess
+    echo "ERROR: Invalid HTACCESS_MODE '$HTACCESS_MODE'."
+    echo "Valid values are: 'dev' or 'prod'."
+    echo "Cannot start with invalid configuration."
+    exit 1
 fi
 
 echo "=== Starting Apache ==="
