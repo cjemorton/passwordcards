@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Password Card Generator - UI Preview</title>
+  <meta name="description" content="Generate customized password cards">
+  <meta name="author" content="Raphael Zimmermann">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="resources/css/normalize.css">
+  <link rel="stylesheet" href="resources/css/skeleton.css">
+  <link rel="stylesheet" href="resources/css/tinycolorpicker.css">
+  <link rel="stylesheet" href="resources/css/main.css">
+  <link rel="icon" type="image/png" href="resources/favicon.png">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+        <h1>Password Card Generator</h1>
+        <p>
+          This website allows you to generate customized password cards in
+          the spirit of  <a href="https://www.qwertycards.com" target="_blank">Qwertycards.com</a>
+      </p>
+      <p>
+          If you like the concept, please buy a card from their <a href="https://www.qwertycards.com" target="_blank">website</a>
+      </p>
+        <img src="resources/cards.png" width="100%">
+    </div>
+
+    <div class="configure">
+      <h1>Generate a new card</h1>
+      
+      <div class="info-box">
+        <h3>🔒 Deterministic Card Generation</h3>
+        <p>This generator creates <strong>reproducible password cards</strong>. When you provide a seed value, the same card can be regenerated at any time with identical parameters.</p>
+        <ul>
+          <li><strong>With Seed:</strong> Generate the same card every time (save your seed!)</li>
+          <li><strong>Without Seed:</strong> Generate a unique, random card</li>
+          <li><strong>Lost Card?</strong> Use your seed and settings to regenerate it</li>
+        </ul>
+        <p style="margin-top: 0.5em;"><em>💡 Tip: Save your seed and settings from the PDF documentation page for card recovery.</em></p>
+      </div>
+
+      <p>Pick the characters you want to use</p>
+      <form action="" method="POST"  accept-charset="ISO-8859-15">
+        <div class="row button-group">
+          <input type="checkbox" name="with-numbers" id="with-numbers" class="hidden" autocomplete="off" checked>
+          <label for="with-numbers" class="label-with-numbers button tooltip" title="0123456789">numbers</label>
+
+          <input type="checkbox" name="with-lower" id="with-lower" class="hidden" autocomplete="off" checked>
+          <label for="with-lower" class="label-with-lower button tooltip" title="abcdefghijklmnopqrstuvwxyz">lower case</label>
+
+          <input type="checkbox" name="with-upper" id="with-upper" class="hidden" autocomplete="off" checked>
+          <label for="with-upper" class="label-with-upper button tooltip" title="ABCDEFGHIJKLMNOPQRSTUVWXYZ">upper case</label>
+
+          <input type="checkbox" name="with-symbols" id="with-symbols" class="hidden" autocomplete="off" checked>
+          <label for="with-symbols" class="label-with-symbols button tooltip" title="!&quot;#$%&amp;\&apos;()*+,-./:;&lt;=&gt;?@[\]^_`{|}~">symbols</label>
+
+          <input type="checkbox" name="with-space" id="with-space" class="hidden" autocomplete="off" >
+          <label for="with-space" class="label-with-space button">space</label>
+
+          <input type="checkbox" name="with-other" id="with-other" class="hidden" autocomplete="off" >
+          <label for="with-other" class="label-with-other button tooltip" title="anything else?">other</label>
+
+        </div>
+        <div class="row" style="display: none; ">
+             <input type="text" id="other-chars" name="other-chars" placeholder="Place other symbols in here" maxlength="20" autocomplete="off"/>
+        </div>
+
+        <div class="form-section">
+             <p>What's your Keyboard layout?</p>
+             <select type="text" name="keyboardlayout">
+              <option value="qwerty">QWERTY</option>
+              <option value="qwertz">QWERTZ</option>
+             </select>
+        </div>
+
+        <div class="form-section">
+             <p>This text goes on the back of your card</p>
+             <input type="text" name="msg" placeholder="For Work" maxlength="20" autocomplete="off">
+        </div>
+
+        <div class="form-section">
+             <p>Watermark URL (displayed on card and embedded in QR code)</p>
+             <input type="text" name="watermark-url" placeholder="https://passwordcards.mrnet.work/" value="https://passwordcards.mrnet.work/" maxlength="200" autocomplete="off" style="width: 80%; max-width: 500px;">
+        </div>
+
+        <div class="form-section">
+            <p>What colors shall we use?</p>
+            <label for="primaryColor">Primary</label>
+            <div id="primary" class="colorPicker">
+                <a class="color"><div class="colorInner"></div></a>
+                <div class="track"></div>
+                <ul class="dropdown"><li></li></ul>
+                <input type="hidden" class="colorInput" value='#1ABC9C' name='primaryColor' id='primaryColor' autocomplete="off"/>
+            </div>
+            <label for="secondaryColor">Secondary</label>
+            <div id="secondary" class="colorPicker">
+                <a class="color"><div class="colorInner"></div></a>
+                <div class="track"></div>
+                <ul class="dropdown"><li></li></ul>
+                <input type="hidden" class="colorInput" value='#ffff' name='secondaryColor' id='secondaryColor' autocomplete="off"/>
+            </div>
+
+        </div>
+        <div class="form-section">
+            <p id="advancedOptionsLabel"><span id="showMoreOptions">Show</span><span id="hideMoreOptions">Hide</span> more options....</p>
+            <div id="advancedOptions">
+                <label for="seed" class="tooltip" title="Use a seed for deterministic, reproducible card generation">Seed (for reproducible cards)</label><br>
+                <input type="text" id="seed" name="seed" placeholder="Enter a number or leave empty for random" maxlength="10" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 1em;">
+                <br>
+                <label for="space-size">Spacebar size</label>
+                <input type="number" min="1" max="8" style="width: 15em;" name="space-length" id="space-size" placeholder="Spacebar size (Default: 8)" maxlength="10" autocomplete="off">
+            </div>
+        </div>
+        <input type="hidden" value='test-token'/>
+
+        <div class="row" style="margin-top: 30px; text-align: center;">
+             <input type="submit" value="Generate PDF!"/><br>
+        </div>
+      </form>
+      <div class="footer-links">
+        <p>Wanna buy a card? Checkout <a href="https://www.qwertycards.com" target="_blank">qwertycards.com</a>!</p>
+        <p>Fork me on <a href="https://github.com/raphiz/passwordcards" target="_blank">Github</a>!</p>
+      </div>
+    </div>
+ </div>
+
+<script type="text/javascript" src="resources/js/jquery-2.1.3.js"></script>
+<script type="text/javascript" src="resources/js/jquery.tinycolorpicker.js"></script>
+<script type="text/javascript" src="resources/js/index.js"></script>
+</body>
+</html>
