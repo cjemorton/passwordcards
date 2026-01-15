@@ -94,8 +94,8 @@
             keyboardLayout: $('select[name="keyboardlayout"]').val(),
             msg: $('input[name="msg"]').val(),
             watermarkUrl: $('input[name="watermark-url"]').val(),
-            primaryColor: $('#primaryColor').val(),
-            secondaryColor: $('#secondaryColor').val(),
+            primaryColor: $('input[name="primaryColor"]').val(),
+            secondaryColor: $('input[name="secondaryColor"]').val(),
             hashAlgorithm: $('#hash-algorithm').val(),
             spaceLength: $('#space-size').val(),
             theme: $('#theme-selector').val(),
@@ -129,8 +129,8 @@
                 $('select[name="keyboardlayout"]').val(settings.keyboardLayout || 'qwerty');
                 $('input[name="msg"]').val(settings.msg || '');
                 $('input[name="watermark-url"]').val(settings.watermarkUrl || '');
-                $('#primaryColor').val(settings.primaryColor || '#1ABC9C');
-                $('#secondaryColor').val(settings.secondaryColor || '#ffffff');
+                $('input[name="primaryColor"]').val(settings.primaryColor || '#1ABC9C');
+                $('input[name="secondaryColor"]').val(settings.secondaryColor || '#ffffff');
                 $('#hash-algorithm').val(settings.hashAlgorithm || 'sha256');
                 $('#space-size').val(settings.spaceLength || '');
                 

@@ -83,8 +83,13 @@ self.addEventListener('fetch', event => {
           return response;
         }).catch(err => {
           console.log('Fetch failed:', err);
-          // Return a custom offline page if available
-          return caches.match('/offline.html');
+          // If fetch fails and we're offline, return a simple response
+          // Note: Create an offline.html page for better UX
+          return new Response('Offline - Please check your connection', {
+            status: 503,
+            statusText: 'Service Unavailable',
+            headers: new Headers({ 'Content-Type': 'text/plain' })
+          });
         });
       })
   );
