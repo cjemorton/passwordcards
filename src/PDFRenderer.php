@@ -56,13 +56,13 @@ class PDFRenderer
         );
 
         // Add QR code in the corner of the front card (pointing to watermark URL)
-        if ($config && $config->watermarkUrl) {
+        if ($config && !empty($config->watermarkUrl)) {
             // Place QR code in top-right corner of front card
             $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 82, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }
 
         // Add QR code in the corner of the back card
-        if ($config && $config->watermarkUrl) {
+        if ($config && !empty($config->watermarkUrl)) {
             // Place QR code in top-right corner of back card
             $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 167, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }
