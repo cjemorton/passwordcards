@@ -59,6 +59,18 @@ class Configuration
 
     /**
      * If no (numeric) seed is provided, generate one.
+     * 
+     * DETERMINISTIC GENERATION:
+     * The seed value is the key to deterministic card generation. When a specific
+     * seed is provided (numeric value), the card generation becomes deterministic,
+     * meaning the exact same card will be generated every time with that seed and
+     * the same configuration parameters.
+     * 
+     * If no seed is provided (null or non-numeric), a random seed is generated
+     * based on the current microtime, resulting in a unique, non-reproducible card.
+     * 
+     * @param mixed $seed The seed value (numeric) or null
+     * @return int The seed to use for card generation
      */
     public static function evalSeed($seed)
     {
