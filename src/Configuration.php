@@ -39,7 +39,9 @@ class Configuration
 
     public $printNumberSeed = false;
 
-    public function __construct($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $watermarkUrl = 'https://passwordcards.mrnet.work/', $hashAlgorithm = 'sha256', $originalStringSeed = null, $printStringSeed = false, $printNumberSeed = false)
+    public $qrCodeEnabled = false;
+
+    public function __construct($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $watermarkUrl = 'https://passwordcards.mrnet.work/', $hashAlgorithm = 'sha256', $originalStringSeed = null, $printStringSeed = false, $printNumberSeed = false, $qrCodeEnabled = false)
     {
         $this->seed = self::evalSeed($seed);
         $this->pattern = self::evalPattern($pattern);
@@ -53,6 +55,7 @@ class Configuration
         $this->originalStringSeed = $originalStringSeed;
         $this->printStringSeed = $printStringSeed;
         $this->printNumberSeed = $printNumberSeed;
+        $this->qrCodeEnabled = $qrCodeEnabled;
     }
 
     public function getPatternCharacters()
