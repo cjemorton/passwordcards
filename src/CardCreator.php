@@ -61,9 +61,9 @@ class CardCreator
         }
 
         // Generate random characters for spacebar using seeded RNG
-        $space_lenght = $this->configration->spaceBarSize;
+        $space_length = $this->configration->spaceBarSize;
         $space = '';
-        for ($i = 0; $i < $space_lenght; $i++) {
+        for ($i = 0; $i < $space_length; $i++) {
             // Use mt_rand() which respects the seed set by mt_srand()
             $space .= $this->escape($chars[mt_rand(0, $char_count-1)]);
         }
@@ -104,27 +104,24 @@ class CardCreator
      */
     private function calculateWatermarkFontSize($length)
     {
-        // Base font size for short URLs (up to 30 chars)
-        if ($length <= 30) {
-            return 10;
+        // Define breakpoints as [maxLength, fontSize] pairs
+        $breakpoints = [
+            [30, 10],
+            [50, 9],
+            [70, 8],
+            [100, 7],
+            [130, 6],
+            [160, 5],
+        ];
+        
+        // Find appropriate font size based on length
+        foreach ($breakpoints as list($maxLength, $fontSize)) {
+            if ($length <= $maxLength) {
+                return $fontSize;
+            }
         }
-        // Scale down font size for longer URLs
-        if ($length <= 50) {
-            return 9;
-        }
-        if ($length <= 70) {
-            return 8;
-        }
-        if ($length <= 100) {
-            return 7;
-        }
-        if ($length <= 130) {
-            return 6;
-        }
-        if ($length <= 160) {
-            return 5;
-        }
-        // For very long URLs (up to 200 chars max)
+        
+        // For very long URLs (> 160 chars, up to 200 max)
         return 4;
     }
 

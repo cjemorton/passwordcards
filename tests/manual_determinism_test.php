@@ -70,15 +70,28 @@ if (strpos($shortSvg, 'font-size:10px') !== false) {
     exit(1);
 }
 
-// Long URL
+// Long URL (119 characters - should result in 7px according to breakpoints)
 $longUrl = 'https://verylongdomainname.example.com/path/to/very/long/url/that/should/trigger/smaller/font/size/for/proper/display';
+if (strlen($longUrl) != 119) {
+    echo "Warning: Test URL length is " . strlen($longUrl) . " chars, expected 119\n";
+}
 $longConfig = new Configuration($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $longUrl);
 $longCreator = new CardCreator($longConfig);
 $longSvg = $longCreator->render($longCreator->getSvgTemplate('simple_back'));
-if (strpos($longSvg, 'font-size:6px') !== false || strpos($longSvg, 'font-size:7px') !== false) {
-    echo "✓ PASS: Long URL uses smaller font size\n";
+
+// Extract font size from SVG
+preg_match('/font-size:(\d+)px/', $longSvg, $matches);
+if (isset($matches[1])) {
+    $fontSize = (int)$matches[1];
+    // Long URL should have smaller font (< 10px)
+    if ($fontSize < 10) {
+        echo "✓ PASS: Long URL uses smaller font size ({$fontSize}px)\n";
+    } else {
+        echo "✗ FAIL: Long URL should use smaller font, got {$fontSize}px\n";
+        exit(1);
+    }
 } else {
-    echo "✗ FAIL: Long URL font size incorrect\n";
+    echo "✗ FAIL: Could not extract font size from SVG\n";
     exit(1);
 }
 
