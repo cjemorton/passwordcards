@@ -4,6 +4,19 @@ namespace raphiz\passwordcards;
 
 class PDFRenderer
 {
+    private static function getQRCodeStyle()
+    {
+        return array(
+            'border' => false,
+            'vpadding' => 0,
+            'hpadding' => 0,
+            'fgcolor' => array(0,0,0),
+            'bgcolor' => false,
+            'module_width' => 1,
+            'module_height' => 1
+        );
+    }
+
     public static function render($front, $back, $config = null)
     {
         // create new PDF document
@@ -44,32 +57,14 @@ class PDFRenderer
 
         // Add QR code in the corner of the front card (pointing to watermark URL)
         if ($config && $config->watermarkUrl) {
-            $style = array(
-                'border' => false,
-                'vpadding' => 0,
-                'hpadding' => 0,
-                'fgcolor' => array(0,0,0),
-                'bgcolor' => false,
-                'module_width' => 1,
-                'module_height' => 1
-            );
             // Place QR code in top-right corner of front card
-            $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 82, 17, 12, 12, $style, 'N');
+            $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 82, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }
 
         // Add QR code in the corner of the back card
         if ($config && $config->watermarkUrl) {
-            $style = array(
-                'border' => false,
-                'vpadding' => 0,
-                'hpadding' => 0,
-                'fgcolor' => array(0,0,0),
-                'bgcolor' => false,
-                'module_width' => 1,
-                'module_height' => 1
-            );
             // Place QR code in top-right corner of back card
-            $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 167, 17, 12, 12, $style, 'N');
+            $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 167, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }
 
         // Add documentation page
