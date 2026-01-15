@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'raphiz/passwordcards',
-        'pretty_version' => 'dev-copilot/fix-docker-build-issues',
-        'version' => 'dev-copilot/fix-docker-build-issues',
-        'reference' => '8871eee519dbb1fdfae1133127203e0a8782a594',
+        'pretty_version' => 'dev-copilot/update-composer-lock-file',
+        'version' => 'dev-copilot/update-composer-lock-file',
+        'reference' => 'fd90683c08fdaf9b65e727f8abbd4ed3a4de3020',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'raphiz/passwordcards' => array(
-            'pretty_version' => 'dev-copilot/fix-docker-build-issues',
-            'version' => 'dev-copilot/fix-docker-build-issues',
-            'reference' => '8871eee519dbb1fdfae1133127203e0a8782a594',
+            'pretty_version' => 'dev-copilot/update-composer-lock-file',
+            'version' => 'dev-copilot/update-composer-lock-file',
+            'reference' => 'fd90683c08fdaf9b65e727f8abbd4ed3a4de3020',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

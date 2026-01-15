@@ -42,6 +42,10 @@
             ],
             "description": "easy and fast template engine",
             "homepage": "http://raintpl.com",
+            "support": {
+                "issues": "https://github.com/rainphp/raintpl3/issues",
+                "source": "https://github.com/rainphp/raintpl3/tree/master"
+            },
             "install-path": "../rain/raintpl"
         },
         {
@@ -108,6 +112,10 @@
                 "pdf417",
                 "qrcode"
             ],
+            "support": {
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.2.8"
+            },
+            "abandoned": "tecnickcom/tcpdf",
             "install-path": "../tecnick.com/tcpdf"
         }
     ],
