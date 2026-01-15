@@ -15,7 +15,8 @@ elif [ "$HTACCESS_MODE" = "dev" ]; then
     echo "Using development .htaccess (relaxed: no HTTPS, no path restrictions)"
     cp /var/www/html/.htaccess.dev /var/www/html/.htaccess
 else
-    echo "Warning: Invalid HTACCESS_MODE '$HTACCESS_MODE'. Valid values: 'dev' or 'prod'. Defaulting to 'dev'."
+    echo "ERROR: Invalid HTACCESS_MODE '$HTACCESS_MODE'. Valid values: 'dev' or 'prod'."
+    echo "Defaulting to 'dev' mode for safety."
     cp /var/www/html/.htaccess.dev /var/www/html/.htaccess
 fi
 

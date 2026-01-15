@@ -11,5 +11,6 @@ Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains
 # Only allow access to /index.php and /resources directory
 
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !^/(index\.php(\?.*)?$|resources/)
+RewriteCond %{REQUEST_URI} !^/index\.php(\?.*)?$ 
+RewriteCond %{REQUEST_URI} !^/resources/
 RewriteRule ^(.*)$ / [L,R=301]
