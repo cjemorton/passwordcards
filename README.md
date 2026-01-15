@@ -1,17 +1,32 @@
 # passwordcards
 
-[![Latest Version](https://img.shields.io/github/release/raphiz/passwordcards.svg?style=flat-square)](https://github.com/raphiz/passwordcards/releases)
+[![Latest Version](https://img.shields.io/github/release/cjemorton/passwordcards.svg?style=flat-square)](https://github.com/cjemorton/passwordcards/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![wercker status](https://app.wercker.com/status/6bb146084db30e23f4d09b20a32ac058/s "wercker status")](https://app.wercker.com/project/bykey/6bb146084db30e23f4d09b20a32ac058)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/raphiz/passwordcards/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/raphiz/passwordcards/?branch=master)
-[![Code Climate](https://codeclimate.com/github/raphiz/passwordcards/badges/gpa.svg)](https://codeclimate.com/github/raphiz/passwordcards)
-[![Test Coverage](https://codeclimate.com/github/raphiz/passwordcards/badges/coverage.svg)](https://codeclimate.com/github/raphiz/passwordcards)
-[![Dependency Status](https://www.versioneye.com/user/projects/5506fc2766e561bb9b00016e/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5506fc2766e561bb9b00016e)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/6152eda9-0cd1-41a3-84fb-9601d0996a86/mini.png)](https://insight.sensiolabs.com/projects/6152eda9-0cd1-41a3-84fb-9601d0996a86)
 
-This tool allows you to generate customized password cards in the spirit of Qwertycards.com.
+This tool allows you to generate customized password cards.
 
-If you like the concept, please buy a card from their website.
+## Project Status and History
+
+This project is a **modernized fork** that has diverged significantly from the [original passwordcards project](https://github.com/raphiz/passwordcards) (now archived). While inspired by the original work and the concept pioneered by [Qwertycards.com](https://www.qwertycards.com), this version has evolved into an **independent project** with its own development direction and feature set.
+
+### What's New in This Fork
+
+This modernized version introduces several enhancements and changes:
+
+- **Modern, minimalist UI**: Clean, mobile-friendly interface with reduced clutter
+- **Enhanced theming**: Light, dark, and custom themes with instant switching
+- **Improved accessibility**: Better tooltips, keyboard navigation, and screen reader support
+- **Streamlined experience**: Key information moved to an About modal to keep the main interface focused
+- **Updated card layout**: Refined seed display and removed unnecessary blank lines on card back
+- **Independent identity**: This project now stands as its own entity with unique features and direction
+
+### Credits and Acknowledgments
+
+- **Original Project**: [raphiz/passwordcards](https://github.com/raphiz/passwordcards) - The foundation upon which this fork was built
+- **Inspiration**: [Qwertycards.com](https://www.qwertycards.com) - The commercial service that pioneered the password card concept
+- **Current Maintainer**: This fork is maintained independently with its own roadmap and goals
+
+This project maintains the MIT license from the original work while pursuing its own vision for password card generation.
 
 ## Docker Deployment
 

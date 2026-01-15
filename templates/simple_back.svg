@@ -105,49 +105,13 @@
          sodipodi:role="line">$WATERMARK_URL$</tspan></text>
     <text
        sodipodi:linespacing="125%"
-       id="text_blank_field1"
-       y="887.5"
-       x="10"
-       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
-       xml:space="preserve"><tspan
-         style="font-size:$WATERMARK_FONT_SIZE$px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1"
-         y="887.5"
-         x="10"
-         id="tspan_blank_field1"
-         sodipodi:role="line">___________________________________</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text_blank_field2"
-       y="902.5"
-       x="10"
-       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
-       xml:space="preserve"><tspan
-         style="font-size:$WATERMARK_FONT_SIZE$px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1"
-         y="902.5"
-         x="10"
-         id="tspan_blank_field2"
-         sodipodi:role="line">___________________________________</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
-       id="text_blank_field3"
-       y="917.5"
-       x="150.5"
-       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
-       xml:space="preserve"><tspan
-         style="font-size:$WATERMARK_FONT_SIZE$px;text-align:center;text-anchor:middle;fill:$SECONDARY$;fill-opacity:1"
-         y="917.5"
-         x="150.5"
-         id="tspan_blank_field3"
-         sodipodi:role="line">___________________________________</tspan></text>
-    <text
-       sodipodi:linespacing="125%"
        id="text_seeds"
-       y="932.5"
+       y="1041.1512"
        x="10"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
        xml:space="preserve"><tspan
-         style="font-size:$WATERMARK_FONT_SIZE$px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1"
-         y="932.5"
+         style="font-size:6px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1"
+         y="1041.1512"
          x="10"
          id="tspan_seeds"
          sodipodi:role="line">$SEED_DISPLAY$</tspan></text>

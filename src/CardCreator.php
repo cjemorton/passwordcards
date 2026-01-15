@@ -98,25 +98,26 @@ class CardCreator
 
     /**
      * Build the seed display string based on user's print preferences.
+     * Display format: string seed immediately left of number seed, no labels.
      * 
      * @return string The formatted seed display string
      */
     private function buildSeedDisplay()
     {
-        $lines = [];
+        $parts = [];
         
-        // Add string seed if requested and available
+        // Add string seed if requested and available (no label)
         if ($this->configration->printStringSeed && $this->configration->originalStringSeed !== null) {
-            $lines[] = 'Seed (string): ' . $this->configration->originalStringSeed;
+            $parts[] = $this->configration->originalStringSeed;
         }
         
-        // Add number seed if requested
+        // Add number seed if requested (no label)
         if ($this->configration->printNumberSeed) {
-            $lines[] = 'Seed (number): ' . $this->configration->seed;
+            $parts[] = $this->configration->seed;
         }
         
-        // Join lines with a space separator (SVG tspan will handle line breaks)
-        return implode(' | ', $lines);
+        // Join with space - string seed immediately left of number seed
+        return implode(' ', $parts);
     }
     private function escape($str)
     {

@@ -189,6 +189,21 @@
         $(this).text($(this).text().includes('Show') ? 'Hide Audit Panel' : 'Show Audit Panel');
     });
 
+    // ===== About Modal =====
+    $('#about-modal-toggle').on('click', function() {
+        $('#about-modal').fadeIn();
+    });
+
+    $('.modal-close').on('click', function() {
+        $('#about-modal').fadeOut();
+    });
+
+    $(window).on('click', function(e) {
+        if ($(e.target).is('#about-modal')) {
+            $('#about-modal').fadeOut();
+        }
+    });
+
     // ===== Keyboard Navigation Enhancements =====
     function enhanceAccessibility() {
         // Add keyboard support for custom checkboxes
