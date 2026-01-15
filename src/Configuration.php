@@ -27,6 +27,8 @@ class Configuration
 
     public $keys = null;
 
+    public $spaceBarSize = null;
+
     public function __construct($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor)
     {
         $this->seed = self::evalSeed($seed);
@@ -59,7 +61,7 @@ class Configuration
     {
         if ($seed === null || !is_numeric($seed)) {
             list($usec, $sec) = explode(' ', microtime());
-            $seed = (float) $sec + ((float) $usec * 100000);
+            $seed = (int) ((float) $sec + ((float) $usec * 100000));
         }
         return $seed;
     }

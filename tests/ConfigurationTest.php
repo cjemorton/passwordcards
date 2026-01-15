@@ -1,7 +1,9 @@
 <?php
 namespace raphiz\passwordcards;
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ConfigurationTest extends TestCase
 {
 
     public function testEvalSeedReturnsGivenNonNullSeed()
@@ -20,9 +22,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($seed1);
         $this->assertNotNull($seed2);
 
-        // Is float?
-        $this->assertInternalType('float', $seed1);
-        $this->assertInternalType('float', $seed2);
+        // Is integer (after PHP 8.2 fix)?
+        $this->assertIsInt($seed1);
+        $this->assertIsInt($seed2);
 
         // The seeds shall not be equal!
         $this->assertFalse($seed1 == $seed2);
