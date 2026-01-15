@@ -16,9 +16,11 @@ class RequestUtils
         $creationDate = 0;
         if (file_exists($blacklistfile)) {
             $contents = (int)file_get_contents($blacklistfile);
+            // Get the card generation limit from environment variable
+            $limit = self::getCardGenerationLimit();
             // If the stored value is big, it's the unix timestamp.
             // Otherwise it's the amount of created cards.
-            if ($contents > 5) {
+            if ($contents > $limit) {
                 $creationDate = $contents;
             } else {
                 $count = $contents;
@@ -35,16 +37,58 @@ class RequestUtils
             }
         }
 
-        if ($count === 5) {
+        // Get the card generation limit from environment variable
+        $limit = self::getCardGenerationLimit();
+        if ($count === $limit) {
+            // Get the timeout from environment variable
+            $timeout = self::getCardGenerationTimeout();
             // Write unix timestamp into the blacklist file. The
             // ip is blocked till then.
-            file_put_contents($blacklistfile, time() + 5*60);
+            file_put_contents($blacklistfile, time() + $timeout);
         } else {
             // increment count...
             file_put_contents($blacklistfile, ($count+1));
         }
 
         return true;
+    }
+
+    public static function checkBypassPassword()
+    {
+        if (
+            isset($_POST['bypass-password']) &&
+            isset($_POST['bypass-attempt']) &&
+            $_POST['bypass-attempt'] === "1"
+        ) {
+            $providedPassword = $_POST['bypass-password'];
+            $correctPassword = getenv('BYPASS_PASSWORD');
+            
+            // If no password is set in environment, use default
+            if ($correctPassword === false || $correctPassword === '') {
+                $correctPassword = 'letmein';
+            }
+            
+            return $providedPassword === $correctPassword;
+        }
+        return false;
+    }
+
+    public static function getCardGenerationLimit()
+    {
+        $limit = getenv('CARD_GENERATION_LIMIT');
+        if ($limit === false || !is_numeric($limit)) {
+            return 5; // default
+        }
+        return (int)$limit;
+    }
+
+    public static function getCardGenerationTimeout()
+    {
+        $timeout = getenv('CARD_GENERATION_TIMEOUT');
+        if ($timeout === false || !is_numeric($timeout)) {
+            return 300; // default (5 minutes)
+        }
+        return (int)$timeout;
     }
 
     public static function parseSeed()

@@ -15,22 +15,55 @@ If you like the concept, please buy a card from their website.
 
 ## Docker Deployment
 
-This application can be deployed using Docker and docker-compose. The configuration supports two modes for Apache .htaccess rules:
+This application can be deployed using Docker and docker-compose. 
 
-### HTACCESS_MODE Environment Variable
+### Environment Configuration
 
-The `HTACCESS_MODE` environment variable controls which .htaccess configuration is used:
+The application supports several environment variables for configuration. You can set these in a `.env` file or directly in `docker-compose.yml`.
 
-- **`dev` (default)**: Relaxed rules for local development
-  - No HTTPS enforcement
-  - No path restrictions
-  - Ideal for local testing without SSL certificates
+#### Creating a .env File
 
-- **`prod`**: Strict security rules for production
-  - Forces HTTPS redirect
-  - Enables HSTS (HTTP Strict Transport Security)
-  - Restricts access to `/index.php` and `/resources/` only
-  - Recommended for all production deployments
+Copy the example configuration:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` to customize the values:
+
+```bash
+# Apache .htaccess mode: 'dev' for development, 'prod' for production
+HTACCESS_MODE=dev
+
+# Bypass password for rate limiting
+BYPASS_PASSWORD=letmein
+
+# Card generation limit (number of cards before timeout)
+CARD_GENERATION_LIMIT=5
+
+# Card generation timeout (in seconds)
+CARD_GENERATION_TIMEOUT=300
+```
+
+#### Environment Variables
+
+- **`HTACCESS_MODE`** (default: `dev`): Controls Apache .htaccess configuration
+  - `dev`: Relaxed rules for local development (no HTTPS, no path restrictions)
+  - `prod`: Strict security rules for production (HTTPS enforced, HSTS enabled, path restrictions)
+
+- **`BYPASS_PASSWORD`** (default: `letmein`): Password to bypass rate limiting
+  - When users hit the rate limit, they can enter this password to continue generating cards immediately
+
+- **`CARD_GENERATION_LIMIT`** (default: `5`): Number of cards that can be generated before rate limiting kicks in
+
+- **`CARD_GENERATION_TIMEOUT`** (default: `300`): Time in seconds users must wait after hitting the rate limit (300 = 5 minutes)
+
+### Rate Limiting & Bypass
+
+The application includes rate limiting to prevent spam:
+- Users can generate up to `CARD_GENERATION_LIMIT` cards (default: 5)
+- After reaching the limit, they must wait `CARD_GENERATION_TIMEOUT` seconds (default: 5 minutes)
+- Users can bypass the wait by entering the `BYPASS_PASSWORD` when prompted
 
 ### Usage
 
@@ -86,6 +119,7 @@ docker-compose up -d
 
 - **Always use `prod` mode for internet-facing deployments** to ensure proper security
 - **Use `dev` mode only for local development** where HTTPS is not configured
+- **Change the default `BYPASS_PASSWORD`** in production to a secure value
 - The mode can be changed at any time by updating the environment variable and restarting the container
 
 ## Contributing
