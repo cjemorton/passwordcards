@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'raphiz/passwordcards',
-        'pretty_version' => 'dev-copilot/add-watermark-qr-code-settings',
-        'version' => 'dev-copilot/add-watermark-qr-code-settings',
-        'reference' => '8890443fe775181c18a8442e6aa53d7eea964de0',
+        'pretty_version' => 'dev-copilot/enable-string-seeds-and-hashing',
+        'version' => 'dev-copilot/enable-string-seeds-and-hashing',
+        'reference' => 'e7148655e10dab4c7c8753e2fad9edc1f5d51f98',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -119,9 +119,9 @@
             'dev_requirement' => false,
         ),
         'raphiz/passwordcards' => array(
-            'pretty_version' => 'dev-copilot/add-watermark-qr-code-settings',
-            'version' => 'dev-copilot/add-watermark-qr-code-settings',
-            'reference' => '8890443fe775181c18a8442e6aa53d7eea964de0',
+            'pretty_version' => 'dev-copilot/enable-string-seeds-and-hashing',
+            'version' => 'dev-copilot/enable-string-seeds-and-hashing',
+            'reference' => 'e7148655e10dab4c7c8753e2fad9edc1f5d51f98',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

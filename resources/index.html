@@ -27,9 +27,10 @@
         <ul>
           <li><strong>With Seed:</strong> Generate the same card every time (save your seed!)</li>
           <li><strong>Without Seed:</strong> Generate a unique, random card</li>
-          <li><strong>Lost Card?</strong> Use your seed and settings to regenerate it</li>
+          <li><strong>String Seeds:</strong> You can use words or phrases as seeds - they are hashed into numbers using your chosen algorithm</li>
+          <li><strong>Lost Card?</strong> Use your seed, hash algorithm, and settings to regenerate it</li>
         </ul>
-        <p style="margin-top: 0.5em;"><em>💡 Tip: Save your seed and settings from the PDF documentation page for card recovery.</em></p>
+        <p style="margin-top: 0.5em;"><em>💡 Tip: Save your seed, hash algorithm, and all settings from the PDF documentation page for card recovery. The hash algorithm is CRITICAL for string seeds!</em></p>
       </div>
 
       <p>Pick the characters you want to use</p>
@@ -96,7 +97,14 @@
         </div>
         <div class="form-section">
             <p>Seed (for reproducible cards)</p>
-            <input type="text" id="seed" name="seed" placeholder="Enter a number or leave empty for random" maxlength="10" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 1em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation">
+            <input type="text" id="seed" name="seed" placeholder="Enter a number or word" maxlength="50" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 0.5em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation. Can be a number or a word/phrase.">
+            <p style="font-size: 0.9em; margin-top: 0.5em; margin-bottom: 0.5em;">Hash Algorithm (for string seeds)</p>
+            <select name="hash-algorithm" id="hash-algorithm" style="width: 80%; max-width: 400px; margin-bottom: 1em;" class="tooltip" title="Algorithm used to convert string seeds to numbers. IMPORTANT: Save this with your seed for card recovery!">
+                <option value="sha256" selected>SHA-256 (Recommended)</option>
+                <option value="md5">MD5</option>
+                <option value="sha1">SHA-1</option>
+                <option value="sha512">SHA-512</option>
+            </select>
         </div>
         
         <div class="form-section">
