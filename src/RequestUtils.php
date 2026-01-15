@@ -260,6 +260,11 @@ class RequestUtils
         return 'https://passwordcards.mrnet.work/';
     }
 
+    public static function parseQrCodeEnabled()
+    {
+        return isset($_POST['qr-code-enabled']) && $_POST['qr-code-enabled'] === '1';
+    }
+
     public static function parsePattern()
     {
          $pattern = "";

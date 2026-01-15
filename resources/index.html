@@ -15,11 +15,50 @@
       <p>
           If you like the concept, please buy a card from their <a href="https://www.qwertycards.com" target="_blank">website</a>
       </p>
-        <img src="resources/cards.png" width="100%">
+        <img src="resources/cards.png" width="100%" alt="Password Card Examples">
     </div>
 
     <div class="configure">
       <h1>Generate a new card</h1>
+      
+      <!-- Settings Toolbar -->
+      <div class="settings-toolbar" role="toolbar" aria-label="Settings management">
+        <div>
+          <label for="theme-selector" class="sr-only">Theme:</label>
+          <select id="theme-selector" aria-label="Select color theme">
+            <option value="light">Light Theme</option>
+            <option value="dark">Dark Theme</option>
+            <option value="custom">Custom Theme</option>
+          </select>
+        </div>
+        <div>
+          <label for="font-selector" class="sr-only">Font:</label>
+          <select id="font-selector" aria-label="Select font family">
+            <option value="sans-serif">Sans Serif</option>
+            <option value="monospace">Monospace</option>
+            <option value="system">System Default</option>
+          </select>
+        </div>
+        <button id="export-settings-btn" aria-label="Export settings to file">📥 Export Settings</button>
+        <button id="import-settings-btn" aria-label="Import settings from file">📤 Import Settings</button>
+        <input type="file" id="import-settings-file" accept=".json" aria-hidden="true">
+        <button id="clear-storage-btn" aria-label="Clear local storage">🗑️ Clear Storage</button>
+        <button id="audit-mode-toggle" aria-label="Toggle audit panel">🔍 Show Audit Panel</button>
+      </div>
+
+      <!-- Audit Panel -->
+      <div id="audit-panel" class="audit-panel" role="region" aria-label="Algorithm audit information">
+        <h3>🔐 Algorithm Transparency & Audit</h3>
+        <p>This tool is fully open-source. You can review the algorithms and code:</p>
+        <ul>
+          <li><strong>Card Generation Algorithm:</strong> <a href="https://github.com/raphiz/passwordcards/blob/master/src/CardCreator.php" target="_blank" rel="noopener">CardCreator.php</a></li>
+          <li><strong>Configuration Logic:</strong> <a href="https://github.com/raphiz/passwordcards/blob/master/src/Configuration.php" target="_blank" rel="noopener">Configuration.php</a></li>
+          <li><strong>Seed Hashing:</strong> Uses PHP built-in hash() function with selected algorithm</li>
+          <li><strong>Random Generation:</strong> Uses mt_rand() seeded with your seed value for deterministic results</li>
+          <li><strong>Privacy:</strong> All generation happens on the server; no seeds are stored</li>
+        </ul>
+        <p><em>Note: Inspect the code to verify the security and correctness of the implementation.</em></p>
+      </div>
       
       <div class="info-box">
         <h3>🔒 Deterministic Card Generation</h3>
@@ -33,35 +72,48 @@
         <p style="margin-top: 0.5em;"><em>💡 Tip: Save your seed, hash algorithm, and all settings from the PDF documentation page for card recovery. The hash algorithm is CRITICAL for string seeds!</em></p>
       </div>
 
+      <!-- Password Example -->
+      <div class="password-example-box" role="region" aria-label="Sample password preview">
+        <h4>🔑 Sample Password/Pattern Preview</h4>
+        <div id="password-example" aria-live="polite">Select character types below</div>
+        <button type="button" id="generate-example-btn" style="margin-top: 0.5em; padding: 5px 15px;">Regenerate</button>
+      </div>
+
       <p>Pick the characters you want to use</p>
       <form action="" method="POST"  accept-charset="ISO-8859-15">
-        <div class="row button-group">
-          <input type="checkbox" name="with-numbers" id="with-numbers" class="hidden" autocomplete="off" checked>
+        <div class="row button-group" role="group" aria-label="Character type selection">
+          <input type="checkbox" name="with-numbers" id="with-numbers" class="hidden" autocomplete="off" checked aria-describedby="numbers-desc">
           <label for="with-numbers" class="label-with-numbers button tooltip" title="0123456789">numbers</label>
+          <span id="numbers-desc" class="sr-only">Include numbers 0-9</span>
 
-          <input type="checkbox" name="with-lower" id="with-lower" class="hidden" autocomplete="off" checked>
+          <input type="checkbox" name="with-lower" id="with-lower" class="hidden" autocomplete="off" checked aria-describedby="lower-desc">
           <label for="with-lower" class="label-with-lower button tooltip" title="abcdefghijklmnopqrstuvwxyz">lower case</label>
+          <span id="lower-desc" class="sr-only">Include lowercase letters a-z</span>
 
-          <input type="checkbox" name="with-upper" id="with-upper" class="hidden" autocomplete="off" checked>
+          <input type="checkbox" name="with-upper" id="with-upper" class="hidden" autocomplete="off" checked aria-describedby="upper-desc">
           <label for="with-upper" class="label-with-upper button tooltip" title="ABCDEFGHIJKLMNOPQRSTUVWXYZ">upper case</label>
+          <span id="upper-desc" class="sr-only">Include uppercase letters A-Z</span>
 
-          <input type="checkbox" name="with-symbols" id="with-symbols" class="hidden" autocomplete="off" checked>
+          <input type="checkbox" name="with-symbols" id="with-symbols" class="hidden" autocomplete="off" checked aria-describedby="symbols-desc">
           <label for="with-symbols" class="label-with-symbols button tooltip" title="!&quot;#$%&amp;\&apos;()*+,-./:;&lt;=&gt;?@[\]^_`{|}~">symbols</label>
+          <span id="symbols-desc" class="sr-only">Include special symbols</span>
 
-          <input type="checkbox" name="with-space" id="with-space" class="hidden" autocomplete="off" >
+          <input type="checkbox" name="with-space" id="with-space" class="hidden" autocomplete="off" aria-describedby="space-desc">
           <label for="with-space" class="label-with-space button">space</label>
+          <span id="space-desc" class="sr-only">Include space character</span>
 
-          <input type="checkbox" name="with-other" id="with-other" class="hidden" autocomplete="off" >
+          <input type="checkbox" name="with-other" id="with-other" class="hidden" autocomplete="off" aria-describedby="other-desc">
           <label for="with-other" class="label-with-other button tooltip" title="anything else?">other</label>
+          <span id="other-desc" class="sr-only">Include custom characters</span>
 
         </div>
         <div class="row" style="display: none; ">
-             <input type="text" id="other-chars" name="other-chars" placeholder="Place other symbols in here" maxlength="20" autocomplete="off"/>
+             <input type="text" id="other-chars" name="other-chars" placeholder="Place other symbols in here" maxlength="20" autocomplete="off" aria-label="Custom characters"/>
         </div>
 
         <div class="form-section">
              <p>What's your Keyboard layout?</p>
-             <select type="text" name="keyboardlayout">
+             <select type="text" name="keyboardlayout" aria-label="Keyboard layout">
               <option value="qwerty">QWERTY</option>
               <option value="qwertz">QWERTZ</option>
              </select>
@@ -69,12 +121,21 @@
 
         <div class="form-section">
              <p>This text goes on the back of your card</p>
-             <input type="text" name="msg" placeholder="For Work" maxlength="20" autocomplete="off">
+             <input type="text" name="msg" placeholder="For Work" maxlength="20" autocomplete="off" list="annotation-suggestions" aria-label="Card annotation text">
+             <datalist id="annotation-suggestions">
+               <option value="Email">
+               <option value="Banking">
+               <option value="Work">
+               <option value="Personal">
+               <option value="Social Media">
+               <option value="Shopping">
+               <option value="Gaming">
+             </datalist>
         </div>
 
         <div class="form-section">
              <p>Watermark URL (displayed on card and embedded in QR code)</p>
-             <input type="text" name="watermark-url" placeholder="https://passwordcards.mrnet.work/" value="https://passwordcards.mrnet.work/" maxlength="200" autocomplete="off" style="width: 80%; max-width: 500px;">
+             <input type="text" name="watermark-url" placeholder="https://passwordcards.mrnet.work/" value="https://passwordcards.mrnet.work/" maxlength="200" autocomplete="off" style="width: 80%; max-width: 500px;" aria-label="Watermark URL">
         </div>
 
         <div class="form-section">
@@ -97,9 +158,9 @@
         </div>
         <div class="form-section">
             <p>Seed (for reproducible cards)</p>
-            <input type="text" id="seed" name="seed" placeholder="Enter a string/word seed OR number seed" maxlength="50" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 0.5em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation. Can be a number or a word/phrase.">
+            <input type="text" id="seed" name="seed" placeholder="Enter a string/word seed OR number seed" maxlength="50" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 0.5em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation. Can be a number or a word/phrase." aria-label="Seed value">
             <p style="font-size: 0.9em; margin-top: 0.5em; margin-bottom: 0.5em;">Hash Algorithm (for string seeds)</p>
-            <select name="hash-algorithm" id="hash-algorithm" style="width: 80%; max-width: 400px; margin-bottom: 1em;" class="tooltip" title="Algorithm used to convert string seeds to numbers. IMPORTANT: Save this with your seed for card recovery!">
+            <select name="hash-algorithm" id="hash-algorithm" style="width: 80%; max-width: 400px; margin-bottom: 1em;" class="tooltip" title="Algorithm used to convert string seeds to numbers. IMPORTANT: Save this with your seed for card recovery!" aria-label="Hash algorithm">
                 <option value="sha256" selected>SHA-256 (Recommended)</option>
                 <option value="md5">MD5</option>
                 <option value="sha1">SHA-1</option>
@@ -119,15 +180,53 @@
         </div>
         
         <div class="form-section">
-            <p>Spacebar size</p>
-            <input type="number" min="1" max="8" style="width: 15em;" name="space-length" id="space-size" placeholder="Spacebar size (Default: 8)" maxlength="10" autocomplete="off">
+            <p>QR Code Options</p>
+            <label style="display: inline-block; margin-right: 1em;">
+                <input type="checkbox" name="qr-code-enabled" id="qr-code-enabled" value="1" autocomplete="off" checked>
+                Include QR code on card (links to watermark URL)
+            </label>
+            <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 0.5em;"><em>⚠️ Privacy Note: QR code will contain the watermark URL. Toggle off for enhanced privacy.</em></p>
         </div>
+        
+        <div class="form-section">
+            <p>Spacebar size</p>
+            <input type="number" min="1" max="8" style="width: 15em;" name="space-length" id="space-size" placeholder="Spacebar size (Default: 8)" maxlength="10" autocomplete="off" aria-label="Spacebar size">
+        </div>
+        
+        <!-- Batch Generation -->
+        <div class="form-section">
+            <p>Multi-Card Batch Generation</p>
+            <label style="display: inline-block;">
+                <input type="checkbox" id="batch-generate-toggle" autocomplete="off">
+                Enable batch generation of multiple cards
+            </label>
+            <div id="batch-options" class="batch-options">
+                <p style="font-size: 0.9em;">Generate multiple cards at once with shared settings:</p>
+                <div id="batch-card-list" class="batch-card-list"></div>
+                <button type="button" id="add-batch-card" style="padding: 8px 16px; margin-top: 0.5em;">+ Add Card</button>
+                <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 1em;"><em>Note: Batch generation will create a ZIP file with multiple PDFs. Leave seed empty for random cards.</em></p>
+            </div>
+        </div>
+        
         <input type="hidden" value='{{sessiontoken}}'/>
 
         <div class="row" style="margin-top: 30px; text-align: center;">
-             <input type="submit" value="Generate PDF!"/><br>
+             <input type="submit" value="Generate PDF!" aria-label="Generate password card PDF"/><br>
         </div>
       </form>
+      
+      <!-- Privacy & Security Notice -->
+      <div class="info-box" style="margin-top: 2em;">
+        <h3>🔐 Privacy & Local Storage</h3>
+        <p><strong>Your privacy matters:</strong></p>
+        <ul>
+          <li>Theme and font preferences are stored locally in your browser</li>
+          <li>Seeds and card data are NEVER stored - they're only used during generation</li>
+          <li>All card generation happens server-side; no data is logged or saved</li>
+          <li>Use the "Clear Storage" button above to wipe all locally stored settings</li>
+        </ul>
+      </div>
+      
       <div class="footer-links">
         <p>Wanna buy a card? Checkout <a href="https://www.qwertycards.com" target="_blank">qwertycards.com</a>!</p>
         <p>Fork me on <a href="https://github.com/raphiz/passwordcards" target="_blank">Github</a>!</p>
