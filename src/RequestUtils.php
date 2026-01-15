@@ -111,6 +111,18 @@ class RequestUtils
         }
         return 'qwerty';
     }
+    public static function parseWatermarkUrl()
+    {
+        if (isset($_POST['watermark-url'])) {
+            $url = filter_var($_POST['watermark-url'], FILTER_SANITIZE_URL);
+            // Validate URL format
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
+                return substr($url, 0, 200);
+            }
+        }
+        return 'https://passwordcards.mrnet.work/';
+    }
+
     public static function parsePattern()
     {
          $pattern = "";

@@ -28,9 +28,10 @@ if (!RequestUtils::isPost()) {
         $primary = RequestUtils::parsePrimaryColor();
         $secondary = RequestUtils::parseSecondaryColor();
         $spaceBarSize = RequestUtils::parseSpacebarSize();
+        $watermarkUrl = RequestUtils::parseWatermarkUrl();
     
         // Setup configuration
-        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary);
+        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary, $watermarkUrl);
         $creator = new CardCreator($cfg);
     
         // Load SVG templates
@@ -42,7 +43,7 @@ if (!RequestUtils::isPost()) {
         $back = $creator->renderIntoTempfile($back_template);
     
         // Render the PDF
-        $doc = PDFRenderer::render($front, $back);
+        $doc = PDFRenderer::render($front, $back, $cfg);
     
         // Prepare response PDF file header
         RequestUtils::preparePdfHeader(strlen($doc));

@@ -36,6 +36,6 @@ class CardCreatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testConfiguration = new Configuration(10, null, null, 8, '', '#000000', '#ffffff');
+        $this->testConfiguration = new Configuration(10, null, null, 8, '', '#000000', '#ffffff', 'https://passwordcards.mrnet.work/');
     }
 }
