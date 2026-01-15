@@ -94,7 +94,7 @@ class PDFRenderer
         $pdf->SetFont('helvetica', 'B', 12);
         $pdf->Cell(0, 8, 'Watermark URL', 0, 1, 'L');
         $pdf->SetFont('helvetica', '', 10);
-        $pdf->MultiCell(0, 5, 'The watermark URL displayed on your card is: ' . $config->watermarkUrl . "\n\nThis URL is also embedded in the QR code on each card. You can customize this URL when generating your card to point to your preferred password card generator or information page.', 0, 'L');
+        $pdf->MultiCell(0, 5, 'The watermark URL displayed on your card is: ' . $config->watermarkUrl . "\n\nThis URL is also embedded in the QR code on each card. You can customize this URL when generating your card to point to your preferred password card generator or information page.", 0, 'L');
         $pdf->Ln(5);
 
         // Card Generation Settings
@@ -119,7 +119,7 @@ class PDFRenderer
         $pdf->SetFont('helvetica', '', 10);
         $pdf->MultiCell(0, 5, 
             "1. Keep this card with you or in a secure location.\n\n" .
-            "2. To create a password, choose a starting position on the card and follow a pattern you'll remember.\n\n" .
+            "2. To create a password, choose a starting position on the card and follow a pattern you will remember.\n\n" .
             "3. You can use the seed value to regenerate this exact card in the future.\n\n" .
             "4. The QR code on the card links to the watermark URL, which can help you regenerate cards or access the generator.\n\n" .
             "5. Never share your seed or pattern with others.\n\n" .
