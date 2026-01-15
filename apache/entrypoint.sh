@@ -7,6 +7,13 @@ HTACCESS_MODE=${HTACCESS_MODE:-dev}
 echo "=== Password Cards Entrypoint ==="
 echo "HTACCESS_MODE: $HTACCESS_MODE"
 
+# Verify template files exist
+if [ ! -f /var/www/html/.htaccess.dev ] || [ ! -f /var/www/html/.htaccess.prod ]; then
+    echo "ERROR: .htaccess template files not found!"
+    echo "Expected: /var/www/html/.htaccess.dev and /var/www/html/.htaccess.prod"
+    exit 1
+fi
+
 # Copy the appropriate .htaccess file based on the mode
 if [ "$HTACCESS_MODE" = "prod" ]; then
     echo "Using production .htaccess (strict: HTTPS enforced, path restrictions enabled)"

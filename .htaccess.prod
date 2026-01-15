@@ -8,9 +8,10 @@ RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
 
 
-# Only allow access to /index.php and /resources directory
+# Only allow access to /, /index.php and /resources directory
 
 RewriteEngine on
+RewriteCond %{REQUEST_URI} !^/$
 RewriteCond %{REQUEST_URI} !^/index\.php(\?.*)?$
 RewriteCond %{REQUEST_URI} !^/resources/
-RewriteRule ^(.*)$ / [L,R=301]
+RewriteRule ^.+$ /index.php [L,R=301]
