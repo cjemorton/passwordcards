@@ -124,7 +124,7 @@ class PDFRenderer
         $pdf->SetFont('helvetica', 'B', 12);
         $pdf->Cell(0, 8, 'Watermark URL', 0, 1, 'L');
         $pdf->SetFont('helvetica', '', 10);
-        $pdf->MultiCell(0, 5, 'Generator URL: ' . $config->watermarkUrl . "\n\nThis URL is displayed on your card and embedded in the QR code on the left panel. Scan the QR code with your phone to quickly access the generator.', 0, 'L');
+        $pdf->MultiCell(0, 5, 'Generator URL: ' . $config->watermarkUrl . "\n\nThis URL is displayed on your card and embedded in the QR code on the left panel. Scan the QR code with your phone to quickly access the generator.", 0, 'L');
         $pdf->Ln(3);
 
         // Usage Instructions
