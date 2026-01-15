@@ -8,16 +8,21 @@ class RequestUtils
         return $_SERVER['REQUEST_METHOD'] == "POST";
     }
 
-    public static function preventSpam()
+    public static function getBlacklistFile()
     {
         $ip = $_SERVER['REMOTE_ADDR'];
-        $blacklistfile = __DIR__ . '/../blacklist/' . $ip;
+        return __DIR__ . '/../blacklist/' . $ip;
+    }
+
+    public static function preventSpam()
+    {
+        $blacklistfile = self::getBlacklistFile();
         $count = 0;
         $creationDate = 0;
+        $limit = self::getCardGenerationLimit();
+        
         if (file_exists($blacklistfile)) {
             $contents = (int)file_get_contents($blacklistfile);
-            // Get the card generation limit from environment variable
-            $limit = self::getCardGenerationLimit();
             // If the stored value is big, it's the unix timestamp.
             // Otherwise it's the amount of created cards.
             if ($contents > $limit) {
@@ -37,8 +42,6 @@ class RequestUtils
             }
         }
 
-        // Get the card generation limit from environment variable
-        $limit = self::getCardGenerationLimit();
         if ($count === $limit) {
             // Get the timeout from environment variable
             $timeout = self::getCardGenerationTimeout();
@@ -63,12 +66,13 @@ class RequestUtils
             $providedPassword = $_POST['bypass-password'];
             $correctPassword = getenv('BYPASS_PASSWORD');
             
-            // If no password is set in environment, use default
+            // If no password is set in environment, bypass feature is disabled
             if ($correctPassword === false || $correctPassword === '') {
-                $correctPassword = 'letmein';
+                return false;
             }
             
-            return $providedPassword === $correctPassword;
+            // Use hash_equals for timing-safe comparison
+            return hash_equals($correctPassword, $providedPassword);
         }
         return false;
     }

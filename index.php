@@ -19,8 +19,7 @@ if (!RequestUtils::isPost()) {
     
     // If bypass password is valid, clear the rate limit for this IP
     if ($bypassValid) {
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $blacklistfile = __DIR__ . '/blacklist/' . $ip;
+        $blacklistfile = RequestUtils::getBlacklistFile();
         if (file_exists($blacklistfile)) {
             file_put_contents($blacklistfile, 0);
         }
@@ -30,6 +29,8 @@ if (!RequestUtils::isPost()) {
     if ($spamPrevention !== true) {
         $tpl = new Tpl;
         $tpl->assign('seconds', $spamPrevention);
+        $tpl->assign('limit', RequestUtils::getCardGenerationLimit());
+        $tpl->assign('timeout_minutes', round(RequestUtils::getCardGenerationTimeout() / 60));
         // Pass form data to template so it can be resubmitted with bypass password
         $formData = $_POST;
         // Remove bypass password fields from form data for security
