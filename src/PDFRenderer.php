@@ -55,16 +55,10 @@ class PDFRenderer
             '55' // height
         );
 
-        // Add QR code in the corner of the front card (pointing to watermark URL)
+        // Add QR code only on the left panel (front card) pointing to watermark URL
         if ($config && !empty($config->watermarkUrl)) {
-            // Place QR code in top-right corner of front card
+            // Place QR code in top-right corner of front card (left panel)
             $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 82, 17, 12, 12, self::getQRCodeStyle(), 'N');
-        }
-
-        // Add QR code in the corner of the back card
-        if ($config && !empty($config->watermarkUrl)) {
-            // Place QR code in top-right corner of back card
-            $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 167, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }
 
         // Add documentation page
@@ -85,12 +79,15 @@ class PDFRenderer
         $pdf->Cell(0, 10, 'Password Card Information', 0, 1, 'C');
         $pdf->Ln(5);
 
-        // Watermark URL section
+        // Deterministic Generation Section
         $pdf->SetFont('helvetica', 'B', 12);
-        $pdf->Cell(0, 8, 'Watermark URL', 0, 1, 'L');
+        $pdf->Cell(0, 8, 'Deterministic Card Generation', 0, 1, 'L');
         $pdf->SetFont('helvetica', '', 10);
-        $pdf->MultiCell(0, 5, 'The watermark URL displayed on your card is: ' . $config->watermarkUrl . "\n\nThis URL is also embedded in the QR code on each card. You can customize this URL when generating your card to point to your preferred password card generator or information page.", 0, 'L');
-        $pdf->Ln(5);
+        $pdf->MultiCell(0, 5, 
+            "This card was generated using deterministic generation. This means that using the same parameters below, you can regenerate this EXACT card at any time.\n\n" .
+            "IMPORTANT: Save these parameters in a secure location. If you lose your card, you can recreate it using these exact settings.",
+            0, 'L');
+        $pdf->Ln(3);
 
         // Card Generation Settings
         $pdf->SetFont('helvetica', 'B', 12);
@@ -104,9 +101,31 @@ class PDFRenderer
         $settings .= "Card Text: " . ($config->text ? $config->text : '(none)') . "\n";
         $settings .= "Primary Color: " . $config->primaryColor . "\n";
         $settings .= "Secondary Color: " . $config->secondaryColor . "\n";
+        $settings .= "Watermark URL: " . $config->watermarkUrl . "\n";
         
         $pdf->MultiCell(0, 5, $settings, 0, 'L');
-        $pdf->Ln(5);
+        $pdf->Ln(3);
+
+        // Loss Recovery Instructions
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 8, 'Card Loss Recovery Process', 0, 1, 'L');
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->MultiCell(0, 5, 
+            "If you lose your physical card:\n\n" .
+            "1. Access the password card generator at the watermark URL shown below\n" .
+            "2. Enter your seed value (" . $config->seed . ") in the seed field\n" .
+            "3. Configure all other settings exactly as shown in the 'Card Generation Settings' section above\n" .
+            "4. Generate the PDF - your card will be identical to this one\n\n" .
+            "NOTE: All parameters must match EXACTLY for the card to be regenerated correctly. Same seed + same parameters = identical card.",
+            0, 'L');
+        $pdf->Ln(3);
+
+        // Watermark URL section
+        $pdf->SetFont('helvetica', 'B', 12);
+        $pdf->Cell(0, 8, 'Watermark URL', 0, 1, 'L');
+        $pdf->SetFont('helvetica', '', 10);
+        $pdf->MultiCell(0, 5, 'Generator URL: ' . $config->watermarkUrl . "\n\nThis URL is displayed on your card and embedded in the QR code on the left panel. Scan the QR code with your phone to quickly access the generator.', 0, 'L');
+        $pdf->Ln(3);
 
         // Usage Instructions
         $pdf->SetFont('helvetica', 'B', 12);
@@ -115,10 +134,9 @@ class PDFRenderer
         $pdf->MultiCell(0, 5, 
             "1. Keep this card with you or in a secure location.\n\n" .
             "2. To create a password, choose a starting position on the card and follow a pattern you will remember.\n\n" .
-            "3. You can use the seed value to regenerate this exact card in the future.\n\n" .
-            "4. The QR code on the card links to the watermark URL, which can help you regenerate cards or access the generator.\n\n" .
-            "5. Never share your seed or pattern with others.\n\n" .
-            "6. You can customize the character pattern, colors, and other settings when generating new cards.",
+            "3. Never share your seed, pattern, or starting positions with others.\n\n" .
+            "4. Store a copy of this documentation page securely (separate from the card) to enable card recovery.\n\n" .
+            "5. The QR code on the left panel links to the generator for easy access.",
             0, 'L');
     }
 }
