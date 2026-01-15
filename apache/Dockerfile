@@ -49,6 +49,11 @@ WORKDIR /var/www/html
 COPY . /var/www/html/
 
 # -------------------------------
+# Install Composer dependencies
+# -------------------------------
+RUN composer install --no-dev --optimize-autoloader
+
+# -------------------------------
 # Create necessary directories
 # -------------------------------
 RUN mkdir -p /var/www/html/blacklist && chown -R www-data:www-data /var/www/html
