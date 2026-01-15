@@ -29,7 +29,9 @@ class Configuration
 
     public $spaceBarSize = null;
 
-    public function __construct($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor)
+    public $watermarkUrl = null;
+
+    public function __construct($seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $watermarkUrl = 'https://passwordcards.mrnet.work/')
     {
         $this->seed = self::evalSeed($seed);
         $this->pattern = self::evalPattern($pattern);
@@ -38,6 +40,7 @@ class Configuration
         $this->text = $text;
         $this->spaceBarSize = $spaceBarSize;
         $this->secondaryColor = $secondaryColor;
+        $this->watermarkUrl = $watermarkUrl;
     }
 
     public function getPatternCharacters()

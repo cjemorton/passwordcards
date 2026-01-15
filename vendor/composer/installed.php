@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'raphiz/passwordcards',
-        'pretty_version' => 'dev-copilot/fix-deprecations-for-php-8-2',
-        'version' => 'dev-copilot/fix-deprecations-for-php-8-2',
-        'reference' => 'e98991bd151c496a2c427d8a243d3b1a4441ebf0',
+        'pretty_version' => 'dev-copilot/add-watermark-qr-code-settings',
+        'version' => 'dev-copilot/add-watermark-qr-code-settings',
+        'reference' => '8890443fe775181c18a8442e6aa53d7eea964de0',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -119,9 +119,9 @@
             'dev_requirement' => false,
         ),
         'raphiz/passwordcards' => array(
-            'pretty_version' => 'dev-copilot/fix-deprecations-for-php-8-2',
-            'version' => 'dev-copilot/fix-deprecations-for-php-8-2',
-            'reference' => 'e98991bd151c496a2c427d8a243d3b1a4441ebf0',
+            'pretty_version' => 'dev-copilot/add-watermark-qr-code-settings',
+            'version' => 'dev-copilot/add-watermark-qr-code-settings',
+            'reference' => '8890443fe775181c18a8442e6aa53d7eea964de0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -73,6 +73,8 @@ class CardCreator
 
         $svg = str_replace('$PATTERN$', $this->escape($this->configration->pattern), $svg);
 
+        $svg = str_replace('$WATERMARK_URL$', $this->escape($this->configration->watermarkUrl), $svg);
+
         return $svg;
     }
     private function escape($str)
