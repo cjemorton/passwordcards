@@ -1,6 +1,0 @@
-# Development .htaccess - Relaxed rules for local development
-# No HTTPS enforcement, no path restrictions
-
-RewriteEngine on
-
-# Allow all requests without restrictions for easier local development

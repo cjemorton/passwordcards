@@ -20,54 +20,101 @@ This major release introduces a completely rewritten client-side application wit
 - **♿ Accessibility**: Enhanced keyboard navigation, ARIA labels, and screen reader support
 - **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
 
-### Modern vs Legacy
+## Repository Structure
 
-This repository now contains two versions:
+This repository contains two independent applications:
 
-1. **Modern Version** (default): React-based client-side application
-2. **Legacy Version**: Original PHP-based server-side application (in `/legacy` directory)
-
-The modern version is recommended for all users due to enhanced privacy (no server communication) and better features.
-
-## Getting Started
-
-### Modern UI (Recommended)
-
-#### Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
+```
+passwordcards/
+├── modern/          # Modern React + Material-UI app (recommended)
+├── legacy/          # Original PHP-based app
+├── docker/          # Docker configurations for both apps
+├── docker-compose.yml
+└── README.md
 ```
 
-Open http://localhost:3000 in your browser.
+### Modern Version (Recommended)
 
-#### Production Build
+Located in `/modern` - A React-based client-side application with enhanced privacy and features.
 
-```bash
-# Build for production
-npm run build
+- **Technology**: React 19, TypeScript, Material-UI v7, Vite
+- **Privacy**: 100% client-side - no server communication
+- **Access**: http://localhost:3000 (via Docker Compose)
 
-# Preview production build
-npm run preview
-```
-
-The built files will be in the `dist/` directory, ready to be served by any static file server.
+See [modern/README.md](modern/README.md) for detailed information.
 
 ### Legacy Version
 
-To access the legacy PHP-based version during development:
+Located in `/legacy` - The original PHP-based server-side application.
 
+- **Technology**: PHP 8.2, Apache, TCPDF
+- **Access**: http://localhost:3001 (via Docker Compose)
+
+See [legacy/README.md](legacy/README.md) for detailed information.
+
+## Getting Started with Docker Compose
+
+The easiest way to run both applications is using Docker Compose.
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Quick Start
+
+Build and run both applications:
+
+```bash
+docker-compose up -d --build
 ```
-http://localhost:3000/?legacy=true
+
+This will start:
+- **Modern app** at http://localhost:3000
+- **Legacy app** at http://localhost:3001
+
+### Stop Applications
+
+```bash
+docker-compose down
 ```
 
-Or directly access `/resources/index.html` (requires PHP server).
+### Environment Configuration
 
-See [legacy/README.md](legacy/README.md) for more details about the legacy implementation.
+You can configure the legacy app using environment variables. Copy the example:
+
+```bash
+cp .env.example .env
+```
+
+Available environment variables:
+
+- **`HTACCESS_MODE`** (default: `dev`): `dev` for development, `prod` for production
+- **`BYPASS_PASSWORD`**: Password to bypass rate limiting
+- **`CARD_GENERATION_LIMIT`** (default: `5`): Cards before rate limiting
+- **`CARD_GENERATION_TIMEOUT`** (default: `300`): Timeout in seconds
+
+### Development Mode
+
+For local development without Docker:
+
+#### Modern App
+
+```bash
+cd modern
+npm install
+npm run dev
+```
+
+#### Legacy App
+
+Requires PHP 8.2+ and Composer:
+
+```bash
+cd legacy
+composer install
+php -S localhost:8080
+```
 
 ## Project Status and History
 
@@ -96,7 +143,7 @@ This project maintains the MIT license from the original work while pursuing its
 
 ## Technology Stack
 
-### Modern UI
+### Modern App
 - **React 19** - UI framework
 - **TypeScript** - Type-safe development
 - **Material-UI (MUI) v7** - Component library
@@ -105,129 +152,19 @@ This project maintains the MIT license from the original work while pursuing its
 - **html2canvas** - Canvas-based image export
 - **qrcode** - QR code generation
 
-### Legacy (for reference)
-- **PHP 7+** - Server-side logic
+### Legacy App
+- **PHP 8.2** - Server-side logic
 - **TCPDF** - PDF generation
 - **jQuery** - DOM manipulation
 - **RainTPL** - Template engine
 
-## Docker Deployment
-
-This application can be deployed using Docker and docker-compose. 
-
-### Environment Configuration
-
-The application supports several environment variables for configuration. You can set these in a `.env` file or directly in `docker-compose.yml`.
-
-#### Creating a .env File
-
-Copy the example configuration:
-
-```bash
-cp .env.example .env
-```
-
-Then edit `.env` to customize the values:
-
-```bash
-# Apache .htaccess mode: 'dev' for development, 'prod' for production
-HTACCESS_MODE=dev
-
-# Bypass password for rate limiting
-BYPASS_PASSWORD=letmein
-
-# Card generation limit (number of cards before timeout)
-CARD_GENERATION_LIMIT=5
-
-# Card generation timeout (in seconds)
-CARD_GENERATION_TIMEOUT=300
-```
-
-#### Environment Variables
-
-- **`HTACCESS_MODE`** (default: `dev`): Controls Apache .htaccess configuration
-  - `dev`: Relaxed rules for local development (no HTTPS, no path restrictions)
-  - `prod`: Strict security rules for production (HTTPS enforced, HSTS enabled, path restrictions)
-
-- **`BYPASS_PASSWORD`** (default: `letmein`): Password to bypass rate limiting
-  - When users hit the rate limit, they can enter this password to continue generating cards immediately
-
-- **`CARD_GENERATION_LIMIT`** (default: `5`): Number of cards that can be generated before rate limiting kicks in
-
-- **`CARD_GENERATION_TIMEOUT`** (default: `300`): Time in seconds users must wait after hitting the rate limit (300 = 5 minutes)
-
-### Rate Limiting & Bypass
-
-The application includes rate limiting to prevent spam:
-- Users can generate up to `CARD_GENERATION_LIMIT` cards (default: 5)
-- After reaching the limit, they must wait `CARD_GENERATION_TIMEOUT` seconds (default: 5 minutes)
-- Users can bypass the wait by entering the `BYPASS_PASSWORD` when prompted
-
-### Usage
-
-#### Local Development
-
-For local development, use the default `dev` mode:
-
-```bash
-docker-compose up -d
-```
-
-Or explicitly set it in `docker-compose.yml`:
-
-```yaml
-services:
-  web:
-    environment:
-      - HTACCESS_MODE=dev
-```
-
-Access the application at: http://localhost:8080
-
-#### Production Deployment
-
-For production, set `HTACCESS_MODE=prod`:
-
-```yaml
-services:
-  web:
-    environment:
-      - HTACCESS_MODE=prod
-```
-
-Or via command line:
-
-```bash
-HTACCESS_MODE=prod docker-compose up -d
-```
-
-Alternatively, you can create a `.env` file:
-
-```bash
-echo "HTACCESS_MODE=prod" > .env
-docker-compose up -d
-```
-
-**Important**: When using production mode, ensure:
-- Your domain has a valid SSL certificate configured
-- Your reverse proxy or load balancer handles HTTPS termination, OR
-- Apache is configured with SSL certificates
-
-### Recommendations
-
-- **Always use `prod` mode for internet-facing deployments** to ensure proper security
-- **Use `dev` mode only for local development** where HTTPS is not configured
-- **Change the default `BYPASS_PASSWORD`** in production to a secure value
-- The mode can be changed at any time by updating the environment variable and restarting the container
-
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Please see [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for details.
 
 ## Security
 
 If you discover any security related issues, please email mister.norbert ät gmail.com instead of using the issue tracker.
-
 
 ## License
 

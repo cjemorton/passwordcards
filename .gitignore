@@ -1,16 +1,20 @@
-/cache/
-/blacklist/
-/build/
-/vendor/
-.phpunit.result.cache
-.env
-
-# Node/NPM
-node_modules/
-dist/
+# Build artifacts
+**/node_modules/
+**/dist/
+**/cache/
+**/blacklist/
+**/build/
 *.log
 .DS_Store
 
 # IDE
 .vscode/
 .idea/
+
+# Environment
+.env
+
+# PHP
+legacy/vendor/
+legacy/.phpunit.result.cache
+

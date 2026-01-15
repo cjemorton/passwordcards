@@ -1,11 +1,20 @@
 services:
-  web:
+  modern:
     build:
       context: .
-      dockerfile: apache/Dockerfile
-    container_name: passwordcards_web
+      dockerfile: docker/Dockerfile.modern
+    container_name: passwordcards_modern
     ports:
-      - "8080:80"
+      - "3000:80"
+    restart: unless-stopped
+
+  legacy:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.legacy
+    container_name: passwordcards_legacy
+    ports:
+      - "3001:80"
     environment:
       # Set to 'dev' for local development (no HTTPS, no path restrictions)
       # Set to 'prod' for production deployment (force HTTPS, restrict paths)
