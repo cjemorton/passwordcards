@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Default to 'dev' mode if HTACCESS_MODE is not set
 HTACCESS_MODE=${HTACCESS_MODE:-dev}
