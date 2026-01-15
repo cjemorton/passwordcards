@@ -77,7 +77,7 @@ class CardCreator
     }
     private function escape($str)
     {
-        return htmlentities(utf8_encode($str), ENT_XML1);
+        return htmlentities(mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1'), ENT_XML1);
     }
 
 
