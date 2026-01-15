@@ -3,22 +3,88 @@
 [![Latest Version](https://img.shields.io/github/release/cjemorton/passwordcards.svg?style=flat-square)](https://github.com/cjemorton/passwordcards/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-This tool allows you to generate customized password cards.
+This tool allows you to generate customized password cards with complete privacy - all processing happens in your browser.
+
+## Version 2.0.0 - Modern UI Release 🚀
+
+This major release introduces a completely rewritten client-side application with a modern React + Material-UI interface.
+
+### Key Features
+
+- **🔒 100% Client-Side**: All card generation, encryption, and export happens in your browser - no server required
+- **🎨 Modern Material-UI**: Beautiful, responsive interface with dark mode as default
+- **👁️ Live Preview**: See your password card update in real-time as you change settings
+- **📦 Multiple Export Formats**: Export as PDF, PNG, or JPG
+- **📱 QR Code Support**: Generate QR codes with your card settings for easy restoration
+- **💾 Settings Management**: Import/export settings, persistent preferences via localStorage
+- **♿ Accessibility**: Enhanced keyboard navigation, ARIA labels, and screen reader support
+- **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+
+### Modern vs Legacy
+
+This repository now contains two versions:
+
+1. **Modern Version** (default): React-based client-side application
+2. **Legacy Version**: Original PHP-based server-side application (in `/legacy` directory)
+
+The modern version is recommended for all users due to enhanced privacy (no server communication) and better features.
+
+## Getting Started
+
+### Modern UI (Recommended)
+
+#### Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+```
+
+Open http://localhost:3000 in your browser.
+
+#### Production Build
+
+```bash
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+The built files will be in the `dist/` directory, ready to be served by any static file server.
+
+### Legacy Version
+
+To access the legacy PHP-based version during development:
+
+```
+http://localhost:3000/?legacy=true
+```
+
+Or directly access `/resources/index.html` (requires PHP server).
+
+See [legacy/README.md](legacy/README.md) for more details about the legacy implementation.
 
 ## Project Status and History
 
 This project is a **modernized fork** that has diverged significantly from the [original passwordcards project](https://github.com/raphiz/passwordcards) (now archived). While inspired by the original work and the concept pioneered by [Qwertycards.com](https://www.qwertycards.com), this version has evolved into an **independent project** with its own development direction and feature set.
 
-### What's New in This Fork
+### What's New in Version 2.0
 
-This modernized version introduces several enhancements and changes:
-
-- **Modern, minimalist UI**: Clean, mobile-friendly interface with reduced clutter
-- **Enhanced theming**: Light, dark, and custom themes with instant switching
-- **Improved accessibility**: Better tooltips, keyboard navigation, and screen reader support
-- **Streamlined experience**: Key information moved to an About modal to keep the main interface focused
-- **Updated card layout**: Refined seed display and removed unnecessary blank lines on card back
-- **Independent identity**: This project now stands as its own entity with unique features and direction
+- **Complete rewrite with React and TypeScript**: Modern component architecture
+- **Client-side only**: No PHP backend required - everything runs in the browser
+- **Material-UI framework**: Professional, accessible UI components
+- **Enhanced privacy**: No data ever leaves your browser
+- **Live preview**: See your card before exporting
+- **Multiple export formats**: PDF, PNG, and JPG support
+- **QR code with settings**: Scan to restore your card configuration
+- **Settings persistence**: Your preferences are saved locally
+- **Dark mode**: Eye-friendly default theme
+- **Improved accessibility**: WCAG compliant with keyboard navigation
 
 ### Credits and Acknowledgments
 
@@ -27,6 +93,23 @@ This modernized version introduces several enhancements and changes:
 - **Current Maintainer**: This fork is maintained independently with its own roadmap and goals
 
 This project maintains the MIT license from the original work while pursuing its own vision for password card generation.
+
+## Technology Stack
+
+### Modern UI
+- **React 19** - UI framework
+- **TypeScript** - Type-safe development
+- **Material-UI (MUI) v7** - Component library
+- **Vite** - Build tool and dev server
+- **jsPDF** - Client-side PDF generation
+- **html2canvas** - Canvas-based image export
+- **qrcode** - QR code generation
+
+### Legacy (for reference)
+- **PHP 7+** - Server-side logic
+- **TCPDF** - PDF generation
+- **jQuery** - DOM manipulation
+- **RainTPL** - Template engine
 
 ## Docker Deployment
 

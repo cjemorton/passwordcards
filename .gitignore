@@ -4,3 +4,13 @@
 /vendor/
 .phpunit.result.cache
 .env
+
+# Node/NPM
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
