@@ -1,12 +1,5 @@
 (function($) {
 
-    $('#advancedOptionsLabel').click(function() {
-
-        $('#showMoreOptions').toggle();
-        $('#hideMoreOptions').toggle();
-        $('#advancedOptions').slideToggle();
-    });
-
     $('#with-other').click(function() {
         $('#other-chars').parent().slideToggle();
     });

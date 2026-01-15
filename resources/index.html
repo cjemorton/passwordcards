@@ -95,14 +95,15 @@
 
         </div>
         <div class="form-section">
-            <p id="advancedOptionsLabel"><span id="showMoreOptions">Show</span><span id="hideMoreOptions">Hide</span> more options....</p>
-            <div id="advancedOptions">
-                <label for="seed" class="tooltip" title="Use a seed for deterministic, reproducible card generation">Seed (for reproducible cards)</label><br>
-                <input type="text" id="seed" name="seed" placeholder="Enter a number or leave empty for random" maxlength="10" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 1em;">
-                <br>
-                <label for="space-size">Spacebar size</label>
-                <input type="number" min="1" max="8" style="width: 15em;" name="space-length" id="space-size" placeholder="Spacebar size (Default: 8)" maxlength="10" autocomplete="off">
-            </div>
+            <p>Seed (for reproducible cards)</p>
+            <label for="seed" class="tooltip" title="Use a seed for deterministic, reproducible card generation">Seed</label><br>
+            <input type="text" id="seed" name="seed" placeholder="Enter a number or leave empty for random" maxlength="10" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 1em;">
+        </div>
+        
+        <div class="form-section">
+            <p>Spacebar size</p>
+            <label for="space-size">Spacebar size</label>
+            <input type="number" min="1" max="8" style="width: 15em;" name="space-length" id="space-size" placeholder="Spacebar size (Default: 8)" maxlength="10" autocomplete="off">
         </div>
         <input type="hidden" value='{{sessiontoken}}'/>
 
