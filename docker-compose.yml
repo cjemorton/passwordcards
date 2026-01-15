@@ -1,8 +1,8 @@
 services:
   web:
     build:
-      context: ./apache
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: apache/Dockerfile
     container_name: passwordcards_web
     ports:
       - "8000:80"
