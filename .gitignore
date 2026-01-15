@@ -2,3 +2,4 @@
 /blacklist/
 /build/
 /vendor/
+.phpunit.result.cache
