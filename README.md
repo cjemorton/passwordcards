@@ -67,7 +67,14 @@ services:
 Or via command line:
 
 ```bash
-docker-compose up -d -e HTACCESS_MODE=prod
+HTACCESS_MODE=prod docker-compose up -d
+```
+
+Alternatively, you can create a `.env` file:
+
+```bash
+echo "HTACCESS_MODE=prod" > .env
+docker-compose up -d
 ```
 
 **Important**: When using production mode, ensure:
