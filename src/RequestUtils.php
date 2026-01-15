@@ -135,6 +135,46 @@ class RequestUtils
     }
     
     /**
+     * Get the original string seed if it was a string, or null if it was numeric or empty.
+     * This is used to display the string seed on the card if requested.
+     * 
+     * @return string|null The original string seed or null
+     */
+    public static function parseOriginalStringSeed()
+    {
+        if (isset($_POST['seed']) && !empty(trim($_POST['seed']))) {
+            $seed = trim($_POST['seed']);
+            
+            // Only return the string seed if it's not numeric
+            if (!is_numeric($seed)) {
+                return $seed;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Check if user wants to print the string seed on the card.
+     * 
+     * @return bool True if string seed should be printed
+     */
+    public static function parsePrintStringSeed()
+    {
+        return isset($_POST['print-string-seed']) && $_POST['print-string-seed'] === '1';
+    }
+    
+    /**
+     * Check if user wants to print the number seed on the card.
+     * 
+     * @return bool True if number seed should be printed
+     */
+    public static function parsePrintNumberSeed()
+    {
+        return isset($_POST['print-number-seed']) && $_POST['print-number-seed'] === '1';
+    }
+    
+    
+    /**
      * Parse the hash algorithm selection from POST data.
      * Defaults to SHA-256 for security and reproducibility.
      * 
