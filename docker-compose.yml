@@ -6,4 +6,8 @@ services:
     container_name: passwordcards_web
     ports:
       - "8080:80"
+    environment:
+      # Set to 'dev' for local development (no HTTPS, no path restrictions)
+      # Set to 'prod' for production deployment (force HTTPS, restrict paths)
+      - HTACCESS_MODE=dev
     restart: unless-stopped
