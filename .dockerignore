@@ -25,6 +25,4 @@ legacy/blacklist/
 legacy/tests/
 legacy/.phpunit.result.cache
 legacy/phpunit.xml
-legacy/.scrutinizer.yml
-legacy/wercker.yml
 
