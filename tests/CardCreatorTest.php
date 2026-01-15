@@ -1,23 +1,21 @@
 <?php
 namespace raphiz\passwordcards;
 
-class CardCreatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CardCreatorTest extends TestCase
 {
-    /**
-     * @expectedException     \Exception
-     * @expectedExceptionMessage     The given $configuration is null!
-     */
     public function testConstructorDeclinesNull()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The given $configuration is null!');
         new CardCreator(null);
     }
 
-    /**
-    * @expectedException     \Exception
-    * @expectedExceptionMessage     The given $configuration is not a valid Configuration object.
-    */
     public function testConstructorDeclinesNonConfigurationInstances()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The given $configuration is not a valid Configuration object.');
         new CardCreator('fooBaa');
     }
 
@@ -36,7 +34,7 @@ class CardCreatorTest extends \PHPUnit_Framework_TestCase
 
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->testConfiguration = new Configuration(10, null, null, 8, '', '#000000', '#ffffff');
     }
