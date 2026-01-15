@@ -49,9 +49,12 @@ if (!RequestUtils::isPost()) {
         $spaceBarSize = RequestUtils::parseSpacebarSize();
         $watermarkUrl = RequestUtils::parseWatermarkUrl();
         $hashAlgorithm = RequestUtils::parseHashAlgorithm();
+        $originalStringSeed = RequestUtils::parseOriginalStringSeed();
+        $printStringSeed = RequestUtils::parsePrintStringSeed();
+        $printNumberSeed = RequestUtils::parsePrintNumberSeed();
     
         // Setup configuration
-        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary, $watermarkUrl, $hashAlgorithm);
+        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary, $watermarkUrl, $hashAlgorithm, $originalStringSeed, $printStringSeed, $printNumberSeed);
         $creator = new CardCreator($cfg);
     
         // Load SVG templates

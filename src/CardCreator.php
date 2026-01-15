@@ -89,7 +89,34 @@ class CardCreator
         $watermarkFontSize = $this->calculateWatermarkFontSize($watermarkLength);
         $svg = str_replace('$WATERMARK_FONT_SIZE$', $watermarkFontSize, $svg);
 
+        // Build seed display string based on user preferences
+        $seedDisplay = $this->buildSeedDisplay();
+        $svg = str_replace('$SEED_DISPLAY$', $this->escape($seedDisplay), $svg);
+
         return $svg;
+    }
+
+    /**
+     * Build the seed display string based on user's print preferences.
+     * 
+     * @return string The formatted seed display string
+     */
+    private function buildSeedDisplay()
+    {
+        $lines = [];
+        
+        // Add string seed if requested and available
+        if ($this->configration->printStringSeed && $this->configration->originalStringSeed !== null) {
+            $lines[] = 'Seed (string): ' . $this->configration->originalStringSeed;
+        }
+        
+        // Add number seed if requested
+        if ($this->configration->printNumberSeed) {
+            $lines[] = 'Seed (number): ' . $this->configration->seed;
+        }
+        
+        // Join lines with a space separator (SVG tspan will handle line breaks)
+        return implode(' | ', $lines);
     }
     private function escape($str)
     {

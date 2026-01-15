@@ -132,6 +132,70 @@ class RequestUtilsTest extends TestCase
         $this->assertNotEquals($seed1, $seed2, 'Different string seeds should produce different numeric seeds');
     }
 
+    public function testParseOriginalStringSeedReturnsNullForNumeric()
+    {
+        $_POST['seed'] = '12345';
+        $this->assertNull(RequestUtils::parseOriginalStringSeed());
+    }
+
+    public function testParseOriginalStringSeedReturnsStringForNonNumeric()
+    {
+        $_POST['seed'] = 'mypassword';
+        $this->assertEquals('mypassword', RequestUtils::parseOriginalStringSeed());
+
+        $_POST['seed'] = 'test phrase';
+        $this->assertEquals('test phrase', RequestUtils::parseOriginalStringSeed());
+    }
+
+    public function testParseOriginalStringSeedReturnsNullWhenEmpty()
+    {
+        $this->assertNull(RequestUtils::parseOriginalStringSeed());
+        
+        $_POST['seed'] = '';
+        $this->assertNull(RequestUtils::parseOriginalStringSeed());
+    }
+
+    public function testParsePrintStringSeedDefaultsFalse()
+    {
+        $this->assertFalse(RequestUtils::parsePrintStringSeed());
+    }
+
+    public function testParsePrintStringSeedReturnsTrue()
+    {
+        $_POST['print-string-seed'] = '1';
+        $this->assertTrue(RequestUtils::parsePrintStringSeed());
+    }
+
+    public function testParsePrintStringSeedReturnsFalseForInvalidValue()
+    {
+        $_POST['print-string-seed'] = 'on';
+        $this->assertFalse(RequestUtils::parsePrintStringSeed());
+
+        $_POST['print-string-seed'] = 'yes';
+        $this->assertFalse(RequestUtils::parsePrintStringSeed());
+    }
+
+    public function testParsePrintNumberSeedDefaultsFalse()
+    {
+        $this->assertFalse(RequestUtils::parsePrintNumberSeed());
+    }
+
+    public function testParsePrintNumberSeedReturnsTrue()
+    {
+        $_POST['print-number-seed'] = '1';
+        $this->assertTrue(RequestUtils::parsePrintNumberSeed());
+    }
+
+    public function testParsePrintNumberSeedReturnsFalseForInvalidValue()
+    {
+        $_POST['print-number-seed'] = 'on';
+        $this->assertFalse(RequestUtils::parsePrintNumberSeed());
+
+        $_POST['print-number-seed'] = 'yes';
+        $this->assertFalse(RequestUtils::parsePrintNumberSeed());
+    }
+
+
     protected function tearDown(): void
     {
         // Clean up POST data after each test

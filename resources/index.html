@@ -97,7 +97,7 @@
         </div>
         <div class="form-section">
             <p>Seed (for reproducible cards)</p>
-            <input type="text" id="seed" name="seed" placeholder="Enter a number or word" maxlength="50" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 0.5em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation. Can be a number or a word/phrase.">
+            <input type="text" id="seed" name="seed" placeholder="Enter a string/word seed OR number seed" maxlength="50" autocomplete="off" style="width: 80%; max-width: 400px; margin-bottom: 0.5em;" class="tooltip" title="Use a seed for deterministic, reproducible card generation. Can be a number or a word/phrase.">
             <p style="font-size: 0.9em; margin-top: 0.5em; margin-bottom: 0.5em;">Hash Algorithm (for string seeds)</p>
             <select name="hash-algorithm" id="hash-algorithm" style="width: 80%; max-width: 400px; margin-bottom: 1em;" class="tooltip" title="Algorithm used to convert string seeds to numbers. IMPORTANT: Save this with your seed for card recovery!">
                 <option value="sha256" selected>SHA-256 (Recommended)</option>
@@ -105,6 +105,17 @@
                 <option value="sha1">SHA-1</option>
                 <option value="sha512">SHA-512</option>
             </select>
+            <p style="font-size: 0.9em; margin-top: 0.5em; margin-bottom: 0.5em;">Print seed on card:</p>
+            <div style="margin-bottom: 1em;">
+                <label style="display: inline-block; margin-right: 1em;">
+                    <input type="checkbox" name="print-string-seed" id="print-string-seed" value="1" autocomplete="off">
+                    String seed
+                </label>
+                <label style="display: inline-block; margin-right: 1em;">
+                    <input type="checkbox" name="print-number-seed" id="print-number-seed" value="1" autocomplete="off">
+                    Number seed
+                </label>
+            </div>
         </div>
         
         <div class="form-section">
