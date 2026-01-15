@@ -5,12 +5,12 @@ RewriteCond %{HTTPS} off
 RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # HSTS Header - only when using https
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" "expr=%{HTTPS} == 'on'"
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
 
 
 # Only allow access to /index.php and /resources directory
 
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !^/index\.php(\?.*)?$ 
+RewriteCond %{REQUEST_URI} !^/index\.php(\?.*)?$
 RewriteCond %{REQUEST_URI} !^/resources/
 RewriteRule ^(.*)$ / [L,R=301]
