@@ -80,6 +80,8 @@ class CardCreator
 
         $svg = str_replace('$PATTERN$', $this->escape($this->configration->pattern), $svg);
 
+        $svg = str_replace('$HASH_ALGORITHM$', $this->escape(strtoupper($this->configration->hashAlgorithm)), $svg);
+
         $svg = str_replace('$WATERMARK_URL$', $this->escape($this->configration->watermarkUrl), $svg);
 
         // Calculate appropriate font size for watermark URL to prevent clipping

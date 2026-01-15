@@ -95,6 +95,7 @@ class PDFRenderer
         $pdf->SetFont('helvetica', '', 10);
         
         $settings = "Seed: " . $config->seed . "\n";
+        $settings .= "Hash Algorithm: " . strtoupper($config->hashAlgorithm) . " (CRITICAL for string seed recovery)\n";
         $settings .= "Pattern: " . $config->pattern . "\n";
         $settings .= "Keyboard Layout: " . $config->keys . "\n";
         $settings .= "Spacebar Size: " . $config->spaceBarSize . "\n";
@@ -114,9 +115,10 @@ class PDFRenderer
             "If you lose your physical card:\n\n" .
             "1. Access the password card generator at the watermark URL shown below\n" .
             "2. Enter your seed value (" . $config->seed . ") in the seed field\n" .
-            "3. Configure all other settings exactly as shown in the 'Card Generation Settings' section above\n" .
-            "4. Generate the PDF - your card will be identical to this one\n\n" .
-            "NOTE: All parameters must match EXACTLY for the card to be regenerated correctly. Same seed + same parameters = identical card.",
+            "3. Select the hash algorithm (" . strtoupper($config->hashAlgorithm) . ") from the dropdown\n" .
+            "4. Configure all other settings exactly as shown in the 'Card Generation Settings' section above\n" .
+            "5. Generate the PDF - your card will be identical to this one\n\n" .
+            "CRITICAL: If you used a string seed, you MUST select the correct hash algorithm. The hash algorithm converts your string seed into a number, and different algorithms produce different cards. Same seed + same algorithm + same parameters = identical card.",
             0, 'L');
         $pdf->Ln(3);
 

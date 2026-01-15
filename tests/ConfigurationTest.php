@@ -66,8 +66,8 @@ class ConfigurationTest extends TestCase
 
     public function testGetPatternCharactersHappyPath()
     {
-        //$seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $watermarkUrl
-        $cfg = new Configuration(null, 'a0-', null, 8, '', '#000000', '#ffffff', 'https://passwordcards.mrnet.work/');
+        //$seed, $pattern, $keys, $spaceBarSize, $text, $primaryColor, $secondaryColor, $watermarkUrl, $hashAlgorithm
+        $cfg = new Configuration(null, 'a0-', null, 8, '', '#000000', '#ffffff', 'https://passwordcards.mrnet.work/', 'sha256');
         $chars = $cfg->getPatternCharacters();
         $this->assertEquals('a', $chars[0]);
         $this->assertEquals('0', $chars[1]);

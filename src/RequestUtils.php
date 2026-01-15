@@ -97,15 +97,60 @@ class RequestUtils
         return $timeout;
     }
 
+    /**
+     * Parse and process the seed value from POST data.
+     * 
+     * SEED PROCESSING:
+     * - If seed is numeric, return it directly as an integer
+     * - If seed is a non-empty string, hash it using the selected algorithm
+     * - Hashing converts the string to a deterministic numeric value
+     * - Same string + same algorithm = same numeric seed = reproducible card
+     * 
+     * @return int|null The numeric seed value or null if no seed provided
+     */
     public static function parseSeed()
     {
-        if (
-            isset($_POST['seed']) &&
-            is_numeric($_POST['seed'])
-        ) {
-            return $_POST['seed'];
+        if (isset($_POST['seed']) && !empty(trim($_POST['seed']))) {
+            $seed = trim($_POST['seed']);
+            
+            // If seed is numeric, return it directly
+            if (is_numeric($seed)) {
+                return (int)$seed;
+            }
+            
+            // If seed is a string, hash it to get a numeric value
+            // This ensures reproducibility: same string + same algorithm = same card
+            $algorithm = self::parseHashAlgorithm();
+            $hash = hash($algorithm, $seed);
+            
+            // Convert the hash to a numeric seed by taking the first 10 hex characters
+            // and converting to integer. This gives us a manageable seed value.
+            $numericSeed = hexdec(substr($hash, 0, 10));
+            
+            return $numericSeed;
         }
         return null;
+    }
+    
+    /**
+     * Parse the hash algorithm selection from POST data.
+     * Defaults to SHA-256 for security and reproducibility.
+     * 
+     * @return string The hash algorithm name (lowercase)
+     */
+    public static function parseHashAlgorithm()
+    {
+        $validAlgorithms = ['md5', 'sha1', 'sha256', 'sha512'];
+        
+        if (
+            isset($_POST['hash-algorithm']) &&
+            in_array(strtolower($_POST['hash-algorithm']), $validAlgorithms)
+        ) {
+            return strtolower($_POST['hash-algorithm']);
+        }
+        
+        // Default to SHA-256 for best security and reproducibility
+        return 'sha256';
     }
 
     public static function parseSpacebarSize()

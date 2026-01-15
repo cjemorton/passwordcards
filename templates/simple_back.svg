@@ -78,7 +78,7 @@
          id="tspan3212"
          x="9.9902725"
          y="1041.1512"
-         style="font-size:10px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">/$SEED$/$PATTERN$/</tspan></text>
+         style="font-size:10px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">/$SEED$/$PATTERN$/$HASH_ALGORITHM$/</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3207"
