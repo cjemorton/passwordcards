@@ -1,0 +1,32 @@
+{
+  "name": "Password Card Generator",
+  "short_name": "PasswordCards",
+  "description": "Generate customized password cards for secure password management",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/resources/favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["utilities", "productivity", "security"],
+  "shortcuts": [
+    {
+      "name": "Generate New Card",
+      "short_name": "New Card",
+      "description": "Generate a new password card",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/resources/favicon.png",
+          "sizes": "48x48"
+        }
+      ]
+    }
+  ]
+}
