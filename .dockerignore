@@ -4,7 +4,6 @@ vendor/
 # Exclude cache and build directories
 cache/
 build/
-blacklist/
 
 # Exclude git files
 .git
