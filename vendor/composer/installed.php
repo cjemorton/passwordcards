@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'raphiz/passwordcards',
-        'pretty_version' => 'dev-copilot/enable-string-seeds-and-hashing',
-        'version' => 'dev-copilot/enable-string-seeds-and-hashing',
-        'reference' => 'e7148655e10dab4c7c8753e2fad9edc1f5d51f98',
+        'pretty_version' => 'dev-copilot/improve-passwordcards-usability',
+        'version' => 'dev-copilot/improve-passwordcards-usability',
+        'reference' => '92c20314dacb1835cebb74b908703750cc4453be',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -119,9 +119,9 @@
             'dev_requirement' => false,
         ),
         'raphiz/passwordcards' => array(
-            'pretty_version' => 'dev-copilot/enable-string-seeds-and-hashing',
-            'version' => 'dev-copilot/enable-string-seeds-and-hashing',
-            'reference' => 'e7148655e10dab4c7c8753e2fad9edc1f5d51f98',
+            'pretty_version' => 'dev-copilot/improve-passwordcards-usability',
+            'version' => 'dev-copilot/improve-passwordcards-usability',
+            'reference' => '92c20314dacb1835cebb74b908703750cc4453be',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
