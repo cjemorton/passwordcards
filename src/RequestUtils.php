@@ -79,20 +79,22 @@ class RequestUtils
 
     public static function getCardGenerationLimit()
     {
-        $limit = getenv('CARD_GENERATION_LIMIT');
-        if ($limit === false || !is_numeric($limit)) {
-            return 5; // default
+        static $limit = null;
+        if ($limit === null) {
+            $envLimit = getenv('CARD_GENERATION_LIMIT');
+            $limit = ($envLimit !== false && is_numeric($envLimit)) ? (int)$envLimit : 5;
         }
-        return (int)$limit;
+        return $limit;
     }
 
     public static function getCardGenerationTimeout()
     {
-        $timeout = getenv('CARD_GENERATION_TIMEOUT');
-        if ($timeout === false || !is_numeric($timeout)) {
-            return 300; // default (5 minutes)
+        static $timeout = null;
+        if ($timeout === null) {
+            $envTimeout = getenv('CARD_GENERATION_TIMEOUT');
+            $timeout = ($envTimeout !== false && is_numeric($envTimeout)) ? (int)$envTimeout : 300;
         }
-        return (int)$timeout;
+        return $timeout;
     }
 
     public static function parseSeed()

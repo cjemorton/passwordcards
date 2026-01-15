@@ -10,8 +10,8 @@ services:
       # Set to 'dev' for local development (no HTTPS, no path restrictions)
       # Set to 'prod' for production deployment (force HTTPS, restrict paths)
       - HTACCESS_MODE=${HTACCESS_MODE:-dev}
-      # Bypass password for rate limiting
-      - BYPASS_PASSWORD=${BYPASS_PASSWORD:-letmein}
+      # Bypass password for rate limiting (IMPORTANT: Set this in your .env file)
+      - BYPASS_PASSWORD=${BYPASS_PASSWORD}
       # Card generation limit (number of cards before timeout)
       - CARD_GENERATION_LIMIT=${CARD_GENERATION_LIMIT:-5}
       # Card generation timeout in seconds
