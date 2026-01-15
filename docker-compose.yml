@@ -5,5 +5,5 @@ services:
       dockerfile: apache/Dockerfile
     container_name: passwordcards_web
     ports:
-      - "8000:80"
+      - "8080:80"
     restart: unless-stopped
