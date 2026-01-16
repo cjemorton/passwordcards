@@ -4,6 +4,23 @@
 **Repository:** cjemorton/passwordcards  
 **Original Author:** Raphael Zimmermann (raphiz)
 
+---
+
+## ⚠️ NOTICE: This document describes the ORIGINAL state before fixes
+
+**As of January 16, 2026**, all Docker issues documented below have been resolved:
+- ✅ Docker build context and COPY instructions are correct
+- ✅ PHP extensions are properly configured
+- ✅ No permission issues exist
+- ✅ Composer runs correctly
+- ✅ Autoloading issue fixed (composer.json now uses "php/" directory)
+- ✅ Typo fixed ($configration → $configuration)
+- ✅ PDF exports aligned between legacy and modern apps
+
+This document is preserved for historical reference and understanding of the improvements made.
+
+---
+
 ## Executive Summary
 
 This repository is a PHP-based web application that generates customizable password cards inspired by Qwertycards.com. The application allows users to create personalized password cards with various patterns, keyboard layouts, and colors, which are then rendered as downloadable PDF files.

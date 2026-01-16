@@ -16,7 +16,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "raphiz\\passwordcards\\": "src/" }
+        "psr-4": { "raphiz\\passwordcards\\": "php/" }
     },
     "scripts": {
         "test": "vendor/bin/phpunit"
