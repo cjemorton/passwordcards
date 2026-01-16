@@ -4,13 +4,19 @@ import { AppSettings, generatePattern } from '../utils/settings';
 import { Configuration } from '../lib/Configuration';
 import { CardCreator, CardData } from '../lib/CardCreator';
 import { hashSeed } from '../lib/SeededRandom';
+import { SvgRenderer } from '../lib/SvgRenderer';
 
 interface Props {
   settings: AppSettings;
 }
 
+// Create a singleton SVG renderer
+const svgRenderer = new SvgRenderer();
+
 export default function LivePreview({ settings }: Props) {
   const [cardData, setCardData] = useState<CardData | null>(null);
+  const [svgFront, setSvgFront] = useState<string>('');
+  const [svgBack, setSvgBack] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,6 +29,9 @@ export default function LivePreview({ settings }: Props) {
     setError(null);
 
     try {
+      // Load SVG templates first
+      await svgRenderer.loadTemplates();
+
       // Parse seed
       let numericSeed: number | undefined;
       if (settings.seed) {
@@ -52,11 +61,16 @@ export default function LivePreview({ settings }: Props) {
         qrCodeEnabled: settings.qrCodeEnabled,
       });
 
-      // Generate card
+      // Generate card data
       const creator = new CardCreator(config);
       const data = creator.generateCard();
       
+      // Render SVGs
+      const { front, back } = svgRenderer.renderBoth(data);
+      
       setCardData(data);
+      setSvgFront(front);
+      setSvgBack(back);
     } catch (err) {
       setError((err as Error).message);
       console.error('Error generating card:', err);
@@ -85,7 +99,7 @@ export default function LivePreview({ settings }: Props) {
 
       {cardData && !loading && (
         <Box>
-          {/* Card Front - Password Grid */}
+          {/* Card Front - SVG Display */}
           <Box
             sx={{
               border: 2,
@@ -93,77 +107,27 @@ export default function LivePreview({ settings }: Props) {
               borderRadius: 1,
               p: 2,
               mb: 2,
-              backgroundColor: cardData.primaryColor,
-              color: cardData.secondaryColor,
+              backgroundColor: 'background.paper',
             }}
           >
             <Typography variant="subtitle2" gutterBottom>
               Card Front
             </Typography>
-            
-            {/* Grid Layout */}
             <Box
               sx={{
-                display: 'grid',
-                gridTemplateColumns: 'auto repeat(8, 1fr)',
-                gap: 0.5,
-                fontFamily: 'monospace',
-                fontSize: '0.9rem',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                '& svg': {
+                  maxWidth: '100%',
+                  height: 'auto',
+                },
               }}
-            >
-              {/* Header Row */}
-              <Box></Box>
-              {['1', '2', '3', '4', '5', '6', '7', '8'].map((col) => (
-                <Box key={col} sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-                  {col}
-                </Box>
-              ))}
-
-              {/* Data Rows */}
-              {cardData.keys.map((key, rowIndex) => (
-                <>
-                  <Box key={`key-${rowIndex}`} sx={{ fontWeight: 'bold', pr: 1 }}>
-                    {key}
-                  </Box>
-                  {Array.from({ length: 8 }).map((_, colIndex) => {
-                    const charIndex = rowIndex * 8 + colIndex;
-                    const char = cardData.values[charIndex] || '';
-                    return (
-                      <Box
-                        key={`cell-${rowIndex}-${colIndex}`}
-                        sx={{
-                          textAlign: 'center',
-                          p: 0.5,
-                          border: 1,
-                          borderColor: 'rgba(255,255,255,0.2)',
-                          backgroundColor: 'rgba(0,0,0,0.1)',
-                        }}
-                      >
-                        {char}
-                      </Box>
-                    );
-                  })}
-                </>
-              ))}
-
-              {/* Spacebar Row */}
-              <Box sx={{ fontWeight: 'bold', pr: 1 }}>SPACE</Box>
-              <Box
-                sx={{
-                  gridColumn: 'span 8',
-                  textAlign: 'center',
-                  p: 0.5,
-                  border: 1,
-                  borderColor: 'rgba(255,255,255,0.2)',
-                  backgroundColor: 'rgba(0,0,0,0.1)',
-                }}
-              >
-                {cardData.spacebar}
-              </Box>
-            </Box>
+              dangerouslySetInnerHTML={{ __html: svgFront }}
+            />
           </Box>
 
-          {/* Card Back - Info */}
+          {/* Card Back - SVG Display */}
           <Box
             sx={{
               border: 2,
@@ -176,38 +140,24 @@ export default function LivePreview({ settings }: Props) {
             <Typography variant="subtitle2" gutterBottom>
               Card Back
             </Typography>
-            <Box sx={{ fontSize: '0.9rem' }}>
-              {cardData.text && (
-                <Typography variant="body2" gutterBottom>
-                  <strong>Annotation:</strong> {cardData.text}
-                </Typography>
-              )}
-              {cardData.seedDisplay && (
-                <Typography variant="body2" gutterBottom>
-                  {cardData.seedDisplay}
-                </Typography>
-              )}
-              <Typography variant="body2" gutterBottom>
-                <strong>Pattern:</strong> {cardData.pattern}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                <strong>Hash Algorithm:</strong> {cardData.hashAlgorithm}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                <strong>Watermark:</strong> {cardData.watermarkUrl}
-              </Typography>
-              {cardData.qrCodeEnabled && (
-                <Typography variant="body2" color="text.secondary">
-                  [QR Code will appear here in PDF export]
-                </Typography>
-              )}
-            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                '& svg': {
+                  maxWidth: '100%',
+                  height: 'auto',
+                },
+              }}
+              dangerouslySetInnerHTML={{ __html: svgBack }}
+            />
           </Box>
 
           {/* Info Message */}
           <Box sx={{ mt: 2, p: 2, backgroundColor: 'info.main', color: 'info.contrastText', borderRadius: 1 }}>
             <Typography variant="caption">
-              💡 This is a simplified preview. The actual PDF export will have professional formatting.
+              💡 This preview matches the legacy card layout pixel-perfect. Export to PDF, PNG, or JPG below.
             </Typography>
           </Box>
         </Box>
