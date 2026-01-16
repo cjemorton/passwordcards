@@ -12,9 +12,16 @@ export class SeededRandom {
   private mt: number[] = [];
   private index: number = 0;
 
-  constructor(seed: number) {
-    this.seed = seed;
-    this.init(seed);
+  constructor(seed: number | bigint) {
+    // Convert BigInt to number for internal use
+    // PHP's mt_srand uses the lower 32 bits of the seed for initialization
+    // This ensures cross-platform compatibility
+    if (typeof seed === 'bigint') {
+      this.seed = Number(BigInt.asUintN(32, seed));
+    } else {
+      this.seed = seed >>> 0;
+    }
+    this.init(this.seed);
   }
 
   /**
@@ -82,15 +89,25 @@ export class SeededRandom {
 
 /**
  * Hash a string seed to a numeric seed
+ * 
+ * This matches the PHP implementation which takes the first 15 hexadecimal
+ * characters from the hash and converts to integer. This provides ~60 bits
+ * of entropy (15 hex chars = 60 bits) which is sufficient to prevent practical
+ * collisions while ensuring cross-platform compatibility.
+ * 
+ * Returns a BigInt to preserve precision of large seed values.
  */
-export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' | 'sha512' | 'md5' = 'sha256'): Promise<number> {
+export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' | 'sha512' | 'md5' = 'sha256'): Promise<bigint> {
   // For browser compatibility, we use the Web Crypto API for SHA algorithms
   let hashBuffer: ArrayBuffer;
   
   if (algorithm === 'md5') {
-    // MD5 requires a polyfill or library - for now we'll use a simple hash
-    // In production, you'd want to use a proper MD5 implementation
-    return simpleHash(stringSeed);
+    // MD5 requires a polyfill or library
+    // For now, use a simple hash as fallback
+    // NOTE: This provides less entropy (32 bits) than the main path (60 bits)
+    // and may result in different cards compared to PHP MD5 implementation
+    // TODO: Implement proper MD5 hashing for full compatibility
+    return BigInt(simpleHash(stringSeed));
   }
   
   const encoder = new TextEncoder();
@@ -104,15 +121,18 @@ export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' 
   
   hashBuffer = await crypto.subtle.digest(algoMap[algorithm], data);
   
-  // Convert first 4 bytes to a 32-bit integer
+  // Convert hash to hexadecimal string
   const hashArray = new Uint8Array(hashBuffer);
-  let seed = 0;
-  for (let i = 0; i < 4; i++) {
-    seed = (seed << 8) | hashArray[i];
-  }
+  const hashHex = Array.from(hashArray)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
   
-  // Ensure positive 32-bit integer
-  return seed >>> 0;
+  // Take first 15 hex characters and convert to BigInt (matching PHP implementation)
+  // This provides ~60 bits of entropy while matching the PHP backend exactly
+  const first15Chars = hashHex.substring(0, 15);
+  const seed = BigInt('0x' + first15Chars);
+  
+  return seed;
 }
 
 /**

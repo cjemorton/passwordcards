@@ -151,14 +151,17 @@ export async function importSettings(file: File): Promise<AppSettings> {
 export function generatePattern(settings: AppSettings): string {
   const parts: string[] = [];
   
+  // Order matches legacy PHP implementation: numbers, lowercase, uppercase, symbols, space, other
+  // No separators between parts (legacy concatenates directly)
+  if (settings.withNumbers) parts.push('0-9');
   if (settings.withLower) parts.push('a-z');
   if (settings.withUpper) parts.push('A-Z');
-  if (settings.withNumbers) parts.push('0-9');
   if (settings.withSymbols) parts.push('*-*');
   if (settings.withSpace) parts.push(' ');
   if (settings.withOther && settings.otherChars) parts.push(settings.otherChars);
   
-  return parts.join('~') || 'a-zA-Z0-9~*-*';
+  // Join without separator to match PHP implementation
+  return parts.join('') || 'a-zA-Z0-9*-*';
 }
 
 /**
