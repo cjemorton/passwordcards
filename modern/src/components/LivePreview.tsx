@@ -33,7 +33,7 @@ export default function LivePreview({ settings }: Props) {
       await svgRenderer.loadTemplates();
 
       // Parse seed
-      let numericSeed: number | undefined;
+      let numericSeed: number | bigint | undefined;
       if (settings.seed) {
         if (/^\d+$/.test(settings.seed)) {
           // Numeric seed
@@ -59,6 +59,7 @@ export default function LivePreview({ settings }: Props) {
         printStringSeed: settings.printStringSeed,
         printNumberSeed: settings.printNumberSeed,
         qrCodeEnabled: settings.qrCodeEnabled,
+        showSeedOnCard: settings.showSeedOnCard,
       });
 
       // Generate card data

@@ -20,11 +20,12 @@ export class ExportUtils {
     format: ExportFormat,
     frontSvg: string,
     backSvg: string,
-    cardData: CardData
+    cardData: CardData,
+    cardsPerPage: number = 3
   ): Promise<void> {
     switch (format) {
       case 'pdf':
-        await this.exportPDF(frontSvg, backSvg, cardData);
+        await this.exportPDF(frontSvg, backSvg, cardData, cardsPerPage);
         break;
       case 'png':
         await this.exportImage(frontSvg, backSvg, 'png');
@@ -38,13 +39,16 @@ export class ExportUtils {
   }
 
   /**
-   * Export as PDF - follows legacy PDFRenderer.php approach
-   * Two cards side-by-side on A4, with optional documentation page
+   * Export as PDF - Updated to support configurable layout
+   * - Text/back card on left, keyboard/front card on right (reversed from legacy)
+   * - Configurable cards per page
+   * - Toggleable QR code and seed display
    */
   private static async exportPDF(
     frontSvg: string,
     backSvg: string,
-    cardData: CardData
+    cardData: CardData,
+    cardsPerPage: number = 3
   ): Promise<void> {
     // Create PDF with A4 dimensions
     const pdf = new jsPDF({
@@ -61,37 +65,74 @@ export class ExportUtils {
       creator: 'Password Card Generator',
     });
 
-    // Add fold lines (matching legacy positions)
-    // TCPDF default line width is 0.2mm
-    pdf.setLineWidth(0.2);
-    pdf.line(95, 10, 95, 13);
-    pdf.line(95, 72, 95, 75);
-
-    // Convert SVGs to high-resolution images and embed in PDF
-    // This approach ensures proper font rendering and matches legacy TCPDF quality
-    // SVG dimensions: 301.18109 x 194.88188 pixels
-    // Target dimensions: 85mm x 55mm (matching legacy)
+    // Calculate vertical spacing for cards per page
+    // A4 height: 297mm, with margins
+    const pageHeight = 297;
+    const topMargin = 10;
+    const bottomMargin = 10;
+    const availableHeight = pageHeight - topMargin - bottomMargin;
+    const cardHeight = 55; // mm
+    const verticalSpacing = availableHeight / cardsPerPage;
     
-    // Add front card (left panel)
-    const frontImageData = await this.svgToImageData(frontSvg);
-    pdf.addImage(frontImageData, 'PNG', 10, 15, 85, 55);
-
-    // Add back card (right panel)
+    // Card dimensions
+    const cardWidth = 85; // mm
+    
+    // Convert SVGs to high-resolution images once for efficiency
     const backImageData = await this.svgToImageData(backSvg);
-    pdf.addImage(backImageData, 'PNG', 95, 15, 85, 55);
-
-    // Add QR code if enabled
-    if (cardData.qrCodeEnabled && cardData.watermarkUrl) {
-      try {
-        const qrDataUrl = await QRCode.toDataURL(cardData.watermarkUrl, {
-          errorCorrectionLevel: 'L',
-          margin: 0,
-          width: 128,
+    const frontImageData = await this.svgToImageData(frontSvg);
+    
+    // Generate cards based on cardsPerPage setting
+    for (let i = 0; i < cardsPerPage; i++) {
+      // Calculate Y position for this card
+      const yPos = topMargin + (i * verticalSpacing) + ((verticalSpacing - cardHeight) / 2);
+      
+      // Add fold lines (vertical line between cards)
+      pdf.setLineWidth(0.2);
+      pdf.line(95, yPos, 95, yPos + 3);
+      pdf.line(95, yPos + cardHeight - 3, 95, yPos + cardHeight);
+      
+      // REVERSED LAYOUT: Back card (text) on left, Front card (keyboard) on right
+      
+      // Add back card (LEFT panel) - was previously on the right
+      pdf.addImage(backImageData, 'PNG', 10, yPos, cardWidth, cardHeight);
+      
+      // Add front card (RIGHT panel) - was previously on the left
+      pdf.addImage(frontImageData, 'PNG', 95, yPos, cardWidth, cardHeight);
+      
+      // Add QR code if enabled
+      if (cardData.qrCodeEnabled && cardData.watermarkUrl) {
+        try {
+          const qrDataUrl = await QRCode.toDataURL(cardData.watermarkUrl, {
+            errorCorrectionLevel: 'L',
+            margin: 0,
+            width: 128,
+          });
+          // Place QR code in top-right corner of back card (left panel)
+          pdf.addImage(qrDataUrl, 'PNG', 82, yPos + 2, 12, 12);
+        } catch (error) {
+          console.error('Error generating QR code:', error);
+        }
+      }
+      
+      // Add seed display if enabled - positioned vertically along the fold edge
+      if (cardData.showSeedOnCard && cardData.seedDisplay) {
+        pdf.setFontSize(6);
+        pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(100, 100, 100); // Gray color
+        
+        // Position text vertically along the fold line (rotated 90 degrees)
+        // X position: at the fold line (95mm)
+        // Y position: centered vertically on the card
+        const textX = 94; // Just left of the fold line
+        const textY = yPos + (cardHeight / 2);
+        
+        // Save state, rotate, add text, restore
+        pdf.saveGraphicsState();
+        pdf.text(cardData.seedDisplay, textX, textY, {
+          angle: 90, // Rotate 90 degrees for vertical text
+          align: 'center',
         });
-        // Place QR code in top-right corner of front card (matching legacy position)
-        pdf.addImage(qrDataUrl, 'PNG', 82, 17, 12, 12);
-      } catch (error) {
-        console.error('Error generating QR code:', error);
+        pdf.restoreGraphicsState();
       }
     }
 
@@ -330,19 +371,24 @@ export class ExportUtils {
         scale: 2, // Higher quality
       });
 
-      // Convert to blob and download
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `password-card.${format === 'jpeg' ? 'jpg' : 'png'}`;
-          link.click();
-          URL.revokeObjectURL(url);
-        }
-      }, `image/${format}`);
+      // Convert to blob and download with proper async handling
+      await new Promise<void>((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `password-card.${format === 'jpeg' ? 'jpg' : 'png'}`;
+            link.click();
+            URL.revokeObjectURL(url);
+            resolve();
+          } else {
+            reject(new Error('Failed to create image blob'));
+          }
+        }, `image/${format}`);
+      });
     } finally {
-      // Clean up
+      // Clean up - safe to do after blob creation completes
       document.body.removeChild(container);
     }
   }

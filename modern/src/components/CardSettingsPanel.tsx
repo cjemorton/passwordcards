@@ -209,7 +209,12 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               <Select
                 value={settings.keyboardLayout}
                 label="Keyboard Layout"
-                onChange={(e) => onUpdate({ keyboardLayout: e.target.value as any })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'qwerty' || value === 'qwertz') {
+                    onUpdate({ keyboardLayout: value });
+                  }
+                }}
               >
                 <MenuItem value="qwerty">QWERTY</MenuItem>
                 <MenuItem value="qwertz">QWERTZ</MenuItem>
@@ -251,6 +256,17 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               onChange={(e) => onUpdate({ spaceBarSize: parseInt(e.target.value) || 8 })}
               inputProps={{ min: 1, max: 16 }}
             />
+
+            <TextField
+              fullWidth
+              size="small"
+              type="number"
+              label="Cards Per Page (PDF)"
+              value={settings.cardsPerPage}
+              onChange={(e) => onUpdate({ cardsPerPage: parseInt(e.target.value) || 3 })}
+              inputProps={{ min: 1, max: 10 }}
+              helperText="Number of cards to print on each PDF page (1-10)"
+            />
           </Stack>
         </AccordionDetails>
       </Accordion>
@@ -289,7 +305,12 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               <Select
                 value={settings.hashAlgorithm}
                 label="Hash Algorithm"
-                onChange={(e) => onUpdate({ hashAlgorithm: e.target.value as any })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'sha256' || value === 'sha1' || value === 'sha512' || value === 'md5') {
+                    onUpdate({ hashAlgorithm: value });
+                  }
+                }}
               >
                 <MenuItem value="sha256">SHA-256 (Recommended)</MenuItem>
                 <MenuItem value="sha1">SHA-1</MenuItem>
@@ -316,6 +337,15 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
                   />
                 }
                 label="Print number seed on card"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={settings.showSeedOnCard}
+                    onChange={(e) => onUpdate({ showSeedOnCard: e.target.checked })}
+                  />
+                }
+                label="Show seed on card (visible display)"
               />
               <FormControlLabel
                 control={

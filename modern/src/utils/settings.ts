@@ -32,6 +32,7 @@ export interface AppSettings {
   customWidth: number;
   customHeight: number;
   cardsPerPage: number;
+  showSeedOnCard: boolean;
   
   // Tutorial
   hasSeenTutorial: boolean;
@@ -54,14 +55,15 @@ const DEFAULT_SETTINGS: AppSettings = {
   hashAlgorithm: 'sha256',
   printStringSeed: false,
   printNumberSeed: false,
-  qrCodeEnabled: true,
+  qrCodeEnabled: false,
   spaceBarSize: 8,
   theme: 'dark',
   fontSize: 14,
   cardSize: 'standard',
   customWidth: 3.375,
   customHeight: 2.125,
-  cardsPerPage: 1,
+  cardsPerPage: 3,
+  showSeedOnCard: false,
   hasSeenTutorial: false,
 };
 
@@ -191,11 +193,21 @@ export function decodeSettingsFromUrl(queryString: string): Partial<AppSettings>
   const settings: Partial<AppSettings> = {};
   
   // TODO: Implement pattern parsing back to individual settings
-  if (params.has('k')) settings.keyboardLayout = params.get('k') as any;
+  if (params.has('k')) {
+    const keyValue = params.get('k');
+    if (keyValue === 'qwerty' || keyValue === 'qwertz') {
+      settings.keyboardLayout = keyValue;
+    }
+  }
   if (params.has('a')) settings.annotation = params.get('a') || '';
   if (params.has('pc')) settings.primaryColor = params.get('pc') || '';
   if (params.has('sc')) settings.secondaryColor = params.get('sc') || '';
-  if (params.has('ha')) settings.hashAlgorithm = params.get('ha') as any;
+  if (params.has('ha')) {
+    const hashValue = params.get('ha');
+    if (hashValue === 'sha256' || hashValue === 'sha1' || hashValue === 'sha512' || hashValue === 'md5') {
+      settings.hashAlgorithm = hashValue;
+    }
+  }
   if (params.has('sb')) settings.spaceBarSize = parseInt(params.get('sb') || '8');
   if (params.has('qr')) settings.qrCodeEnabled = params.get('qr') === '1';
   

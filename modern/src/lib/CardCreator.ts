@@ -21,6 +21,7 @@ export interface CardData {
   watermarkUrl: string;
   seedDisplay: string;
   qrCodeEnabled: boolean;
+  showSeedOnCard: boolean;
 }
 
 export class CardCreator {
@@ -82,6 +83,7 @@ export class CardCreator {
       watermarkUrl: this.config.watermarkUrl,
       seedDisplay,
       qrCodeEnabled: this.config.qrCodeEnabled,
+      showSeedOnCard: this.config.showSeedOnCard,
     };
   }
 
@@ -104,17 +106,5 @@ export class CardCreator {
 
     // Join with space - string seed immediately left of number seed
     return parts.join(' ');
-  }
-
-  /**
-   * Escape special characters for SVG/HTML
-   */
-  private escape(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
   }
 }

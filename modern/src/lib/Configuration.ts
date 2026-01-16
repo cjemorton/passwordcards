@@ -19,6 +19,7 @@ export interface CardConfiguration {
   printStringSeed: boolean;
   printNumberSeed: boolean;
   qrCodeEnabled: boolean;
+  showSeedOnCard: boolean;
 }
 
 export class Configuration {
@@ -41,6 +42,7 @@ export class Configuration {
   public printStringSeed: boolean;
   public printNumberSeed: boolean;
   public qrCodeEnabled: boolean;
+  public showSeedOnCard: boolean;
 
   constructor(config: Partial<CardConfiguration>) {
     this.seed = Configuration.evalSeed(config.seed);
@@ -56,6 +58,7 @@ export class Configuration {
     this.printStringSeed = config.printStringSeed ?? false;
     this.printNumberSeed = config.printNumberSeed ?? false;
     this.qrCodeEnabled = config.qrCodeEnabled ?? false;
+    this.showSeedOnCard = config.showSeedOnCard ?? false;
   }
 
   /**
