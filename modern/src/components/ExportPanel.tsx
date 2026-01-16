@@ -72,6 +72,7 @@ export default function ExportPanel({ settings }: Props) {
         printStringSeed: settings.printStringSeed,
         printNumberSeed: settings.printNumberSeed,
         qrCodeEnabled: settings.qrCodeEnabled,
+        showSeedOnCard: settings.showSeedOnCard,
       });
 
       // Generate card data
@@ -101,7 +102,7 @@ export default function ExportPanel({ settings }: Props) {
     setError(null);
     
     try {
-      await ExportUtils.export(exportFormat, svgFront, svgBack, cardData);
+      await ExportUtils.export(exportFormat, svgFront, svgBack, cardData, settings.cardsPerPage);
     } catch (err) {
       setError((err as Error).message);
       console.error('Export error:', err);
@@ -154,7 +155,7 @@ export default function ExportPanel({ settings }: Props) {
 
         <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>
           {exportFormat === 'pdf' 
-            ? 'PDF export includes both cards side-by-side with fold lines and a documentation page for card recovery.'
+            ? `PDF export includes ${settings.cardsPerPage} card${settings.cardsPerPage > 1 ? 's' : ''} per page with text on left, keyboard on right, fold lines, and a documentation page for card recovery.`
             : 'Image export includes both front and back cards stacked vertically.'}
         </Typography>
       </Stack>

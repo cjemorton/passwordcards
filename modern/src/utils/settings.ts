@@ -32,6 +32,7 @@ export interface AppSettings {
   customWidth: number;
   customHeight: number;
   cardsPerPage: number;
+  showSeedOnCard: boolean;
   
   // Tutorial
   hasSeenTutorial: boolean;
@@ -54,14 +55,15 @@ const DEFAULT_SETTINGS: AppSettings = {
   hashAlgorithm: 'sha256',
   printStringSeed: false,
   printNumberSeed: false,
-  qrCodeEnabled: true,
+  qrCodeEnabled: false,
   spaceBarSize: 8,
   theme: 'dark',
   fontSize: 14,
   cardSize: 'standard',
   customWidth: 3.375,
   customHeight: 2.125,
-  cardsPerPage: 1,
+  cardsPerPage: 3,
+  showSeedOnCard: false,
   hasSeenTutorial: false,
 };
 

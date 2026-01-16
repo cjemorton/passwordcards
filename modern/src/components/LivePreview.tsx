@@ -59,6 +59,7 @@ export default function LivePreview({ settings }: Props) {
         printStringSeed: settings.printStringSeed,
         printNumberSeed: settings.printNumberSeed,
         qrCodeEnabled: settings.qrCodeEnabled,
+        showSeedOnCard: settings.showSeedOnCard,
       });
 
       // Generate card data

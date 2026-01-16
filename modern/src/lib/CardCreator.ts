@@ -21,6 +21,7 @@ export interface CardData {
   watermarkUrl: string;
   seedDisplay: string;
   qrCodeEnabled: boolean;
+  showSeedOnCard: boolean;
 }
 
 export class CardCreator {
@@ -82,6 +83,7 @@ export class CardCreator {
       watermarkUrl: this.config.watermarkUrl,
       seedDisplay,
       qrCodeEnabled: this.config.qrCodeEnabled,
+      showSeedOnCard: this.config.showSeedOnCard,
     };
   }
 
