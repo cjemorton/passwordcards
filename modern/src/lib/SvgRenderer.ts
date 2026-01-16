@@ -114,10 +114,10 @@ export class SvgRenderer {
     // Show metadata in the selected position, hide the others
     if (cardData.showMetadata) {
       if (cardData.metadataPosition === 'spine') {
-        // Place metadata on both edges adjacent to the fold line
-        // Left panel: metadata at right edge (adjacent to center fold)
-        // Right panel: metadata at left edge (adjacent to center fold)
-        // This ensures visibility when the card is folded
+        // Place metadata at the fold edges (1 unit from center fold on each side)
+        // Left panel: metadata at right edge, 1 unit left of center fold (x≈149.59)
+        // Right panel: metadata at left edge, 1 unit right of center fold (x≈151.59)
+        // This ensures visibility when the card is folded, with metadata along the fold line
         svg = svg.replace('$METADATA_BOTTOM$', '');
         svg = svg.replace('$METADATA_SPINE_LEFT$', metadataString);
         svg = svg.replace('$METADATA_SPINE_RIGHT$', metadataString);

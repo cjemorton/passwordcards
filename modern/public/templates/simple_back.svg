@@ -81,34 +81,36 @@
          y="1041.1512"
          style="font-size:10px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">$METADATA_BOTTOM$</tspan></text>
     <!-- Metadata at spine - LEFT panel (right edge, adjacent to fold) - rotated 90 degrees -->
-    <!-- Positioned at right edge of left panel, text flows toward center -->
+    <!-- Positioned at right edge of left panel, 1 unit from center fold line -->
+    <!-- When card is folded, metadata sits along the fold and remains visible -->
     <text
        xml:space="preserve"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
        x="954.98029"
-       y="-145.59055"
+       y="-149.59055"
        id="text_metadata_spine_left"
        transform="rotate(90)"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan_metadata_spine_left"
          x="954.98029"
-         y="-145.59055"
+         y="-149.59055"
          style="font-size:8px;text-align:end;text-anchor:end;fill:$SECONDARY$;fill-opacity:1">$METADATA_SPINE_LEFT$</tspan></text>
     <!-- Metadata at spine - RIGHT panel (left edge, adjacent to fold) - rotated 90 degrees -->
-    <!-- Positioned at left edge of right panel, text flows away from center -->
+    <!-- Positioned at left edge of right panel, 1 unit from center fold line -->
+    <!-- When card is folded, metadata sits along the fold and remains visible -->
     <text
        xml:space="preserve"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
        x="954.98029"
-       y="-155.59055"
+       y="-151.59055"
        id="text_metadata_spine_right"
        transform="rotate(90)"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan_metadata_spine_right"
          x="954.98029"
-         y="-155.59055"
+         y="-151.59055"
          style="font-size:8px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">$METADATA_SPINE_RIGHT$</tspan></text>
     <text
        sodipodi:linespacing="125%"
