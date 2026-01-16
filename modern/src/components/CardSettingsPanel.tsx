@@ -228,6 +228,9 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               placeholder="For Work, Personal, etc."
               value={settings.annotation}
               onChange={(e) => onUpdate({ annotation: e.target.value })}
+              multiline
+              minRows={1}
+              maxRows={4}
               InputProps={{
                 endAdornment: settings.annotation && (
                   <Tooltip title="Copy annotation">
@@ -238,6 +241,21 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
                 ),
               }}
             />
+
+            <FormControl fullWidth size="small">
+              <InputLabel>Annotation Font Size</InputLabel>
+              <Select
+                value={settings.annotationFontSize}
+                label="Annotation Font Size"
+                onChange={(e) => onUpdate({ annotationFontSize: Number(e.target.value) })}
+              >
+                <MenuItem value={12}>Small (12px)</MenuItem>
+                <MenuItem value={16}>Medium (16px)</MenuItem>
+                <MenuItem value={20}>Large (20px)</MenuItem>
+                <MenuItem value={24}>Extra Large (24px)</MenuItem>
+                <MenuItem value={28}>Huge (28px)</MenuItem>
+              </Select>
+            </FormControl>
 
             <TextField
               fullWidth
@@ -267,6 +285,23 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               inputProps={{ min: 1, max: 10 }}
               helperText="Number of cards to print on each PDF page (1-10)"
             />
+
+            <FormControl fullWidth size="small">
+              <InputLabel>Card Output Size</InputLabel>
+              <Select
+                value={settings.cardOutputSize}
+                label="Card Output Size"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'laminating' || value === 'credit-card') {
+                    onUpdate({ cardOutputSize: value });
+                  }
+                }}
+              >
+                <MenuItem value="laminating">Self-Laminating Card (66mm × 100mm)</MenuItem>
+                <MenuItem value="credit-card">Credit Card Size (85.6mm × 53.98mm)</MenuItem>
+              </Select>
+            </FormControl>
           </Stack>
         </AccordionDetails>
       </Accordion>
@@ -356,7 +391,40 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
                 }
                 label="Include QR code"
               />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={settings.showMetadata}
+                    onChange={(e) => onUpdate({ showMetadata: e.target.checked })}
+                  />
+                }
+                label={
+                  <Box>
+                    Show metadata string
+                    <Tooltip title="Display the //seed/pattern/hash// metadata on the card">
+                      <Typography variant="caption" sx={{ ml: 0.5, cursor: 'help' }}>ⓘ</Typography>
+                    </Tooltip>
+                  </Box>
+                }
+              />
             </FormGroup>
+
+            <FormControl fullWidth size="small" disabled={!settings.showMetadata}>
+              <InputLabel>Metadata Position</InputLabel>
+              <Select
+                value={settings.metadataPosition}
+                label="Metadata Position"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'bottom' || value === 'spine') {
+                    onUpdate({ metadataPosition: value });
+                  }
+                }}
+              >
+                <MenuItem value="bottom">Bottom of Card (Current)</MenuItem>
+                <MenuItem value="spine">Spine/Fold Line (Center)</MenuItem>
+              </Select>
+            </FormControl>
 
             <TextField
               fullWidth

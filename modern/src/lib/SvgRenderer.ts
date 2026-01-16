@@ -108,17 +108,53 @@ export class SvgRenderer {
     // Replace seed display
     svg = svg.replace('$SEED_DISPLAY$', this.escape(cardData.seedDisplay));
 
-    // Legacy format: /seed/pattern/hash_algorithm/
-    const legacySeedFormat = `/${this.escape(String(cardData.seed))}/${this.escape(cardData.pattern)}/${this.escape(cardData.hashAlgorithm)}/`;
-    svg = svg.replace('$SEED$/$PATTERN$/$HASH_ALGORITHM$/', legacySeedFormat);
+    // Handle metadata string
+    const metadataString = `/${this.escape(String(cardData.seed))}/${this.escape(cardData.pattern)}/${this.escape(cardData.hashAlgorithm)}/`;
+    
+    // Show metadata in the selected position, hide the other
+    if (cardData.showMetadata) {
+      if (cardData.metadataPosition === 'spine') {
+        svg = svg.replace('$METADATA_BOTTOM$', '');
+        svg = svg.replace('$METADATA_SPINE$', metadataString);
+      } else {
+        // bottom position (default)
+        svg = svg.replace('$METADATA_BOTTOM$', metadataString);
+        svg = svg.replace('$METADATA_SPINE$', '');
+      }
+    } else {
+      // Hide metadata entirely
+      svg = svg.replace('$METADATA_BOTTOM$', '');
+      svg = svg.replace('$METADATA_SPINE$', '');
+    }
 
     // Replace individual values for compatibility (with escaping)
     svg = svg.replace(/\$SEED\$/g, this.escape(String(cardData.seed)));
     svg = svg.replace(/\$PATTERN\$/g, this.escape(cardData.pattern));
     svg = svg.replace(/\$HASH_ALGORITHM\$/g, this.escape(cardData.hashAlgorithm));
 
-    // Replace text annotation
-    svg = svg.replace('$TEXT$', this.escape(cardData.text));
+    // Handle multi-line text annotation
+    const textLines = cardData.text.split('\n');
+    let textMultiline = '';
+    if (textLines.length > 0 && cardData.text.trim() !== '') {
+      const baseY = 947.46991;
+      const lineHeight = cardData.annotationFontSize * 1.25; // 125% line height
+      const totalHeight = (textLines.length - 1) * lineHeight;
+      const startY = baseY - (totalHeight / 2); // Center the text block vertically
+      
+      textLines.forEach((line, index) => {
+        const y = startY + (index * lineHeight);
+        textMultiline += `<tspan
+         id="tspan3812_${index}"
+         style="font-weight:bold;-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;fill:${cardData.secondaryColor};fill-opacity:1"
+         y="${y}"
+         x="150.53195"
+         sodipodi:role="line">${this.escape(line)}</tspan>`;
+      });
+    }
+    svg = svg.replace('$TEXT_MULTILINE$', textMultiline);
+    
+    // Replace annotation font size
+    svg = svg.replace('$ANNOTATION_FONT_SIZE$', String(cardData.annotationFontSize));
 
     // Replace watermark URL
     svg = svg.replace('$WATERMARK_URL$', this.escape(cardData.watermarkUrl));

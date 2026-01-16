@@ -60,6 +60,10 @@ export default function LivePreview({ settings }: Props) {
         printNumberSeed: settings.printNumberSeed,
         qrCodeEnabled: settings.qrCodeEnabled,
         showSeedOnCard: settings.showSeedOnCard,
+        showMetadata: settings.showMetadata,
+        metadataPosition: settings.metadataPosition,
+        annotationFontSize: settings.annotationFontSize,
+        cardOutputSize: settings.cardOutputSize,
       });
 
       // Generate card data
@@ -109,6 +113,7 @@ export default function LivePreview({ settings }: Props) {
               p: 2,
               mb: 2,
               backgroundColor: 'background.paper',
+              overflow: 'hidden',
             }}
           >
             <Typography variant="subtitle2" gutterBottom>
@@ -119,9 +124,11 @@ export default function LivePreview({ settings }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflow: 'auto',
                 '& svg': {
                   maxWidth: '100%',
                   height: 'auto',
+                  display: 'block',
                 },
               }}
               dangerouslySetInnerHTML={{ __html: svgFront }}
@@ -136,6 +143,7 @@ export default function LivePreview({ settings }: Props) {
               borderRadius: 1,
               p: 2,
               backgroundColor: 'background.paper',
+              overflow: 'hidden',
             }}
           >
             <Typography variant="subtitle2" gutterBottom>
@@ -146,20 +154,15 @@ export default function LivePreview({ settings }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflow: 'auto',
                 '& svg': {
                   maxWidth: '100%',
                   height: 'auto',
+                  display: 'block',
                 },
               }}
               dangerouslySetInnerHTML={{ __html: svgBack }}
             />
-          </Box>
-
-          {/* Info Message */}
-          <Box sx={{ mt: 2, p: 2, backgroundColor: 'info.main', color: 'info.contrastText', borderRadius: 1 }}>
-            <Typography variant="caption">
-              💡 This preview matches the legacy card layout pixel-perfect. Export to PDF, PNG, or JPG below.
-            </Typography>
           </Box>
         </Box>
       )}

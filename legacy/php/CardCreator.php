@@ -76,7 +76,48 @@ class CardCreator
 
         $svg = str_replace('$SECONDARY$', $this->configuration->secondaryColor, $svg);
 
-        $svg = str_replace('$TEXT$', $this->escape($this->configuration->text), $svg);
+        // Handle metadata string
+        $metadataString = '/' . $this->escape($seed) . '/' . $this->escape($this->configuration->pattern) . '/' . $this->escape(strtoupper($this->configuration->hashAlgorithm)) . '/';
+        
+        // Show metadata in the selected position, hide the other
+        if ($this->configuration->showMetadata) {
+            if ($this->configuration->metadataPosition === 'spine') {
+                $svg = str_replace('$METADATA_BOTTOM$', '', $svg);
+                $svg = str_replace('$METADATA_SPINE$', $metadataString, $svg);
+            } else {
+                // bottom position (default)
+                $svg = str_replace('$METADATA_BOTTOM$', $metadataString, $svg);
+                $svg = str_replace('$METADATA_SPINE$', '', $svg);
+            }
+        } else {
+            // Hide metadata entirely
+            $svg = str_replace('$METADATA_BOTTOM$', '', $svg);
+            $svg = str_replace('$METADATA_SPINE$', '', $svg);
+        }
+
+        // Handle multi-line text annotation
+        $textLines = explode("\n", $this->configuration->text);
+        $textMultiline = '';
+        if (count($textLines) > 0 && trim($this->configuration->text) !== '') {
+            $baseY = 947.46991;
+            $lineHeight = $this->configuration->annotationFontSize * 1.25; // 125% line height
+            $totalHeight = (count($textLines) - 1) * $lineHeight;
+            $startY = $baseY - ($totalHeight / 2); // Center the text block vertically
+            
+            foreach ($textLines as $index => $line) {
+                $y = $startY + ($index * $lineHeight);
+                $textMultiline .= '<tspan
+         id="tspan3812_' . $index . '"
+         style="font-weight:bold;-inkscape-font-specification:\'Open Sans Bold\';text-align:center;text-anchor:middle;fill:' . $this->configuration->secondaryColor . ';fill-opacity:1"
+         y="' . $y . '"
+         x="150.53195"
+         sodipodi:role="line">' . $this->escape($line) . '</tspan>';
+            }
+        }
+        $svg = str_replace('$TEXT_MULTILINE$', $textMultiline, $svg);
+        
+        // Replace annotation font size
+        $svg = str_replace('$ANNOTATION_FONT_SIZE$', $this->configuration->annotationFontSize, $svg);
 
         $svg = str_replace('$PATTERN$', $this->escape($this->configuration->pattern), $svg);
 

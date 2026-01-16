@@ -22,6 +22,10 @@ export interface AppSettings {
   printNumberSeed: boolean;
   qrCodeEnabled: boolean;
   spaceBarSize: number;
+  showMetadata: boolean;
+  metadataPosition: 'bottom' | 'spine';
+  annotationFontSize: number;
+  cardOutputSize: 'laminating' | 'credit-card';
   
   // UI settings
   theme: 'light' | 'dark' | 'custom';
@@ -57,6 +61,10 @@ const DEFAULT_SETTINGS: AppSettings = {
   printNumberSeed: false,
   qrCodeEnabled: false,
   spaceBarSize: 8,
+  showMetadata: true,
+  metadataPosition: 'bottom',
+  annotationFontSize: 20,
+  cardOutputSize: 'laminating',
   theme: 'dark',
   fontSize: 14,
   cardSize: 'standard',

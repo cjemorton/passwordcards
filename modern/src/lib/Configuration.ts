@@ -20,6 +20,10 @@ export interface CardConfiguration {
   printNumberSeed: boolean;
   qrCodeEnabled: boolean;
   showSeedOnCard: boolean;
+  showMetadata: boolean;
+  metadataPosition: 'bottom' | 'spine';
+  annotationFontSize: number;
+  cardOutputSize: 'laminating' | 'credit-card';
 }
 
 export class Configuration {
@@ -43,6 +47,10 @@ export class Configuration {
   public printNumberSeed: boolean;
   public qrCodeEnabled: boolean;
   public showSeedOnCard: boolean;
+  public showMetadata: boolean;
+  public metadataPosition: 'bottom' | 'spine';
+  public annotationFontSize: number;
+  public cardOutputSize: 'laminating' | 'credit-card';
 
   constructor(config: Partial<CardConfiguration>) {
     this.seed = Configuration.evalSeed(config.seed);
@@ -59,6 +67,10 @@ export class Configuration {
     this.printNumberSeed = config.printNumberSeed ?? false;
     this.qrCodeEnabled = config.qrCodeEnabled ?? false;
     this.showSeedOnCard = config.showSeedOnCard ?? false;
+    this.showMetadata = config.showMetadata ?? true;
+    this.metadataPosition = config.metadataPosition ?? 'bottom';
+    this.annotationFontSize = config.annotationFontSize ?? 20;
+    this.cardOutputSize = config.cardOutputSize ?? 'laminating';
   }
 
   /**

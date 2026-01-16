@@ -67,6 +67,7 @@
        y="857.48029"
        height="194.8819"
        width="301.18109" />
+    <!-- Metadata at bottom (original position) -->
     <text
        xml:space="preserve"
        style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
@@ -78,7 +79,21 @@
          id="tspan3212"
          x="9.9902725"
          y="1041.1512"
-         style="font-size:10px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">/$SEED$/$PATTERN$/$HASH_ALGORITHM$/</tspan></text>
+         style="font-size:10px;text-align:start;text-anchor:start;fill:$SECONDARY$;fill-opacity:1">$METADATA_BOTTOM$</tspan></text>
+    <!-- Metadata at spine (center fold line) - rotated 90 degrees -->
+    <text
+       xml:space="preserve"
+       style="font-size:20px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:$SECONDARY$;fill-opacity:1;stroke:none;font-family:Open Sans;-inkscape-font-specification:Open Sans"
+       x="954.98029"
+       y="-150.59055"
+       id="text_metadata_spine"
+       transform="rotate(90)"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan_metadata_spine"
+         x="954.98029"
+         y="-150.59055"
+         style="font-size:8px;text-align:center;text-anchor:middle;fill:$SECONDARY$;fill-opacity:1">$METADATA_SPINE$</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3207"
@@ -120,12 +135,7 @@
        id="text3808"
        y="947.46991"
        x="150.53195"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20px;line-height:125%;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';letter-spacing:0px;word-spacing:0px;fill:$PRIMARY$;fill-opacity:1;stroke:none"
-       xml:space="preserve"><tspan
-         id="tspan3812"
-         style="font-weight:bold;-inkscape-font-specification:'Open Sans Bold';text-align:center;text-anchor:middle;fill:$SECONDARY$;fill-opacity:1"
-         y="947.46991"
-         x="150.53195"
-         sodipodi:role="line">$TEXT$</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:$ANNOTATION_FONT_SIZE$px;line-height:125%;font-family:'Open Sans';-inkscape-font-specification:'Open Sans';letter-spacing:0px;word-spacing:0px;fill:$PRIMARY$;fill-opacity:1;stroke:none"
+       xml:space="preserve">$TEXT_MULTILINE$</text>
   </g>
 </svg>
