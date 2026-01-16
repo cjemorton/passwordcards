@@ -5,19 +5,19 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  root: './modern',
+  root: '.',
   publicDir: 'public',
   build: {
-    outDir: '../dist',
+    outDir: 'dist',
     emptyOutDir: true,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './modern/src'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   server: {
-    port: 3000,
+    port: parseInt(process.env.PORT || '3000'),
     open: true,
   },
 })

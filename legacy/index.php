@@ -6,7 +6,7 @@ use \Rain\Tpl;
 
 Tpl::configure(
     array(
-        "tpl_dir" => __DIR__ . "/resources/",
+        "tpl_dir" => __DIR__ . "/frontend/",
     )
 );
 

@@ -1,5 +1,5 @@
 # -------------------------------
-# Stage 0: PHP + Apache
+# Legacy Password Cards - PHP + Apache
 # -------------------------------
 FROM php:8.2-apache
 
@@ -44,14 +44,17 @@ COPY --from=composer:2.9 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # -------------------------------
-# Copy application files
+# Copy legacy application files
 # -------------------------------
-COPY . /var/www/html/
+COPY legacy/ /var/www/html/
 
 # -------------------------------
 # Install Composer dependencies
+# Note: SSL verification is disabled for build environment compatibility
 # -------------------------------
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer config -g -- disable-tls true && \
+    composer config -g -- secure-http false && \
+    composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
 # -------------------------------
 # Create necessary directories
@@ -61,7 +64,7 @@ RUN mkdir -p /var/www/html/blacklist && chown -R www-data:www-data /var/www/html
 # -------------------------------
 # Copy and setup entrypoint script
 # -------------------------------
-COPY apache/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY docker/entrypoint.legacy.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # -------------------------------
