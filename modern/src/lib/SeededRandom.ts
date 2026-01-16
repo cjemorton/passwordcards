@@ -102,8 +102,11 @@ export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' 
   let hashBuffer: ArrayBuffer;
   
   if (algorithm === 'md5') {
-    // MD5 requires a polyfill or library - for now we'll use a simple hash
-    // In production, you'd want to use a proper MD5 implementation
+    // MD5 requires a polyfill or library
+    // For now, use a simple hash as fallback
+    // NOTE: This provides less entropy (32 bits) than the main path (60 bits)
+    // and may result in different cards compared to PHP MD5 implementation
+    // TODO: Implement proper MD5 hashing for full compatibility
     return BigInt(simpleHash(stringSeed));
   }
   

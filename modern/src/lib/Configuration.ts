@@ -93,7 +93,8 @@ export class Configuration {
     if (seed === undefined || (typeof seed === 'number' && !Number.isFinite(seed))) {
       // Generate random seed based on timestamp (similar to PHP microtime)
       const now = performance.now();
-      return Math.floor(now * 100000) % 2147483647; // Keep within 32-bit int range
+      // Use modulo 2^31-1 to ensure positive signed 32-bit integer
+      return Math.floor(now * 100000) % 2147483647;
     }
     if (typeof seed === 'bigint') {
       return seed;
