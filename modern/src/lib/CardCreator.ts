@@ -22,6 +22,9 @@ export interface CardData {
   seedDisplay: string;
   qrCodeEnabled: boolean;
   showSeedOnCard: boolean;
+  showMetadata: boolean;
+  metadataPosition: 'bottom' | 'spine';
+  annotationFontSize: number;
 }
 
 export class CardCreator {
@@ -84,6 +87,9 @@ export class CardCreator {
       seedDisplay,
       qrCodeEnabled: this.config.qrCodeEnabled,
       showSeedOnCard: this.config.showSeedOnCard,
+      showMetadata: this.config.showMetadata,
+      metadataPosition: this.config.metadataPosition,
+      annotationFontSize: this.config.annotationFontSize,
     };
   }
 
