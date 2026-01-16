@@ -6,7 +6,7 @@
  */
 
 export interface CardConfiguration {
-  seed: number;
+  seed: number | bigint;
   pattern: string;
   keys: string;
   spaceBarSize: number;
@@ -28,7 +28,7 @@ export class Configuration {
   static readonly NUMBERS = '0123456789';
   static readonly SYMBOLS = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
 
-  public seed: number;
+  public seed: number | bigint;
   public pattern: string;
   public keys: string;
   public spaceBarSize: number;
@@ -82,18 +82,21 @@ export class Configuration {
    * 
    * DETERMINISTIC GENERATION:
    * The seed value is the key to deterministic card generation. When a specific
-   * seed is provided (integer value), the card generation becomes deterministic,
+   * seed is provided (integer value or bigint), the card generation becomes deterministic,
    * meaning the exact same card will be generated every time with that seed and
    * the same configuration parameters.
    * 
    * If no seed is provided (undefined), a random seed is generated based on the 
    * current timestamp, resulting in a unique, non-reproducible card.
    */
-  public static evalSeed(seed: number | undefined): number {
-    if (seed === undefined || !Number.isFinite(seed)) {
+  public static evalSeed(seed: number | bigint | undefined): number | bigint {
+    if (seed === undefined || (typeof seed === 'number' && !Number.isFinite(seed))) {
       // Generate random seed based on timestamp (similar to PHP microtime)
       const now = performance.now();
       return Math.floor(now * 100000) % 2147483647; // Keep within 32-bit int range
+    }
+    if (typeof seed === 'bigint') {
+      return seed;
     }
     return Math.floor(seed);
   }

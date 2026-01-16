@@ -12,7 +12,7 @@ export interface CardData {
   keys: string[];
   values: string[];
   spacebar: string;
-  seed: number;
+  seed: bigint | number;
   primaryColor: string;
   secondaryColor: string;
   text: string;

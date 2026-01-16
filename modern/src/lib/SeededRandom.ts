@@ -12,9 +12,16 @@ export class SeededRandom {
   private mt: number[] = [];
   private index: number = 0;
 
-  constructor(seed: number) {
-    this.seed = seed;
-    this.init(seed);
+  constructor(seed: number | bigint) {
+    // Convert BigInt to number for internal use
+    // PHP's mt_srand uses the lower 32 bits of the seed for initialization
+    // This ensures cross-platform compatibility
+    if (typeof seed === 'bigint') {
+      this.seed = Number(BigInt.asUintN(32, seed));
+    } else {
+      this.seed = seed >>> 0;
+    }
+    this.init(this.seed);
   }
 
   /**
@@ -87,15 +94,17 @@ export class SeededRandom {
  * characters from the hash and converts to integer. This provides ~60 bits
  * of entropy (15 hex chars = 60 bits) which is sufficient to prevent practical
  * collisions while ensuring cross-platform compatibility.
+ * 
+ * Returns a BigInt to preserve precision of large seed values.
  */
-export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' | 'sha512' | 'md5' = 'sha256'): Promise<number> {
+export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' | 'sha512' | 'md5' = 'sha256'): Promise<bigint> {
   // For browser compatibility, we use the Web Crypto API for SHA algorithms
   let hashBuffer: ArrayBuffer;
   
   if (algorithm === 'md5') {
     // MD5 requires a polyfill or library - for now we'll use a simple hash
     // In production, you'd want to use a proper MD5 implementation
-    return simpleHash(stringSeed);
+    return BigInt(simpleHash(stringSeed));
   }
   
   const encoder = new TextEncoder();
@@ -115,11 +124,10 @@ export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' 
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
   
-  // Take first 15 hex characters and convert to integer (matching PHP implementation)
-  // This provides ~60 bits of entropy which fits comfortably in JavaScript's
-  // Number.MAX_SAFE_INTEGER (2^53-1) while matching the PHP backend exactly
+  // Take first 15 hex characters and convert to BigInt (matching PHP implementation)
+  // This provides ~60 bits of entropy while matching the PHP backend exactly
   const first15Chars = hashHex.substring(0, 15);
-  const seed = parseInt(first15Chars, 16);
+  const seed = BigInt('0x' + first15Chars);
   
   return seed;
 }
