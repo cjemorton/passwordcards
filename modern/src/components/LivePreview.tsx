@@ -63,6 +63,7 @@ export default function LivePreview({ settings }: Props) {
         showMetadata: settings.showMetadata,
         metadataPosition: settings.metadataPosition,
         annotationFontSize: settings.annotationFontSize,
+        cardOutputSize: settings.cardOutputSize,
       });
 
       // Generate card data
@@ -112,6 +113,7 @@ export default function LivePreview({ settings }: Props) {
               p: 2,
               mb: 2,
               backgroundColor: 'background.paper',
+              overflow: 'hidden',
             }}
           >
             <Typography variant="subtitle2" gutterBottom>
@@ -122,9 +124,11 @@ export default function LivePreview({ settings }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflow: 'auto',
                 '& svg': {
                   maxWidth: '100%',
                   height: 'auto',
+                  display: 'block',
                 },
               }}
               dangerouslySetInnerHTML={{ __html: svgFront }}
@@ -139,6 +143,7 @@ export default function LivePreview({ settings }: Props) {
               borderRadius: 1,
               p: 2,
               backgroundColor: 'background.paper',
+              overflow: 'hidden',
             }}
           >
             <Typography variant="subtitle2" gutterBottom>
@@ -149,9 +154,11 @@ export default function LivePreview({ settings }: Props) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                overflow: 'auto',
                 '& svg': {
                   maxWidth: '100%',
                   height: 'auto',
+                  display: 'block',
                 },
               }}
               dangerouslySetInnerHTML={{ __html: svgBack }}

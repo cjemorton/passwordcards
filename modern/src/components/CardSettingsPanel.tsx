@@ -285,6 +285,23 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               inputProps={{ min: 1, max: 10 }}
               helperText="Number of cards to print on each PDF page (1-10)"
             />
+
+            <FormControl fullWidth size="small">
+              <InputLabel>Card Output Size</InputLabel>
+              <Select
+                value={settings.cardOutputSize}
+                label="Card Output Size"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'laminating' || value === 'credit-card') {
+                    onUpdate({ cardOutputSize: value });
+                  }
+                }}
+              >
+                <MenuItem value="laminating">Self-Laminating Card (66mm × 100mm)</MenuItem>
+                <MenuItem value="credit-card">Credit Card Size (85.6mm × 53.98mm)</MenuItem>
+              </Select>
+            </FormControl>
           </Stack>
         </AccordionDetails>
       </Accordion>

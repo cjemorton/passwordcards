@@ -76,6 +76,7 @@ export default function ExportPanel({ settings }: Props) {
         showMetadata: settings.showMetadata,
         metadataPosition: settings.metadataPosition,
         annotationFontSize: settings.annotationFontSize,
+        cardOutputSize: settings.cardOutputSize,
       });
 
       // Generate card data

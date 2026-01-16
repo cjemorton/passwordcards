@@ -101,6 +101,8 @@ export default function AboutDialog({ open, onClose }: Props) {
                 <li>Modern Material-UI interface with dark mode</li>
                 <li>Live preview of your password card (matches legacy pixel-perfect layout)</li>
                 <li>Export as PDF, PNG, or JPG with all settings preserved</li>
+                <li>Two card output sizes: self-laminating (66mm × 100mm) or credit card (85.6mm × 53.98mm)</li>
+                <li>Cut and fold guidelines with dimensions for physical card production</li>
                 <li>QR code with encoded settings (scan to restore configuration)</li>
                 <li>Customizable colors, keyboard layouts, and character sets</li>
                 <li>Multi-line card annotations with adjustable font size</li>
@@ -133,6 +135,8 @@ export default function AboutDialog({ open, onClose }: Props) {
                 <li>Added metadata spine placement option (display on fold line or bottom)</li>
                 <li>Multi-line card annotation support with textarea input</li>
                 <li>Adjustable annotation font size (5 size options from small to huge)</li>
+                <li>Two card output sizes: self-laminating (66mm × 100mm) or credit card standard</li>
+                <li>Cut and fold guidelines with dimension markers for card production</li>
                 <li>Improved mobile responsiveness for card preview</li>
                 <li>Moved export information to About dialog for cleaner UI</li>
               </ul>
