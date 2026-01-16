@@ -169,6 +169,15 @@ function App() {
             🔒 All card generation happens in your browser - no data is sent to any server
           </Typography>
           <Typography variant="caption" color="text.secondary">
+            <a
+              href="https://passwordcards.mrnet.work"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'inherit', textDecoration: 'none' }}
+            >
+              passwordcards.mrnet.work
+            </a>
+            {' • '}
             Open source •{' '}
             <a
               href="https://github.com/cjemorton/passwordcards"

@@ -174,6 +174,12 @@ export default function AboutDialog({ open, onClose }: Props) {
           </AccordionSummary>
           <AccordionDetails>
             <Typography paragraph>
+              <strong>Project Website:</strong>{' '}
+              <Link href="https://passwordcards.mrnet.work" target="_blank">
+                passwordcards.mrnet.work
+              </Link>
+            </Typography>
+            <Typography paragraph>
               This project is inspired by the original{' '}
               <Link href="https://github.com/raphiz/passwordcards" target="_blank">
                 passwordcards project
