@@ -211,9 +211,39 @@ class RequestUtils
     public static function parseText()
     {
         if (isset($_POST['msg'])) {
-            return substr($_POST['msg'], 0, 20);
+            // Support multi-line annotations, limit to 100 chars
+            return substr($_POST['msg'], 0, 100);
         }
         return '';
+    }
+
+    public static function parseAnnotationFontSize()
+    {
+        if (
+            isset($_POST['annotation-font-size']) &&
+            is_numeric($_POST['annotation-font-size']) &&
+            $_POST['annotation-font-size'] >= 12 &&
+            $_POST['annotation-font-size'] <= 28
+        ) {
+            return intval($_POST['annotation-font-size']);
+        }
+        return 20;
+    }
+
+    public static function parseShowMetadata()
+    {
+        return self::isChecked('show-metadata');
+    }
+
+    public static function parseMetadataPosition()
+    {
+        if (
+            isset($_POST['metadata-position']) &&
+            in_array($_POST['metadata-position'], ['bottom', 'spine'])
+        ) {
+            return $_POST['metadata-position'];
+        }
+        return 'bottom';
     }
 
     public static function parsePrimaryColor()

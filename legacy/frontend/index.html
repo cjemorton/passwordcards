@@ -128,8 +128,8 @@
         </div>
 
         <div class="form-section">
-             <p>Card annotation <span class="tooltip" title="Optional text to display on the back of your card">ⓘ</span></p>
-             <input type="text" name="msg" placeholder="For Work" maxlength="20" autocomplete="off" list="annotation-suggestions" aria-label="Card annotation text">
+             <p>Card annotation <span class="tooltip" title="Optional text to display on the back of your card (supports multiple lines)">ⓘ</span></p>
+             <textarea name="msg" placeholder="For Work&#10;Line 2 optional" rows="3" maxlength="100" autocomplete="off" style="width: 80%; max-width: 500px; resize: vertical;" aria-label="Card annotation text"></textarea>
              <datalist id="annotation-suggestions">
                <option value="Email">
                <option value="Banking">
@@ -139,6 +139,14 @@
                <option value="Shopping">
                <option value="Gaming">
              </datalist>
+             <p style="font-size: 0.9em; margin-top: 0.5em;">Annotation Font Size</p>
+             <select name="annotation-font-size" id="annotation-font-size" style="width: 80%; max-width: 300px;" aria-label="Annotation font size">
+                 <option value="12">Small (12px)</option>
+                 <option value="16">Medium (16px)</option>
+                 <option value="20" selected>Large (20px)</option>
+                 <option value="24">Extra Large (24px)</option>
+                 <option value="28">Huge (28px)</option>
+             </select>
         </div>
 
         <div class="form-section">
@@ -185,6 +193,19 @@
                     Number seed
                 </label>
             </div>
+        </div>
+        
+        <div class="form-section">
+            <p>Metadata Display <span class="tooltip" title="Show/hide the //seed/pattern/hash// metadata string on the card">ⓘ</span></p>
+            <label style="display: inline-block; margin-right: 1em; margin-bottom: 0.5em;">
+                <input type="checkbox" name="show-metadata" id="show-metadata" value="1" autocomplete="off" checked>
+                Show metadata string on card
+            </label>
+            <p style="font-size: 0.9em; margin-top: 0.5em; margin-bottom: 0.5em;">Metadata Position <span class="tooltip" title="Choose where to display the metadata on the card">ⓘ</span></p>
+            <select name="metadata-position" id="metadata-position" style="width: 80%; max-width: 400px; margin-bottom: 1em;" aria-label="Metadata position">
+                <option value="bottom" selected>Bottom of Card (Current)</option>
+                <option value="spine">Spine/Fold Line (Center)</option>
+            </select>
         </div>
         
         <div class="form-section">

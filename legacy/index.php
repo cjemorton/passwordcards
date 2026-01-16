@@ -53,9 +53,12 @@ if (!RequestUtils::isPost()) {
         $printStringSeed = RequestUtils::parsePrintStringSeed();
         $printNumberSeed = RequestUtils::parsePrintNumberSeed();
         $qrCodeEnabled = RequestUtils::parseQrCodeEnabled();
+        $showMetadata = RequestUtils::parseShowMetadata();
+        $metadataPosition = RequestUtils::parseMetadataPosition();
+        $annotationFontSize = RequestUtils::parseAnnotationFontSize();
     
         // Setup configuration
-        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary, $watermarkUrl, $hashAlgorithm, $originalStringSeed, $printStringSeed, $printNumberSeed, $qrCodeEnabled);
+        $cfg = new Configuration($seed, $pattern, $keyboardLayout, $spaceBarSize, $text, $primary, $secondary, $watermarkUrl, $hashAlgorithm, $originalStringSeed, $printStringSeed, $printNumberSeed, $qrCodeEnabled, $showMetadata, $metadataPosition, $annotationFontSize);
         $creator = new CardCreator($cfg);
     
         // Load SVG templates
