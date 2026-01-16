@@ -87,9 +87,12 @@ export class ExportUtils {
       const yPos = topMargin + (i * verticalSpacing) + ((verticalSpacing - cardHeight) / 2);
       
       // Add fold lines (vertical line between cards)
+      // Match legacy PHP implementation: 3mm lines with 2mm gap from card edges
+      // Top line: extends above the card (from 5mm before to 2mm before card start)
+      // Bottom line: extends below the card (from 2mm after to 5mm after card end)
       pdf.setLineWidth(0.2);
-      pdf.line(95, yPos, 95, yPos + 3);
-      pdf.line(95, yPos + cardHeight - 3, 95, yPos + cardHeight);
+      pdf.line(95, yPos - 5, 95, yPos - 2);
+      pdf.line(95, yPos + cardHeight + 2, 95, yPos + cardHeight + 5);
       
       // REVERSED LAYOUT: Back card (text) on left, Front card (keyboard) on right
       
