@@ -17,7 +17,6 @@ import {
   LinearProgress,
   Chip,
   Divider,
-  Grid,
 } from '@mui/material';
 import { Search as SearchIcon, Stop as StopIcon } from '@mui/icons-material';
 import { CardCreator } from '../lib/CardCreator';
@@ -253,28 +252,24 @@ export default function RecoverSeedPage() {
             <Typography variant="body2" paragraph>
               Brute-force numeric seeds within a specified range. Best for integer-based seeds.
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="Start Seed"
-                  type="number"
-                  value={startSeed}
-                  onChange={(e) => setStartSeed(e.target.value)}
-                  disabled={searching}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  label="End Seed"
-                  type="number"
-                  value={endSeed}
-                  onChange={(e) => setEndSeed(e.target.value)}
-                  disabled={searching}
-                />
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <TextField
+                fullWidth
+                label="Start Seed"
+                type="number"
+                value={startSeed}
+                onChange={(e) => setStartSeed(e.target.value)}
+                disabled={searching}
+              />
+              <TextField
+                fullWidth
+                label="End Seed"
+                type="number"
+                value={endSeed}
+                onChange={(e) => setEndSeed(e.target.value)}
+                disabled={searching}
+              />
+            </Box>
           </Box>
         ) : (
           <Box>
