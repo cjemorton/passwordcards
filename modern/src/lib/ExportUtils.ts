@@ -77,6 +77,10 @@ export class ExportUtils {
     // Card dimensions
     const cardWidth = 85; // mm
     
+    // Convert SVGs to high-resolution images once for efficiency
+    const backImageData = await this.svgToImageData(backSvg);
+    const frontImageData = await this.svgToImageData(frontSvg);
+    
     // Generate cards based on cardsPerPage setting
     for (let i = 0; i < cardsPerPage; i++) {
       // Calculate Y position for this card
@@ -87,12 +91,7 @@ export class ExportUtils {
       pdf.line(95, yPos, 95, yPos + 3);
       pdf.line(95, yPos + cardHeight - 3, 95, yPos + cardHeight);
       
-      // Convert SVGs to high-resolution images and embed in PDF
       // REVERSED LAYOUT: Back card (text) on left, Front card (keyboard) on right
-      
-      // Convert SVGs to images (only once for efficiency)
-      const backImageData = i === 0 ? await this.svgToImageData(backSvg) : await this.svgToImageData(backSvg);
-      const frontImageData = i === 0 ? await this.svgToImageData(frontSvg) : await this.svgToImageData(frontSvg);
       
       // Add back card (LEFT panel) - was previously on the right
       pdf.addImage(backImageData, 'PNG', 10, yPos, cardWidth, cardHeight);
