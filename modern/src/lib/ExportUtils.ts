@@ -371,19 +371,24 @@ export class ExportUtils {
         scale: 2, // Higher quality
       });
 
-      // Convert to blob and download
-      canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `password-card.${format === 'jpeg' ? 'jpg' : 'png'}`;
-          link.click();
-          URL.revokeObjectURL(url);
-        }
-      }, `image/${format}`);
+      // Convert to blob and download with proper async handling
+      await new Promise<void>((resolve, reject) => {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `password-card.${format === 'jpeg' ? 'jpg' : 'png'}`;
+            link.click();
+            URL.revokeObjectURL(url);
+            resolve();
+          } else {
+            reject(new Error('Failed to create image blob'));
+          }
+        }, `image/${format}`);
+      });
     } finally {
-      // Clean up
+      // Clean up - safe to do after blob creation completes
       document.body.removeChild(container);
     }
   }

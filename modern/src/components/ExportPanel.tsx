@@ -48,7 +48,7 @@ export default function ExportPanel({ settings }: Props) {
       await svgRenderer.loadTemplates();
 
       // Parse seed
-      let numericSeed: number | undefined;
+      let numericSeed: number | bigint | undefined;
       if (settings.seed) {
         if (/^\d+$/.test(settings.seed)) {
           numericSeed = parseInt(settings.seed, 10);

@@ -209,7 +209,12 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               <Select
                 value={settings.keyboardLayout}
                 label="Keyboard Layout"
-                onChange={(e) => onUpdate({ keyboardLayout: e.target.value as any })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'qwerty' || value === 'qwertz') {
+                    onUpdate({ keyboardLayout: value });
+                  }
+                }}
               >
                 <MenuItem value="qwerty">QWERTY</MenuItem>
                 <MenuItem value="qwertz">QWERTZ</MenuItem>
@@ -300,7 +305,12 @@ export default function CardSettingsPanel({ settings, onUpdate, onReset, onAbout
               <Select
                 value={settings.hashAlgorithm}
                 label="Hash Algorithm"
-                onChange={(e) => onUpdate({ hashAlgorithm: e.target.value as any })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === 'sha256' || value === 'sha1' || value === 'sha512' || value === 'md5') {
+                    onUpdate({ hashAlgorithm: value });
+                  }
+                }}
               >
                 <MenuItem value="sha256">SHA-256 (Recommended)</MenuItem>
                 <MenuItem value="sha1">SHA-1</MenuItem>
