@@ -3,49 +3,42 @@
 ## What This Repository Does
 A PHP web application that generates customizable password cards (inspired by Qwertycards.com) as PDF downloads.
 
-## Current Status: ⚠️ Docker Build is Broken
+## Current Status: ✅ Docker Issues FIXED
 
-## Critical Dockerfile Problems
+All critical Docker build issues have been resolved:
+- ✅ Build context corrected to `.` in docker-compose.yml
+- ✅ Proper COPY instructions using `legacy/` directory
+- ✅ Correct PHP extensions (zip mbstring dom)
+- ✅ No permission issues with user switching
+- ✅ Composer runs properly before user switch
 
-### Problem 1: Non-Existent Build Directory ❌
-**Line 68:** `COPY --chown=${APACHE_USER}:${APACHE_GROUP} ../build/ /var/www/html/`
-- References `../build/` directory that doesn't exist
-- Will cause immediate build failure
+## Recent Fixes Applied
 
-### Problem 2: Wrong Docker Context ❌
-**docker-compose.yml:** Build context is `./apache` but source code is in parent directory
-- Source files are not accessible during build
+### 1. Autoloading Fix ✅
+- Updated legacy/composer.json to use "php/" instead of "src/" directory
+- Classes now load correctly via PSR-4 autoloading
 
-### Problem 3: Invalid PHP Extensions ❌
-**Line 27:** `RUN docker-php-ext-install zip curl mbstring xml`
-- `curl` and `xml` are not valid extension names
-- Build will fail
+### 2. Typo Fix ✅
+- Fixed $configration → $configuration in CardCreator.php
+- All instances corrected (property, constructor, method references)
 
-### Problem 4: Permission Issues ❌
-- Switches to non-root user (line 58)
-- Then tries to start Apache on port 80 (requires root)
-- Will cause runtime failure
+### 3. PDF Export Alignment ✅
+- Modern app PDF export now matches legacy TCPDF output exactly:
+  - Same metadata (author: Raphael Zimmermann)
+  - Same line width (0.2mm)
+  - Same hash algorithm formatting (uppercase)
+  - Same QR code behavior (checks qrCodeEnabled flag)
 
-### Problem 5: Composer Self-Update Fails ❌
-- Runs `composer self-update` as non-root user
-- Won't have permission to update composer binary
+## Build & Run
 
-## Quick Fix
+Both applications can be built and run via Docker Compose:
 
-Replace `apache/Dockerfile` and update `docker-compose.yml` as shown in the detailed analysis document (`REPOSITORY_ANALYSIS.md`).
+```bash
+docker compose up -d --build
+```
 
-**Or use this minimal fix:**
-
-1. Change docker-compose.yml line 4: `context: .` (instead of `./apache`)
-2. Change Dockerfile line 68: `COPY . /var/www/html/` (instead of `../build/`)
-3. Change Dockerfile line 27: `RUN docker-php-ext-install zip mbstring dom`
-4. Remove line 58: `USER ${APACHE_USER}` (or move after composer)
-5. Move `composer self-update` before USER directive
+- **Modern app**: http://localhost:3000
+- **Legacy app**: http://localhost:3001
 
 ## See Full Analysis
-For complete details, see `REPOSITORY_ANALYSIS.md` which includes:
-- Full architecture overview
-- Security analysis
-- Code quality assessment
-- Complete fixed Dockerfile
-- All recommendations
+For complete details, see `REPOSITORY_ANALYSIS.md` which documents the original state before fixes were applied.
