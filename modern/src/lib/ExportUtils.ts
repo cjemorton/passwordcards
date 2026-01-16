@@ -310,12 +310,4 @@ export class ExportUtils {
       document.body.removeChild(container);
     }
   }
-
-  /**
-   * Convert SVG string to data URL
-   */
-  private static svgToDataUrl(svg: string): string {
-    const base64 = btoa(unescape(encodeURIComponent(svg)));
-    return `data:image/svg+xml;base64,${base64}`;
-  }
 }

@@ -109,11 +109,11 @@ export class SvgRenderer {
     svg = svg.replace('$SEED_DISPLAY$', this.escape(cardData.seedDisplay));
 
     // Legacy format: /seed/pattern/hash_algorithm/
-    const legacySeedFormat = `/${cardData.seed}/${cardData.pattern}/${cardData.hashAlgorithm}/`;
-    svg = svg.replace('$SEED$/$PATTERN$/$HASH_ALGORITHM$/', this.escape(legacySeedFormat));
+    const legacySeedFormat = `/${this.escape(String(cardData.seed))}/${this.escape(cardData.pattern)}/${this.escape(cardData.hashAlgorithm)}/`;
+    svg = svg.replace('$SEED$/$PATTERN$/$HASH_ALGORITHM$/', legacySeedFormat);
 
-    // Replace individual values for compatibility
-    svg = svg.replace(/\$SEED\$/g, String(cardData.seed));
+    // Replace individual values for compatibility (with escaping)
+    svg = svg.replace(/\$SEED\$/g, this.escape(String(cardData.seed)));
     svg = svg.replace(/\$PATTERN\$/g, this.escape(cardData.pattern));
     svg = svg.replace(/\$HASH_ALGORITHM\$/g, this.escape(cardData.hashAlgorithm));
 
@@ -142,12 +142,5 @@ export class SvgRenderer {
       front: this.renderFront(cardData),
       back: this.renderBack(cardData),
     };
-  }
-
-  /**
-   * Get data URL for an SVG string
-   */
-  getSvgDataUrl(svg: string): string {
-    return `data:image/svg+xml;base64,${btoa(svg)}`;
   }
 }
