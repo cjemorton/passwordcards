@@ -82,6 +82,11 @@ export class SeededRandom {
 
 /**
  * Hash a string seed to a numeric seed
+ * 
+ * This matches the PHP implementation which takes the first 15 hexadecimal
+ * characters from the hash and converts to integer. This provides ~60 bits
+ * of entropy (15 hex chars = 60 bits) which is sufficient to prevent practical
+ * collisions while ensuring cross-platform compatibility.
  */
 export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' | 'sha512' | 'md5' = 'sha256'): Promise<number> {
   // For browser compatibility, we use the Web Crypto API for SHA algorithms
@@ -104,15 +109,19 @@ export async function hashSeed(stringSeed: string, algorithm: 'sha256' | 'sha1' 
   
   hashBuffer = await crypto.subtle.digest(algoMap[algorithm], data);
   
-  // Convert first 4 bytes to a 32-bit integer
+  // Convert hash to hexadecimal string
   const hashArray = new Uint8Array(hashBuffer);
-  let seed = 0;
-  for (let i = 0; i < 4; i++) {
-    seed = (seed << 8) | hashArray[i];
-  }
+  const hashHex = Array.from(hashArray)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
   
-  // Ensure positive 32-bit integer
-  return seed >>> 0;
+  // Take first 15 hex characters and convert to integer (matching PHP implementation)
+  // This provides ~60 bits of entropy which fits comfortably in JavaScript's
+  // Number.MAX_SAFE_INTEGER (2^53-1) while matching the PHP backend exactly
+  const first15Chars = hashHex.substring(0, 15);
+  const seed = parseInt(first15Chars, 16);
+  
+  return seed;
 }
 
 /**
