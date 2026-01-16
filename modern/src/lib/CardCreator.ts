@@ -87,19 +87,23 @@ export class CardCreator {
 
   /**
    * Build the seed display string based on user preferences
+   * Format matches legacy PHP implementation: string seed immediately left of number seed, no labels
    */
   private buildSeedDisplay(): string {
     const parts: string[] = [];
 
+    // Add string seed if requested and available (no label)
     if (this.config.printStringSeed && this.config.originalStringSeed) {
-      parts.push(`Seed: ${this.config.originalStringSeed}`);
+      parts.push(this.config.originalStringSeed);
     }
 
+    // Add number seed if requested (no label)
     if (this.config.printNumberSeed) {
-      parts.push(`Number: ${this.config.seed}`);
+      parts.push(String(this.config.seed));
     }
 
-    return parts.join(' | ');
+    // Join with space - string seed immediately left of number seed
+    return parts.join(' ');
   }
 
   /**
