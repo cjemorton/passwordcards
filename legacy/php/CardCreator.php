@@ -4,22 +4,22 @@ namespace raphiz\passwordcards;
 
 class CardCreator
 {
-    private $configration = null;
+    private $configuration = null;
 
-    public function __construct($configration)
+    public function __construct($configuration)
     {
-        if ($configration === null) {
+        if ($configuration === null) {
             throw new \Exception('The given $configuration is null!');
         }
 
-        if ($configration instanceof Configuration === false) {
+        if ($configuration instanceof Configuration === false) {
             throw new \Exception(
                 'The given $configuration is not a valid ' .
                 'Configuration object.'
             );
         }
 
-        $this->configration = $configration;
+        $this->configuration = $configuration;
     }
 
     public function getSvgFilePath($template_name)
@@ -35,18 +35,18 @@ class CardCreator
     public function render($svg)
     {
         // Get and count available characters
-        $chars = $this->configration->getPatternCharacters();
+        $chars = $this->configuration->getPatternCharacters();
         $char_count = count($chars);
 
         // Seed the random number generator for deterministic card generation.
         // When the same seed is used with identical configuration parameters,
         // the exact same card will be generated every time. This allows users
         // to regenerate lost cards using their seed value.
-        $seed = $this->configration->seed;
+        $seed = $this->configuration->seed;
         mt_srand($seed);
 
         // Generate random characters for each key position using seeded RNG
-        $number_of_keys = strlen($this->configration->keys);
+        $number_of_keys = strlen($this->configuration->keys);
         for ($i = 0; $i < $number_of_keys; $i++) {
             // Use mt_rand() which respects the seed set by mt_srand()
             $equivalent = $chars[mt_rand(0, $char_count-1)];
@@ -56,12 +56,12 @@ class CardCreator
             // Replace the equivalent on the "keyboard"
             $svg = str_replace('$' . ($i+1) . '$', $equivalent, $svg);
 
-            $svg = str_replace('$k' . ($i+1) . '$', $this->configration->keys[$i], $svg);
+            $svg = str_replace('$k' . ($i+1) . '$', $this->configuration->keys[$i], $svg);
 
         }
 
         // Generate random characters for spacebar using seeded RNG
-        $space_lenght = $this->configration->spaceBarSize;
+        $space_lenght = $this->configuration->spaceBarSize;
         $space = '';
         for ($i = 0; $i < $space_lenght; $i++) {
             // Use mt_rand() which respects the seed set by mt_srand()
@@ -72,20 +72,20 @@ class CardCreator
 
         $svg = str_replace('$SEED$', $seed, $svg);
 
-        $svg = str_replace('$PRIMARY$', $this->configration->primaryColor, $svg);
+        $svg = str_replace('$PRIMARY$', $this->configuration->primaryColor, $svg);
 
-        $svg = str_replace('$SECONDARY$', $this->configration->secondaryColor, $svg);
+        $svg = str_replace('$SECONDARY$', $this->configuration->secondaryColor, $svg);
 
-        $svg = str_replace('$TEXT$', $this->escape($this->configration->text), $svg);
+        $svg = str_replace('$TEXT$', $this->escape($this->configuration->text), $svg);
 
-        $svg = str_replace('$PATTERN$', $this->escape($this->configration->pattern), $svg);
+        $svg = str_replace('$PATTERN$', $this->escape($this->configuration->pattern), $svg);
 
-        $svg = str_replace('$HASH_ALGORITHM$', $this->escape(strtoupper($this->configration->hashAlgorithm)), $svg);
+        $svg = str_replace('$HASH_ALGORITHM$', $this->escape(strtoupper($this->configuration->hashAlgorithm)), $svg);
 
-        $svg = str_replace('$WATERMARK_URL$', $this->escape($this->configration->watermarkUrl), $svg);
+        $svg = str_replace('$WATERMARK_URL$', $this->escape($this->configuration->watermarkUrl), $svg);
 
         // Calculate appropriate font size for watermark URL to prevent clipping
-        $watermarkLength = strlen($this->configration->watermarkUrl);
+        $watermarkLength = strlen($this->configuration->watermarkUrl);
         $watermarkFontSize = $this->calculateWatermarkFontSize($watermarkLength);
         $svg = str_replace('$WATERMARK_FONT_SIZE$', $watermarkFontSize, $svg);
 
@@ -107,13 +107,13 @@ class CardCreator
         $parts = [];
         
         // Add string seed if requested and available (no label)
-        if ($this->configration->printStringSeed && $this->configration->originalStringSeed !== null) {
-            $parts[] = $this->configration->originalStringSeed;
+        if ($this->configuration->printStringSeed && $this->configuration->originalStringSeed !== null) {
+            $parts[] = $this->configuration->originalStringSeed;
         }
         
         // Add number seed if requested (no label)
-        if ($this->configration->printNumberSeed) {
-            $parts[] = $this->configration->seed;
+        if ($this->configuration->printNumberSeed) {
+            $parts[] = $this->configuration->seed;
         }
         
         // Join with space - string seed immediately left of number seed
