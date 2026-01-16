@@ -75,6 +75,10 @@ export default function RecoverSeedPage() {
     return keyValues.filter(v => v.length > 0);
   };
 
+  /**
+   * Verify a card matches the expected key mapping
+   * This uses the same verification logic as the worker for consistency.
+   */
   const verifyCard = (seed: number | bigint, type: 'numeric' | 'string'): boolean => {
     try {
       const cardConfig = new Configuration({
@@ -88,20 +92,15 @@ export default function RecoverSeedPage() {
       const creator = new CardCreator(cardConfig);
       const card = creator.generateCard();
       
-      const expectedKeys = getKeyMapping();
       const expectedSpacebar = spacebarCode.trim();
       
-      // Verify key mapping matches
-      // Compare non-empty key values with their corresponding positions
-      if (expectedKeys.length > 0) {
-        let keyIndex = 0;
-        for (let i = 0; i < keyValues.length && keyIndex < expectedKeys.length; i++) {
-          if (keyValues[i]) {
-            // This position has a value, verify it matches
-            if (card.values[i] !== keyValues[i]) {
-              return false;
-            }
-            keyIndex++;
+      // Verify key mapping matches - check each position that has a value
+      // This logic matches the worker's verification approach
+      if (keyValues.length > 0) {
+        for (let i = 0; i < Math.min(keyValues.length, card.values.length); i++) {
+          // Only verify positions where user entered a value
+          if (keyValues[i] && card.values[i] !== keyValues[i]) {
+            return false;
           }
         }
       }

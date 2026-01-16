@@ -28,7 +28,17 @@ interface Props {
  * - Overlays Material-UI TextField components at precise positions
  * - Supports keyboard navigation (Tab) between fields
  * - Mobile-responsive scaling
+ * 
+ * IMPORTANT: Coordinate calculations depend on the simple_front.svg template structure.
+ * If the SVG template changes, the key position coordinates must be recalculated.
  */
+
+// SVG viewBox dimensions from simple_front.svg
+// These are used to convert absolute SVG coordinates to percentage positions
+const SVG_VIEWBOX_WIDTH = 301.18109;
+const SVG_VIEWBOX_HEIGHT = 194.88188;
+const SVG_TRANSFORM_Y_OFFSET = 857.4803; // Y-axis transform offset in the SVG
+
 export default function CardPreviewWithOverlay({
   keyboardLayout,
   pattern,
@@ -96,10 +106,28 @@ export default function CardPreviewWithOverlay({
 
   /**
    * Key position coordinates in the SVG (centers of key rectangles)
-   * These are calculated from the simple_front.svg template rect elements.
    * 
-   * Coordinates are in SVG units. The SVG viewBox is 301.18109 x 194.88188 units,
-   * with a transform offset of 857.4803 on the y-axis.
+   * These coordinates are calculated from the simple_front.svg template rect elements
+   * by taking the center point of each key rectangle (x + width/2, y + height/2).
+   * 
+   * Calculation method:
+   * - Row 1 keys: y = 872.80829 + (31.352016/2) = 888.48
+   * - Row 2 keys: y = 917.09961 + (31.352016/2) = 932.78
+   * - Row 3 keys: y = 961.39093 + (31.352016/2) = 977.07
+   * - Key width: 22.493748, spacing between keys: ~28.35
+   * - Spacebar: center at (150.59, 1021.36)
+   * 
+   * SVG coordinate system notes:
+   * - Origin (0,0) is at top-left of SVG viewBox
+   * - Coordinates are in SVG units (not pixels)
+   * - The SVG has a transform of translate(0, -857.4803) applied to the main group
+   * - These coordinates are in the transformed space
+   * 
+   * IMPORTANT: These coordinates are specific to simple_front.svg and must be
+   * recalculated if the template changes. The keyboard layout (QWERTY vs QWERTZ)
+   * affects which letters appear at these positions, but not the positions themselves.
+   * 
+   * Coordinates are in SVG units. The SVG viewBox is 301.18109 x 194.88188 units.
    */
   const getKeyPositions = () => {
     // Row 1: Q W E R T Y U I O P (indices 0-9) - y=888.48 (center of rects at y=872.80829)
@@ -225,9 +253,8 @@ export default function CardPreviewWithOverlay({
             {cardData.keys.map((keyLabel, index) => {
               const pos = keyPositions[index];
               // Convert SVG coordinates to percentage positions
-              // SVG viewBox is ~301x195, with padding added by container
-              const leftPercent = ((pos.x / 301) * 100);
-              const topPercent = ((pos.y - 857.48) / 194.88 * 100); // Adjust for SVG transform
+              const leftPercent = ((pos.x / SVG_VIEWBOX_WIDTH) * 100);
+              const topPercent = ((pos.y - SVG_TRANSFORM_Y_OFFSET) / SVG_VIEWBOX_HEIGHT * 100);
 
               return (
                 <TextField
@@ -293,8 +320,8 @@ export default function CardPreviewWithOverlay({
               }}
               sx={{
                 position: 'absolute',
-                left: `${(spacebarPosition.x / 301) * 100}%`,
-                top: `${((spacebarPosition.y - 857.48) / 194.88) * 100}%`,
+                left: `${(spacebarPosition.x / SVG_VIEWBOX_WIDTH) * 100}%`,
+                top: `${((spacebarPosition.y - SVG_TRANSFORM_Y_OFFSET) / SVG_VIEWBOX_HEIGHT) * 100}%`,
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'auto',
                 width: '140px',
