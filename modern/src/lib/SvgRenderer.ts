@@ -111,20 +111,27 @@ export class SvgRenderer {
     // Handle metadata string
     const metadataString = `/${this.escape(String(cardData.seed))}/${this.escape(cardData.pattern)}/${this.escape(cardData.hashAlgorithm)}/`;
     
-    // Show metadata in the selected position, hide the other
+    // Show metadata in the selected position, hide the others
     if (cardData.showMetadata) {
       if (cardData.metadataPosition === 'spine') {
+        // Place metadata on both edges adjacent to the fold line
+        // Left panel: metadata at right edge (adjacent to center fold)
+        // Right panel: metadata at left edge (adjacent to center fold)
+        // This ensures visibility when the card is folded
         svg = svg.replace('$METADATA_BOTTOM$', '');
-        svg = svg.replace('$METADATA_SPINE$', metadataString);
+        svg = svg.replace('$METADATA_SPINE_LEFT$', metadataString);
+        svg = svg.replace('$METADATA_SPINE_RIGHT$', metadataString);
       } else {
         // bottom position (default)
         svg = svg.replace('$METADATA_BOTTOM$', metadataString);
-        svg = svg.replace('$METADATA_SPINE$', '');
+        svg = svg.replace('$METADATA_SPINE_LEFT$', '');
+        svg = svg.replace('$METADATA_SPINE_RIGHT$', '');
       }
     } else {
       // Hide metadata entirely
       svg = svg.replace('$METADATA_BOTTOM$', '');
-      svg = svg.replace('$METADATA_SPINE$', '');
+      svg = svg.replace('$METADATA_SPINE_LEFT$', '');
+      svg = svg.replace('$METADATA_SPINE_RIGHT$', '');
     }
 
     // Replace individual values for compatibility (with escaping)

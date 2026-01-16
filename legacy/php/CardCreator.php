@@ -79,21 +79,29 @@ class CardCreator
         // Handle metadata string
         $metadataString = '/' . $this->escape($seed) . '/' . $this->escape($this->configuration->pattern) . '/' . $this->escape(strtoupper($this->configuration->hashAlgorithm)) . '/';
         
-        // Show metadata in the selected position, hide the other
+        // Show metadata in the selected position, hide the others
         if ($this->configuration->showMetadata) {
             if ($this->configuration->metadataPosition === 'spine') {
+                // Place metadata on both edges adjacent to the fold line
+                // Left panel: metadata at right edge (adjacent to center fold)
+                // Right panel: metadata at left edge (adjacent to center fold)
+                // This ensures visibility when the card is folded
                 $svg = str_replace('$METADATA_BOTTOM$', '', $svg);
-                $svg = str_replace('$METADATA_SPINE$', $metadataString, $svg);
+                $svg = str_replace('$METADATA_SPINE_LEFT$', $metadataString, $svg);
+                $svg = str_replace('$METADATA_SPINE_RIGHT$', $metadataString, $svg);
             } else {
                 // bottom position (default)
                 $svg = str_replace('$METADATA_BOTTOM$', $metadataString, $svg);
-                $svg = str_replace('$METADATA_SPINE$', '', $svg);
+                $svg = str_replace('$METADATA_SPINE_LEFT$', '', $svg);
+                $svg = str_replace('$METADATA_SPINE_RIGHT$', '', $svg);
             }
         } else {
             // Hide metadata entirely
             $svg = str_replace('$METADATA_BOTTOM$', '', $svg);
-            $svg = str_replace('$METADATA_SPINE$', '', $svg);
+            $svg = str_replace('$METADATA_SPINE_LEFT$', '', $svg);
+            $svg = str_replace('$METADATA_SPINE_RIGHT$', '', $svg);
         }
+
 
         // Handle multi-line text annotation
         $textLines = explode("\n", $this->configuration->text);
