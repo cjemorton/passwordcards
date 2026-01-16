@@ -56,7 +56,7 @@ class PDFRenderer
         );
 
         // Add QR code only on the left panel (front card) pointing to watermark URL
-        if ($config && !empty($config->watermarkUrl)) {
+        if ($config && $config->qrCodeEnabled && !empty($config->watermarkUrl)) {
             // Place QR code in top-right corner of front card (left panel)
             $pdf->write2DBarcode($config->watermarkUrl, 'QRCODE,L', 82, 17, 12, 12, self::getQRCodeStyle(), 'N');
         }

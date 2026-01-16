@@ -58,12 +58,13 @@ export class ExportUtils {
     pdf.setProperties({
       title: 'Password Card',
       subject: 'Password Card',
-      author: 'Password Card Generator',
-      creator: 'Password Card Generator - Modern UI',
+      author: 'Raphael Zimmermann',
+      creator: 'Password Card Generator',
     });
 
     // Add fold lines (matching legacy positions)
-    pdf.setLineWidth(0.1);
+    // TCPDF default line width is 0.2mm
+    pdf.setLineWidth(0.2);
     pdf.line(95, 10, 95, 13);
     pdf.line(95, 72, 95, 75);
 
@@ -168,7 +169,7 @@ export class ExportUtils {
     pdf.setFont('helvetica', 'normal');
     const settings = [
       `Seed: ${cardData.seed}`,
-      `Hash Algorithm: ${cardData.hashAlgorithm} (CRITICAL for string seed recovery)`,
+      `Hash Algorithm: ${cardData.hashAlgorithm.toUpperCase()} (CRITICAL for string seed recovery)`,
       `Pattern: ${cardData.pattern}`,
       `Keyboard Layout: ${cardData.keys.join('')}`,
       `Spacebar Size: ${cardData.spacebar.length}`,
@@ -196,7 +197,7 @@ export class ExportUtils {
       '',
       '1. Access the password card generator at the watermark URL shown below',
       `2. Enter your seed value (${cardData.seed}) in the seed field`,
-      `3. Select the hash algorithm (${cardData.hashAlgorithm}) from the dropdown`,
+      `3. Select the hash algorithm (${cardData.hashAlgorithm.toUpperCase()}) from the dropdown`,
       '4. Configure all other settings exactly as shown in the "Card Generation Settings" section above',
       '5. Generate the PDF - your card will be identical to this one',
       '',
