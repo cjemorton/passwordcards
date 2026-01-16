@@ -115,29 +115,36 @@ export class ExportUtils {
     container.style.backgroundColor = 'white';
     document.body.appendChild(container);
 
-    // Add SVG to container
-    container.innerHTML = svgString;
-    const svgElement = container.querySelector('svg');
+    // Parse SVG safely using DOMParser
+    const parser = new DOMParser();
+    const svgDoc = parser.parseFromString(svgString, 'image/svg+xml');
+    const svgElement = svgDoc.querySelector('svg');
     
     if (!svgElement) {
       document.body.removeChild(container);
       throw new Error('Invalid SVG string');
     }
 
+    // Add parsed SVG to container
+    container.appendChild(svgElement);
+
     // Get SVG dimensions
     const svgWidth = parseFloat(svgElement.getAttribute('width') || '301.18109');
     const svgHeight = parseFloat(svgElement.getAttribute('height') || '194.88188');
     
-    // Calculate scale for high DPI (300 DPI for print quality)
-    // 85mm = 1003.15 pixels at 300 DPI
-    // Scale factor: target_width_pixels / svg_width_pixels
-    const scale = 3.33; // This gives us ~300 DPI quality
+    // Calculate scale for print quality (300 DPI)
+    // Target: 85mm = ~1003 pixels at 300 DPI
+    // Scale factor: (300 DPI * 85mm / 25.4 mm/inch) / svg_width_pixels
+    const PRINT_DPI = 300;
+    const TARGET_WIDTH_MM = 85;
+    const MM_PER_INCH = 25.4;
+    const PRINT_QUALITY_SCALE = (PRINT_DPI * TARGET_WIDTH_MM / MM_PER_INCH) / svgWidth;
 
     try {
       // Render SVG to canvas at high resolution
       const canvas = await html2canvas(container, {
         backgroundColor: '#ffffff',
-        scale: scale,
+        scale: PRINT_QUALITY_SCALE,
         width: svgWidth,
         height: svgHeight,
         logging: false,
