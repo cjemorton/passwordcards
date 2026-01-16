@@ -11,20 +11,34 @@ import {
   IconButton,
   Drawer,
   useMediaQuery,
+  Button,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
+  FindInPage as RecoverIcon,
+  Home as HomeIcon,
 } from '@mui/icons-material';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
 import { AppSettings, loadSettings, saveSettings } from './utils/settings';
 import CardSettingsPanel from './components/CardSettingsPanel';
 import LivePreview from './components/LivePreview';
 import ExportPanel from './components/ExportPanel';
 import AboutDialog from './components/AboutDialog';
+import RecoverSeedPage from './components/RecoverSeedPage';
 
 function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
   const [settings, setSettings] = useState<AppSettings>(loadSettings());
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -106,6 +120,26 @@ function App() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Password Card Generator
             </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1, mr: 2 }}>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/"
+                startIcon={<HomeIcon />}
+                variant={location.pathname === '/' ? 'outlined' : 'text'}
+              >
+                Generator
+              </Button>
+              <Button
+                color="inherit"
+                component={Link}
+                to="/recover-seed"
+                startIcon={<RecoverIcon />}
+                variant={location.pathname === '/recover-seed' ? 'outlined' : 'text'}
+              >
+                Recover Seed
+              </Button>
+            </Box>
             <Typography variant="caption" sx={{ mr: 2, display: { xs: 'none', sm: 'block' } }}>
               v2.0.0 - Modern UI
             </Typography>
@@ -116,42 +150,47 @@ function App() {
         </AppBar>
 
         {/* Main Content */}
-        <Container maxWidth="xl" sx={{ mt: 4, mb: 4, flex: 1 }}>
-          <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
-            {/* Left Panel - Settings */}
-            <Box sx={{ flex: { md: '0 0 400px' }, display: { xs: 'none', md: 'block' } }}>
-              <CardSettingsPanel
-                settings={settings}
-                onUpdate={updateSettings}
-                onReset={resetSettings}
-                onAboutOpen={() => setAboutOpen(true)}
-              />
-            </Box>
+        <Routes>
+          <Route path="/" element={
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, flex: 1 }}>
+              <Box sx={{ display: 'flex', gap: 3, flexDirection: { xs: 'column', md: 'row' } }}>
+                {/* Left Panel - Settings */}
+                <Box sx={{ flex: { md: '0 0 400px' }, display: { xs: 'none', md: 'block' } }}>
+                  <CardSettingsPanel
+                    settings={settings}
+                    onUpdate={updateSettings}
+                    onReset={resetSettings}
+                    onAboutOpen={() => setAboutOpen(true)}
+                  />
+                </Box>
 
-            {/* Mobile Drawer */}
-            <Drawer
-              anchor="left"
-              open={drawerOpen}
-              onClose={() => setDrawerOpen(false)}
-              sx={{ display: { md: 'none' } }}
-            >
-              <Box sx={{ width: 320, p: 2 }}>
-                <CardSettingsPanel
-                  settings={settings}
-                  onUpdate={updateSettings}
-                  onReset={resetSettings}
-                  onAboutOpen={() => setAboutOpen(true)}
-                />
+                {/* Mobile Drawer */}
+                <Drawer
+                  anchor="left"
+                  open={drawerOpen}
+                  onClose={() => setDrawerOpen(false)}
+                  sx={{ display: { md: 'none' } }}
+                >
+                  <Box sx={{ width: 320, p: 2 }}>
+                    <CardSettingsPanel
+                      settings={settings}
+                      onUpdate={updateSettings}
+                      onReset={resetSettings}
+                      onAboutOpen={() => setAboutOpen(true)}
+                    />
+                  </Box>
+                </Drawer>
+
+                {/* Right Panel - Preview & Export */}
+                <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
+                  <LivePreview settings={settings} />
+                  <ExportPanel settings={settings} />
+                </Box>
               </Box>
-            </Drawer>
-
-            {/* Right Panel - Preview & Export */}
-            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <LivePreview settings={settings} />
-              <ExportPanel settings={settings} />
-            </Box>
-          </Box>
-        </Container>
+            </Container>
+          } />
+          <Route path="/recover-seed" element={<RecoverSeedPage />} />
+        </Routes>
 
         {/* Footer */}
         <Box
