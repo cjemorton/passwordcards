@@ -73,6 +73,9 @@ export default function ExportPanel({ settings }: Props) {
         printNumberSeed: settings.printNumberSeed,
         qrCodeEnabled: settings.qrCodeEnabled,
         showSeedOnCard: settings.showSeedOnCard,
+        showMetadata: settings.showMetadata,
+        metadataPosition: settings.metadataPosition,
+        annotationFontSize: settings.annotationFontSize,
       });
 
       // Generate card data

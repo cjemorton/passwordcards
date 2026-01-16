@@ -157,13 +157,6 @@ export default function LivePreview({ settings }: Props) {
               dangerouslySetInnerHTML={{ __html: svgBack }}
             />
           </Box>
-
-          {/* Info Message */}
-          <Box sx={{ mt: 2, p: 2, backgroundColor: 'info.main', color: 'info.contrastText', borderRadius: 1 }}>
-            <Typography variant="caption">
-              💡 This preview matches the legacy card layout pixel-perfect. Export to PDF, PNG, or JPG below.
-            </Typography>
-          </Box>
         </Box>
       )}
     </Paper>
