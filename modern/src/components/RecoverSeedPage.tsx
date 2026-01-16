@@ -22,6 +22,7 @@ import { Search as SearchIcon, Stop as StopIcon } from '@mui/icons-material';
 import { CardCreator } from '../lib/CardCreator';
 import { Configuration } from '../lib/Configuration';
 import { hashSeed } from '../lib/SeededRandom';
+import CardPreviewWithOverlay from './CardPreviewWithOverlay';
 
 interface RecoveryConfig {
   keyboardLayout: 'qwerty' | 'qwertz';
@@ -45,8 +46,8 @@ export default function RecoverSeedPage() {
     hashAlgorithm: 'sha256',
   });
   
-  // Card data inputs
-  const [keyMapping, setKeyMapping] = useState('');
+  // Card data inputs - array-based for overlay input fields
+  const [keyValues, setKeyValues] = useState<string[]>(new Array(26).fill(''));
   const [spacebarCode, setSpacebarCode] = useState('');
   
   // Search parameters
@@ -66,9 +67,12 @@ export default function RecoverSeedPage() {
   // Worker reference
   const [worker, setWorker] = useState<Worker | null>(null);
 
-  const parseKeyMapping = (input: string): string[] => {
-    // Parse comma-separated or space-separated key mapping
-    return input.split(/[,\s]+/).filter(v => v.length > 0);
+  /**
+   * Get key mapping as array, filtering out empty values
+   * This supports the new array-based state from overlay inputs
+   */
+  const getKeyMapping = (): string[] => {
+    return keyValues.filter(v => v.length > 0);
   };
 
   const verifyCard = (seed: number | bigint, type: 'numeric' | 'string'): boolean => {
@@ -84,14 +88,20 @@ export default function RecoverSeedPage() {
       const creator = new CardCreator(cardConfig);
       const card = creator.generateCard();
       
-      const expectedKeys = parseKeyMapping(keyMapping);
+      const expectedKeys = getKeyMapping();
       const expectedSpacebar = spacebarCode.trim();
       
       // Verify key mapping matches
+      // Compare non-empty key values with their corresponding positions
       if (expectedKeys.length > 0) {
-        for (let i = 0; i < Math.min(expectedKeys.length, card.values.length); i++) {
-          if (card.values[i] !== expectedKeys[i]) {
-            return false;
+        let keyIndex = 0;
+        for (let i = 0; i < keyValues.length && keyIndex < expectedKeys.length; i++) {
+          if (keyValues[i]) {
+            // This position has a value, verify it matches
+            if (card.values[i] !== keyValues[i]) {
+              return false;
+            }
+            keyIndex++;
           }
         }
       }
@@ -194,9 +204,10 @@ export default function RecoverSeedPage() {
     };
     
     // Send search parameters to worker
+    // For worker, we need the full key mapping array with values at correct positions
     newWorker.postMessage({
       config,
-      keyMapping: parseKeyMapping(keyMapping),
+      keyMapping: keyValues, // Send full array with positions preserved
       spacebar: spacebarCode.trim(),
       prefix: stringPrefix,
       length: parseInt(stringLength),
@@ -365,31 +376,24 @@ export default function RecoverSeedPage() {
 
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" gutterBottom>
-          Card Data from Your Physical Card
+          Transcribe Your Physical Card
         </Typography>
-        <Stack spacing={2}>
-          <TextField
-            fullWidth
-            label="Key Mapping"
-            value={keyMapping}
-            onChange={(e) => setKeyMapping(e.target.value)}
-            disabled={searching}
-            placeholder="e.g., A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z"
-            helperText="Enter the characters mapped to each key on your card (comma or space separated)"
-            multiline
-            rows={3}
-          />
-          
-          <TextField
-            fullWidth
-            label="Spacebar Code"
-            value={spacebarCode}
-            onChange={(e) => setSpacebarCode(e.target.value)}
-            disabled={searching}
-            placeholder="e.g., Ab3X9mK2"
-            helperText="Enter the spacebar code from your card"
-          />
-        </Stack>
+        <Typography variant="body2" color="text.secondary" paragraph>
+          Enter the configuration settings that match your physical card, then click on each key 
+          position below to enter the corresponding character from your card. This interactive method 
+          reduces transcription errors compared to typing a long list of characters.
+        </Typography>
+        <CardPreviewWithOverlay
+          keyboardLayout={config.keyboardLayout}
+          pattern={config.pattern}
+          spaceBarSize={config.spaceBarSize}
+          hashAlgorithm={config.hashAlgorithm}
+          keyValues={keyValues}
+          spacebarValue={spacebarCode}
+          onKeyValuesChange={setKeyValues}
+          onSpacebarValueChange={setSpacebarCode}
+          disabled={searching}
+        />
       </Paper>
 
       <Paper sx={{ p: 3, mb: 3 }}>
@@ -399,7 +403,7 @@ export default function RecoverSeedPage() {
               variant="contained"
               startIcon={<SearchIcon />}
               onClick={handleSearch}
-              disabled={!keyMapping && !spacebarCode}
+              disabled={getKeyMapping().length === 0 && !spacebarCode}
             >
               Start Search
             </Button>

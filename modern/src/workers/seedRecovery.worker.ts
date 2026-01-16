@@ -129,9 +129,12 @@ async function testStringSeed(
     const card = creator.generateCard();
     
     // Verify key mapping matches
+    // keyMapping is now an array where index corresponds to position
+    // Empty strings mean that position wasn't specified
     if (keyMapping.length > 0) {
       for (let i = 0; i < Math.min(keyMapping.length, card.values.length); i++) {
-        if (card.values[i] !== keyMapping[i]) {
+        // Only verify non-empty positions
+        if (keyMapping[i] && card.values[i] !== keyMapping[i]) {
           return false;
         }
       }
