@@ -8,7 +8,6 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import QRCode from 'qrcode';
-import { svg2pdf } from 'svg2pdf.js';
 import { CardData } from './CardCreator';
 
 export type ExportFormat = 'pdf' | 'png' | 'jpg';
@@ -68,27 +67,18 @@ export class ExportUtils {
     pdf.line(95, 10, 95, 13);
     pdf.line(95, 72, 95, 75);
 
-    // Render SVGs directly to PDF using svg2pdf.js
+    // Convert SVGs to high-resolution images and embed in PDF
+    // This approach ensures proper font rendering and matches legacy TCPDF quality
     // SVG dimensions: 301.18109 x 194.88188 pixels
     // Target dimensions: 85mm x 55mm (matching legacy)
     
     // Add front card (left panel)
-    const frontSvgElement = this.createSvgElement(frontSvg);
-    await svg2pdf(frontSvgElement, pdf, {
-      x: 10,
-      y: 15,
-      width: 85,
-      height: 55,
-    });
+    const frontImageData = await this.svgToImageData(frontSvg);
+    pdf.addImage(frontImageData, 'PNG', 10, 15, 85, 55);
 
     // Add back card (right panel)
-    const backSvgElement = this.createSvgElement(backSvg);
-    await svg2pdf(backSvgElement, pdf, {
-      x: 95,
-      y: 15,
-      width: 85,
-      height: 55,
-    });
+    const backImageData = await this.svgToImageData(backSvg);
+    pdf.addImage(backImageData, 'PNG', 95, 15, 85, 55);
 
     // Add QR code if enabled
     if (cardData.qrCodeEnabled && cardData.watermarkUrl) {
@@ -113,16 +103,61 @@ export class ExportUtils {
   }
 
   /**
-   * Create an SVG element from string
+   * Convert SVG to high-resolution image data for PDF embedding
+   * Uses canvas rendering to ensure proper font and styling support
    */
-  private static createSvgElement(svgString: string): SVGSVGElement {
+  private static async svgToImageData(svgString: string): Promise<string> {
+    // Create a temporary container for the SVG
+    const container = document.createElement('div');
+    container.style.position = 'absolute';
+    container.style.left = '-9999px';
+    container.style.top = '-9999px';
+    container.style.backgroundColor = 'white';
+    document.body.appendChild(container);
+
+    // Parse SVG safely using DOMParser
     const parser = new DOMParser();
-    const doc = parser.parseFromString(svgString, 'image/svg+xml');
-    const svgElement = doc.querySelector('svg');
+    const svgDoc = parser.parseFromString(svgString, 'image/svg+xml');
+    const svgElement = svgDoc.querySelector('svg');
+    
     if (!svgElement) {
+      document.body.removeChild(container);
       throw new Error('Invalid SVG string');
     }
-    return svgElement as SVGSVGElement;
+
+    // Add parsed SVG to container
+    container.appendChild(svgElement);
+
+    // Get SVG dimensions
+    const svgWidth = parseFloat(svgElement.getAttribute('width') || '301.18109');
+    const svgHeight = parseFloat(svgElement.getAttribute('height') || '194.88188');
+    
+    // Calculate scale for print quality (300 DPI)
+    // Target: 85mm = ~1003 pixels at 300 DPI
+    // Scale factor: (300 DPI * 85mm / 25.4 mm/inch) / svg_width_pixels
+    const PRINT_DPI = 300;
+    const TARGET_WIDTH_MM = 85;
+    const MM_PER_INCH = 25.4;
+    const PRINT_QUALITY_SCALE = (PRINT_DPI * TARGET_WIDTH_MM / MM_PER_INCH) / svgWidth;
+
+    try {
+      // Render SVG to canvas at high resolution
+      const canvas = await html2canvas(container, {
+        backgroundColor: '#ffffff',
+        scale: PRINT_QUALITY_SCALE,
+        width: svgWidth,
+        height: svgHeight,
+        logging: false,
+        useCORS: true,
+      });
+
+      // Convert canvas to PNG data URL
+      const imageData = canvas.toDataURL('image/png');
+      return imageData;
+    } finally {
+      // Clean up
+      document.body.removeChild(container);
+    }
   }
 
   /**
