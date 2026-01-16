@@ -133,6 +133,8 @@ export class SvgRenderer {
     svg = svg.replace(/\$HASH_ALGORITHM\$/g, this.escape(cardData.hashAlgorithm));
 
     // Handle multi-line text annotation
+    // IMPORTANT: When annotation is blank or whitespace-only, replace placeholder with empty string
+    // to prevent literal '$TEXT_MULTILINE$' from appearing on the card
     const textLines = cardData.text.split('\n');
     let textMultiline = '';
     if (textLines.length > 0 && cardData.text.trim() !== '') {
@@ -151,6 +153,7 @@ export class SvgRenderer {
          sodipodi:role="line">${this.escape(line)}</tspan>`;
       });
     }
+    // Always replace placeholder to ensure it doesn't appear literally on the card
     svg = svg.replace('$TEXT_MULTILINE$', textMultiline);
     
     // Replace annotation font size
