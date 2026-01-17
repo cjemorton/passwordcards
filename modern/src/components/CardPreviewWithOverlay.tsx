@@ -268,9 +268,10 @@ export default function CardPreviewWithOverlay({
                     'aria-label': `Key ${keyLabel}`,
                     style: {
                       textAlign: 'center',
-                      padding: '2px',
-                      fontSize: '14px',
+                      padding: '4px 2px',
+                      fontSize: 'inherit',
                       fontWeight: 'bold',
+                      fontFamily: 'inherit',
                     },
                   }}
                   sx={{
@@ -279,19 +280,23 @@ export default function CardPreviewWithOverlay({
                     top: `${topPercent}%`,
                     transform: 'translate(-50%, -50%)',
                     pointerEvents: 'auto', // Enable clicks on inputs
-                    width: '28px',
+                    width: '2em',
+                    fontSize: '1em',
                     '& .MuiInputBase-root': {
-                      height: '28px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      height: '2em',
+                      backgroundColor: 'rgba(255, 255, 255, 0.95)',
                       border: '2px solid',
                       borderColor: keyValues[index] ? 'success.main' : 'primary.main',
-                      borderRadius: '4px',
+                      borderRadius: '3px',
+                      fontSize: 'inherit',
                       '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        backgroundColor: 'rgba(255, 255, 255, 1)',
+                        borderColor: keyValues[index] ? 'success.dark' : 'primary.dark',
                       },
                       '&.Mui-focused': {
                         backgroundColor: 'rgba(255, 255, 255, 1)',
-                        boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.25)',
+                        boxShadow: '0 0 0 3px rgba(25, 118, 210, 0.3)',
+                        borderColor: 'primary.main',
                       },
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
@@ -314,8 +319,9 @@ export default function CardPreviewWithOverlay({
                 style: {
                   textAlign: 'center',
                   padding: '4px',
-                  fontSize: '12px',
+                  fontSize: 'inherit',
                   fontWeight: 'bold',
+                  fontFamily: 'inherit',
                 },
               }}
               sx={{
@@ -324,19 +330,23 @@ export default function CardPreviewWithOverlay({
                 top: `${((spacebarPosition.y - SVG_TRANSFORM_Y_OFFSET) / SVG_VIEWBOX_HEIGHT) * 100}%`,
                 transform: 'translate(-50%, -50%)',
                 pointerEvents: 'auto',
-                width: '140px',
+                width: '10em',
+                fontSize: '0.9em',
                 '& .MuiInputBase-root': {
-                  height: '28px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                  height: '2em',
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
                   border: '2px solid',
                   borderColor: spacebarValue ? 'success.main' : 'primary.main',
-                  borderRadius: '4px',
+                  borderRadius: '3px',
+                  fontSize: 'inherit',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                    backgroundColor: 'rgba(255, 255, 255, 1)',
+                    borderColor: spacebarValue ? 'success.dark' : 'primary.dark',
                   },
                   '&.Mui-focused': {
                     backgroundColor: 'rgba(255, 255, 255, 1)',
-                    boxShadow: '0 0 0 2px rgba(25, 118, 210, 0.25)',
+                    boxShadow: '0 0 0 3px rgba(25, 118, 210, 0.3)',
+                    borderColor: 'primary.main',
                   },
                 },
                 '& .MuiOutlinedInput-notchedOutline': {
